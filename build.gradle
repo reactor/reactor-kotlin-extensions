@@ -46,6 +46,23 @@ subprojects {
 	maven { url 'https://repo.spring.io/libs-milestone' }
   }
 
+  configurations.all {
+	resolutionStrategy {
+	  eachDependency {
+		switch (requested.module.toString()) {
+		  case "io.projectreactor:reactor-core":
+		  case "io.projectreactor:reactor-test":
+			return useVersion("3.3.0.BUILD-SNAPSHOT")
+		}
+	  }
+	}
+  }
+
+  dependencies {
+	testCompile 'junit:junit:4.12'
+	testCompile 'org.assertj:assertj-core:3.12.2'
+  }
+
   tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 	kotlinOptions.jvmTarget = "1.8"
 	kotlinOptions.freeCompilerArgs = ["-Xjsr305=strict"]
