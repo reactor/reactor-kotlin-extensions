@@ -18,6 +18,7 @@ package reactor.kotlin.util.function
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import reactor.kotlin.core.util.function.*
 import reactor.util.function.Tuples
 
 object O1; object O2; object O3; object O4

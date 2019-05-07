@@ -16,6 +16,7 @@
 package reactor.kotlin.adapter.rxjava
 
 import io.reactivex.*
+import reactor.adapter.rxjava.RxJava2Adapter
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 

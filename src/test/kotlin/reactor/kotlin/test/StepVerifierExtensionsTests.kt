@@ -17,6 +17,7 @@
 package reactor.kotlin.test
 
 import org.junit.Test
+import reactor.kotlin.core.publisher.toMono
 
 class StepVerifierExtensionsTests {
 

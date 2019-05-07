@@ -42,8 +42,11 @@ configure(rootProject)  {
 	  maven { url 'https://repo.spring.io/libs-snapshot' }
 	}
 
-	jcenter()
 	maven { url 'https://repo.spring.io/libs-milestone' }
+	maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+	maven { url "https://maven-eclipse.github.io/maven" }
+	jcenter()
+	mavenCentral()
   }
 
   configurations.all {
@@ -51,45 +54,79 @@ configure(rootProject)  {
 	  eachDependency {
 		switch (requested.module.toString()) {
 		  case "io.projectreactor:reactor-core":
-		  case "io.projectreactor:reactor-adapter":
-		  case "io.projectreactor:reactor-extra":
 		  case "io.projectreactor:reactor-test":
+		  case "io.projectreactor.addons:reactor-adapter":
+		  case "io.projectreactor.addons:reactor-extra":
 			return useVersion("3.3.0.BUILD-SNAPSHOT")
 		}
 	  }
 	}
   }
 
-  dependencies {
-	testCompile 'junit:junit:4.12'
-	testCompile 'org.assertj:assertj-core:3.12.2'
+
+
+  compileJava {
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+  }
+
+  compileTestJava {
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
   }
 
   tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 	kotlinOptions.jvmTarget = "1.8"
 	kotlinOptions.freeCompilerArgs = ["-Xjsr305=strict"]
   }
+
+
+  task kdocZip(type: Zip, dependsOn: dokka) {
+	//ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
+	classifier = 'kdoc'
+	from(dokka.outputDirectory)
+  }
+
+  artifacts {
+	archives kdocZip
+  }
+  dependencies {
+	compile 'io.projectreactor:reactor-core'
+	optional 'io.projectreactor:reactor-test'
+
+	optional 'io.projectreactor.addons:reactor-adapter'
+	optional "io.reactivex.rxjava2:rxjava:2.2.8"
+
+	optional 'io.projectreactor.addons:reactor-extra'
+	optional "org.eclipse.swt:org.eclipse.swt.${getPlatform()}:4.5.2"
+
+	optional 'org.jetbrains.kotlin:kotlin-stdlib'
+
+	testCompile 'io.projectreactor:reactor-test'
+	testCompile 'junit:junit:4.12'
+	testCompile 'org.assertj:assertj-core:3.12.2'
+  }
+
 }
 
-task kdocZip(type: Zip, dependsOn: dokka) {
-  //ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
-  classifier = 'kdoc'
-  from(dokka.outputDirectory)
-}
 
-artifacts {
-  archives kdocZip
-}
-
-dependencies {
-  compile 'io.projectreactor:reactor-core'
-  optional 'io.projectreactor:reactor-test'
-  optional 'io.projectreactor:reactor-extra'
-  optional 'io.projectreactor:reactor-adapter'
-  
-  optional "io.reactivex.rxjava2:rxjava:2.2.8"
-
-  optional 'org.jetbrains.kotlin:kotlin-stdlib'
-
-  testCompile 'io.projectreactor:reactor-test'
+def getPlatform() {
+  String osname = System.properties['os.name']
+  String osarch = System.properties['os.arch']
+  if (osname.toLowerCase(Locale.ROOT).contains('win')) {
+	if (osarch.contains("64")) {
+	  return "win32.win32.x86_64"
+	}
+	return "win32.win32.x86"
+  }
+  if (osname.toLowerCase(Locale.ROOT).contains("nux")) {
+	if (osarch.contains("64")) {
+	  return "gtk.linux.x86_64"
+	}
+	return "gtk.linux.x86"
+  }
+  if (osname.toLowerCase(Locale.ROOT).contains("mac")) {
+	return "cocoa.macosx.x86_64"
+  }
+  throw new RuntimeException("Unknown OS/Arch: " + osname + ", " + osarch)
 }

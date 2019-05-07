@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package reactor.kotlin.math
+package reactor.kotlin.extra.math
 
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.math.MathFlux
 import java.util.function.Function
 
 

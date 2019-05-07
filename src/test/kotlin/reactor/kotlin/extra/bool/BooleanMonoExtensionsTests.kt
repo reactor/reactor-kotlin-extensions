@@ -18,6 +18,7 @@ package reactor.kotlin.extra.bool
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import reactor.core.publisher.Mono
+import reactor.kotlin.test.test
 
 class BooleanMonoExtensionsTests {
 

@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package reactor.kotlin.swing
+package reactor.kotlin.extra.swing
 
 import reactor.core.scheduler.Scheduler
+import org.eclipse.swt.widgets.Display
+import reactor.swing.SwtScheduler
 
 /**
  * Extension to convert a SWT Display to a [Scheduler].

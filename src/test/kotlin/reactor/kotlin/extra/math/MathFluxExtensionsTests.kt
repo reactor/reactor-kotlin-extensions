@@ -17,6 +17,8 @@ package reactor.kotlin.extra.math
 
 import org.junit.Test
 import reactor.core.publisher.Flux
+import reactor.kotlin.core.publisher.toFlux
+import reactor.kotlin.test.test
 
 /**
  * @author Simon Baslé
