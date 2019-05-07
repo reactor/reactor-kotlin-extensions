@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2017 Pivotal Software Inc, All Rights Reserved.
+ * Copyright (c) 2011-2019 Pivotal Software Inc, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package reactor.util.function
+package reactor.kotlin.util.function
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import reactor.util.function.Tuples
 
 object O1; object O2; object O3; object O4
 object O5; object O6; object O7; object O8

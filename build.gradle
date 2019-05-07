@@ -30,7 +30,7 @@ plugins {
 
 apply from: "gradle/publishing.gradle"
 
-subprojects {
+configure(rootProject)  {
   apply plugin: 'kotlin'
   apply plugin: 'propdeps'
 
@@ -51,6 +51,8 @@ subprojects {
 	  eachDependency {
 		switch (requested.module.toString()) {
 		  case "io.projectreactor:reactor-core":
+		  case "io.projectreactor:reactor-adapter":
+		  case "io.projectreactor:reactor-extra":
 		  case "io.projectreactor:reactor-test":
 			return useVersion("3.3.0.BUILD-SNAPSHOT")
 		}
@@ -67,4 +69,27 @@ subprojects {
 	kotlinOptions.jvmTarget = "1.8"
 	kotlinOptions.freeCompilerArgs = ["-Xjsr305=strict"]
   }
+}
+
+task kdocZip(type: Zip, dependsOn: dokka) {
+  //ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
+  classifier = 'kdoc'
+  from(dokka.outputDirectory)
+}
+
+artifacts {
+  archives kdocZip
+}
+
+dependencies {
+  compile 'io.projectreactor:reactor-core'
+  optional 'io.projectreactor:reactor-test'
+  optional 'io.projectreactor:reactor-extra'
+  optional 'io.projectreactor:reactor-adapter'
+  
+  optional "io.reactivex.rxjava2:rxjava:2.2.8"
+
+  optional 'org.jetbrains.kotlin:kotlin-stdlib'
+
+  testCompile 'io.projectreactor:reactor-test'
 }

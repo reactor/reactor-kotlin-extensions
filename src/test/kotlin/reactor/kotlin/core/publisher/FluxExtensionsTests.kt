@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2018 Pivotal Software Inc, All Rights Reserved.
+ * Copyright (c) 2011-2019 Pivotal Software Inc, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package reactor.core.publisher
+package reactor.kotlin.core.publisher
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert
 import org.junit.Test
 import org.reactivestreams.Publisher
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import reactor.core.publisher.Operators
 import reactor.test.StepVerifier
-import reactor.kotlin.test.test
-import reactor.kotlin.test.verifyError
 import java.io.IOException
-import reactor.kotlin.core.publisher.*
 
 class FluxExtensionsTests {
 

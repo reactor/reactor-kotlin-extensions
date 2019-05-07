@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2018 Pivotal Software Inc, All Rights Reserved.
+ * Copyright (c) 2011-2019 Pivotal Software Inc, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package reactor.core.publisher
+package reactor.kotlin.core.publisher
 
 import org.junit.Test
 import reactor.test.StepVerifier
 import reactor.test.publisher.TestPublisher
-import reactor.kotlin.core.publisher.toMono
 
 class MonoFunctionsTests {
 
@@ -27,19 +26,19 @@ class MonoFunctionsTests {
     fun `whenComplete with void Publishers`() {
         val publishers = Array(3) { TestPublisher.create<Void>() }
         publishers.forEach { it.complete() }
-        StepVerifier.create(reactor.kotlin.core.publisher.whenComplete(*publishers))
+        StepVerifier.create(whenComplete(*publishers))
                 .verifyComplete()
     }
 
     @Test
     fun `whenComplete with two Monos`() {
-        StepVerifier.create(reactor.kotlin.core.publisher.whenComplete("foo1".toMono(), "foo2".toMono()))
+        StepVerifier.create(whenComplete("foo1".toMono(), "foo2".toMono()))
                 .verifyComplete()
     }
 
     @Test
     fun `zip with Monos and combinator`() {
-        val mono = reactor.kotlin.core.publisher.zip("foo1".toMono(), "foo2".toMono(), "foo3".toMono()) { it.joinToString() }
+        val mono = zip("foo1".toMono(), "foo2".toMono(), "foo3".toMono()) { it.joinToString() }
         StepVerifier.create(mono)
                 .expectNext("foo1, foo2, foo3")
                 .verifyComplete()
