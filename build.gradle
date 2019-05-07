@@ -57,7 +57,7 @@ configure(rootProject)  {
 		  case "io.projectreactor:reactor-test":
 		  case "io.projectreactor.addons:reactor-adapter":
 		  case "io.projectreactor.addons:reactor-extra":
-			return useVersion("3.3.0.BUILD-SNAPSHOT")
+			return useVersion("3.3.0.M1")
 		}
 	  }
 	}
