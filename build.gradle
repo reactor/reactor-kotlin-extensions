@@ -80,10 +80,36 @@ configure(rootProject)  {
 	kotlinOptions.freeCompilerArgs = ["-Xjsr305=strict"]
   }
 
+  dokka {
+	dependsOn jar
+	group = "documentation"
+	description = "Generates Kotlin API documentation."
+	moduleName = "reactor-kotlin-extensions"
+	jdkVersion = 8
+
+	outputFormat = "html"
+	outputDirectory = new File(project.buildDir, "docs/kdoc")
+
+	externalDocumentationLink {
+	url = new URL("https://projectreactor.io/docs/core/release/api/")
+	}
+	externalDocumentationLink {
+	url = new URL("https://projectreactor.io/docs/test/release/api/")
+	}
+	externalDocumentationLink {
+	url = new URL("https://projectreactor.io/docs/extra/release/api/")
+	}
+	externalDocumentationLink {
+	url = new URL("https://projectreactor.io/docs/adapter/release/api/")
+	}
+	externalDocumentationLink {
+	url = new URL("https://www.reactive-streams.org/reactive-streams-1.0.2-javadoc/")
+	}
+  }
 
   task kdocZip(type: Zip, dependsOn: dokka) {
 	//ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
-	classifier = 'kdoc'
+	archiveClassifier = 'kdoc'
 	from(dokka.outputDirectory)
   }
 
