@@ -107,6 +107,11 @@ configure(rootProject)  {
 	}
   }
 
+  task sourcesJar(type: Jar, dependsOn: classes) {
+	archiveClassifier = "sources"
+	from sourceSets.main.allSource
+  }
+
   task kdocZip(type: Zip, dependsOn: dokka) {
 	//ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
 	archiveClassifier = 'kdoc'
@@ -114,6 +119,7 @@ configure(rootProject)  {
   }
 
   artifacts {
+	archives sourcesJar
 	archives kdocZip
   }
   dependencies {
