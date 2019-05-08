@@ -12,9 +12,9 @@ With Gradle from repo.spring.io or Maven Central repositories (stable releases o
 
 ```groovy
     repositories {
-//      maven { url 'https://repo.spring.io/snapshot' }
-      maven { url 'https://repo.spring.io/milestone' }
-      mavenCentral()
+	// maven { url 'https://repo.spring.io/snapshot' }
+	maven { url 'https://repo.spring.io/milestone' }
+	mavenCentral()
     }
 
     dependencies {
@@ -23,7 +23,7 @@ With Gradle from repo.spring.io or Maven Central repositories (stable releases o
     }
 ```
 
-# Examples
+# Quick Examples
 
 Tuple destructure:
 ```kotlin
@@ -36,11 +36,11 @@ assertEquals(t3, O3)
 Convert, sum (*requires reactor-extra*) and test (*requires reactor-test*):
 ```kotlin
  intArrayOf(2_000_000_000, 200_000_000) //sum overflows an Int
-                .toFlux()
-                .sum()
-                .test()
-                .expectNext(2_200_000_000)
-                .verifyComplete()
+	.toFlux()
+	.sum()
+	.test()
+	.expectNext(2_200_000_000)
+	.verifyComplete()
 ```
 
 Coordinating when two mono completes:
