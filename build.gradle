@@ -25,7 +25,7 @@ buildscript {
 
 plugins {
   id "org.jetbrains.kotlin.jvm" version "1.2.51"
-  id "org.jetbrains.dokka" version "0.9.16"
+  id "org.jetbrains.dokka" version "0.9.18"
 }
 
 apply from: "gradle/publishing.gradle"
