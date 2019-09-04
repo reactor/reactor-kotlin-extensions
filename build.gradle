@@ -103,7 +103,7 @@ configure(rootProject)  {
 	url = new URL("https://projectreactor.io/docs/adapter/release/api/")
 	}
 	externalDocumentationLink {
-	url = new URL("https://www.reactive-streams.org/reactive-streams-1.0.2-javadoc/")
+	url = new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/")
 	}
   }
 
