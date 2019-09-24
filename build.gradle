@@ -28,7 +28,7 @@ buildscript {
 plugins {
   //NB: stdlib version is defined by this plugin's version
   id "org.jetbrains.kotlin.jvm" version "1.3.50"
-  id "org.jetbrains.dokka" version "0.9.18"
+  id "org.jetbrains.dokka" version "0.9.18" //see also the dokkaRuntime below
 }
 
 
@@ -36,6 +36,7 @@ configure(rootProject)  { project ->
   apply plugin: 'kotlin'
   apply from: "gradle/publishing.gradle"
   apply plugin: 'propdeps'
+  apply plugin: 'org.jetbrains.dokka'
 
   description = 'Kotlin extensions for Project Reactor'
   group = 'io.projectreactor.kotlin'
@@ -50,6 +51,11 @@ configure(rootProject)  { project ->
 	maven { url "https://maven-eclipse.github.io/maven" }
 	jcenter()
 	mavenCentral()
+  }
+
+  //attempt to fix https://github.com/Kotlin/dokka/issues/462
+  dependencies {
+	dokkaRuntime "org.jetbrains.dokka:dokka-fatjar:0.9.18"
   }
 
   configurations.all {
@@ -110,9 +116,16 @@ configure(rootProject)  { project ->
 	}
   }
 
-  task sourcesJar(type: Jar, dependsOn: classes) {
-	archiveClassifier = "sources"
-	from sourceSets.main.allSource
+  task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+	group = "documentation"
+	description = "Generates javadoc for Kotlin API."
+	outputFormat = 'javadoc'
+	outputDirectory = "$buildDir/javadoc"
+  }
+
+  task dokkaJavadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+	archiveClassifier = 'javadoc'
+	from dokkaJavadoc.outputDirectory
   }
 
   task kdocZip(type: Zip, dependsOn: dokka) {
@@ -121,8 +134,16 @@ configure(rootProject)  { project ->
 	from(dokka.outputDirectory)
   }
 
+  task sourcesJar(type: Jar, dependsOn: classes) {
+	archiveClassifier = "sources"
+	from sourceSets.main.allSource
+  }
+
+  assemble.dependsOn dokkaJavadocJar
+
   artifacts {
 	archives sourcesJar
+	archives dokkaJavadocJar
 	archives kdocZip
   }
 
