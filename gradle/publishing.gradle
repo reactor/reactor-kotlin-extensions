@@ -14,35 +14,21 @@
  * limitations under the License.
  */
 
-configure(subprojects) { p ->
+configure(rootProject) { p ->
+
 	apply plugin: 'propdeps-maven'
 	apply plugin: 'maven'
 
 	install {
-		repositories.mavenInstaller {
-			customizePom(pom, project)
-		}
+	  repositories.mavenInstaller {
+		customizePom(pom, project)
+	  }
 	}
 
 	jar {
 		manifest.attributes["Created-By"] = "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
 		manifest.attributes["Implementation-Title"] = project.name
 		manifest.attributes["Implementation-Version"] = project.version
-	}
-
-	task sourcesJar(type: Jar) {
-		classifier = 'sources'
-		from sourceSets.main.allSource
-	}
-
-	task javadocJar(type: Jar) {
-		classifier = 'javadoc'
-		from javadoc
-	}
-
-	artifacts {
-		archives sourcesJar
-		archives javadocJar
 	}
 }
 
