@@ -31,6 +31,11 @@ plugins {
   id "org.jetbrains.dokka" version "0.9.18"
 }
 
+ext {
+  reactorCoreVersion = "3.3.0.BUILD-SNAPSHOT"
+  reactorAddonsVersion = "3.3.0.BUILD-SNAPSHOT"
+}
+
 
 configure(rootProject)  { project ->
   apply plugin: 'kotlin'
@@ -51,22 +56,6 @@ configure(rootProject)  { project ->
 	jcenter()
 	mavenCentral()
   }
-
-  configurations.all {
-	resolutionStrategy {
-	  eachDependency {
-		switch (requested.module.toString()) {
-		  case "io.projectreactor:reactor-core":
-		  case "io.projectreactor:reactor-test":
-		  case "io.projectreactor.addons:reactor-adapter":
-		  case "io.projectreactor.addons:reactor-extra":
-			return useVersion("3.3.0.BUILD-SNAPSHOT")
-		}
-	  }
-	}
-  }
-
-
 
   compileJava {
 	sourceCompatibility = 1.8
@@ -147,12 +136,11 @@ configure(rootProject)  { project ->
   }
 
   dependencies {
-	//dependencies in this group are set with a resolutionStrategy above
-	compile 'io.projectreactor:reactor-core'
-	optional 'io.projectreactor:reactor-test'
-	optional 'io.projectreactor.addons:reactor-adapter'
-	optional 'io.projectreactor.addons:reactor-extra'
-	testCompile 'io.projectreactor:reactor-test'
+	compile "io.projectreactor:reactor-core:${reactorCoreVersion}"
+	optional "io.projectreactor:reactor-test:${reactorCoreVersion}"
+	optional "io.projectreactor.addons:reactor-adapter:${reactorAddonsVersion}"
+	optional "io.projectreactor.addons:reactor-extra:${reactorAddonsVersion}"
+	testCompile "io.projectreactor:reactor-test:${reactorCoreVersion}"
 
 	optional "io.reactivex.rxjava2:rxjava:2.2.8"
 	optional "org.eclipse.swt:org.eclipse.swt.${getPlatform()}:4.5.2"

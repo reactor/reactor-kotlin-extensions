@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-configure(rootProject) { p ->
+configure(rootProject) { subproject ->
 
 	apply plugin: 'propdeps-maven'
 	apply plugin: 'maven'
 
 	install {
 	  repositories.mavenInstaller {
-		customizePom(pom, project)
+		customizePom(pom, subproject)
 	  }
 	}
 
