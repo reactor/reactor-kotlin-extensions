@@ -32,8 +32,8 @@ plugins {
 }
 
 ext {
-  reactorCoreVersion = "3.3.0.BUILD-SNAPSHOT"
-  reactorAddonsVersion = "3.3.0.BUILD-SNAPSHOT"
+  reactorCoreVersion = "3.3.0.RELEASE"
+  reactorAddonsVersion = "3.3.0.RELEASE"
 }
 
 
