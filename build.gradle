@@ -28,7 +28,7 @@ buildscript {
 plugins {
   //NB: stdlib version is defined by this plugin's version
   id "org.jetbrains.kotlin.jvm" version "1.3.50"
-  id "org.jetbrains.dokka" version "0.9.18" //see also the dokkaRuntime below
+  id "org.jetbrains.dokka" version "0.9.18"
 }
 
 
@@ -36,7 +36,6 @@ configure(rootProject)  { project ->
   apply plugin: 'kotlin'
   apply from: "gradle/publishing.gradle"
   apply plugin: 'propdeps'
-  apply plugin: 'org.jetbrains.dokka'
 
   description = 'Kotlin extensions for Project Reactor'
   group = 'io.projectreactor.kotlin'
@@ -51,11 +50,6 @@ configure(rootProject)  { project ->
 	maven { url "https://maven-eclipse.github.io/maven" }
 	jcenter()
 	mavenCentral()
-  }
-
-  //attempt to fix https://github.com/Kotlin/dokka/issues/462
-  dependencies {
-	dokkaRuntime "org.jetbrains.dokka:dokka-fatjar:0.9.18"
   }
 
   configurations.all {
@@ -96,7 +90,8 @@ configure(rootProject)  { project ->
 	moduleName = "reactor-kotlin-extensions"
 	jdkVersion = 8
 
-	outputFormat = "html"
+	//work around https://github.com/Kotlin/dokka/issues/462, F you dokka!
+	outputFormat = "javadoc"
 	outputDirectory = new File(project.buildDir, "docs/kdoc")
 
 	externalDocumentationLink {
@@ -116,35 +111,39 @@ configure(rootProject)  { project ->
 	}
   }
 
-  task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-	group = "documentation"
-	description = "Generates javadoc for Kotlin API."
-	outputFormat = 'javadoc'
-	outputDirectory = "$buildDir/javadoc"
-  }
+  //TODO reactivate separate javadoc creation when https://github.com/Kotlin/dokka/issues/462 is fixed
+//  task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+//	group = "documentation"
+//	description = "Generates javadoc for Kotlin API."
+//	outputFormat = 'javadoc'
+//	outputDirectory = "$buildDir/javadoc"
+//  }
+//  task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+//	archiveClassifier = 'javadoc'
+//	from dokkaJavadoc.outputDirectory
+//  }
 
-  task dokkaJavadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+  //work around https://github.com/Kotlin/dokka/issues/462, F you dokka!
+  task javadocJar(type: Jar, dependsOn: dokka) {
 	archiveClassifier = 'javadoc'
-	from dokkaJavadoc.outputDirectory
+	from dokka.outputDirectory //should be ultimately changed to a special dokkaJavadoc task directory
   }
 
-  task kdocZip(type: Zip, dependsOn: dokka) {
-	//ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
-	archiveClassifier = 'kdoc'
-	from(dokka.outputDirectory)
-  }
+  //TODO reactivate kdoc format and zipping when https://github.com/Kotlin/dokka/issues/462 is fixed
+//  task kdocZip(type: Zip, dependsOn: dokka) {
+//	//ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
+//	archiveClassifier = 'kdoc'
+//	from(dokka.outputDirectory)
+//  }
 
   task sourcesJar(type: Jar, dependsOn: classes) {
 	archiveClassifier = "sources"
 	from sourceSets.main.allSource
   }
 
-  assemble.dependsOn dokkaJavadocJar
-
   artifacts {
 	archives sourcesJar
-	archives dokkaJavadocJar
-	archives kdocZip
+	archives javadocJar
   }
 
   dependencies {
