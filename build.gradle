@@ -24,7 +24,8 @@ buildscript {
 }
 
 plugins {
-  id "org.jetbrains.kotlin.jvm" version "1.2.51"
+  //NB: stdlib version is defined by this plugin's version
+  id "org.jetbrains.kotlin.jvm" version "1.3.50"
   id "org.jetbrains.dokka" version "0.9.18"
 }
 
@@ -123,18 +124,19 @@ configure(rootProject)  {
 	archives kdocZip
   }
   dependencies {
+	//dependencies in this group are set with a resolutionStrategy above
 	compile 'io.projectreactor:reactor-core'
 	optional 'io.projectreactor:reactor-test'
-
 	optional 'io.projectreactor.addons:reactor-adapter'
-	optional "io.reactivex.rxjava2:rxjava:2.2.8"
-
 	optional 'io.projectreactor.addons:reactor-extra'
+	testCompile 'io.projectreactor:reactor-test'
+
+	optional "io.reactivex.rxjava2:rxjava:2.2.8"
 	optional "org.eclipse.swt:org.eclipse.swt.${getPlatform()}:4.5.2"
 
+	//NB: stdlib version is defined by the kotlin jvm plugin's version
 	optional 'org.jetbrains.kotlin:kotlin-stdlib'
 
-	testCompile 'io.projectreactor:reactor-test'
 	testCompile 'junit:junit:4.12'
 	testCompile 'org.assertj:assertj-core:3.12.2'
   }
