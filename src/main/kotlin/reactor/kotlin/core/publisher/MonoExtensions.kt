@@ -20,6 +20,8 @@ import org.reactivestreams.Publisher
 import reactor.core.publisher.Mono
 import java.util.concurrent.Callable
 import java.util.concurrent.CompletableFuture
+import java.util.function.Function
+import java.util.function.Predicate
 import java.util.function.Supplier
 import kotlin.reflect.KClass
 
@@ -134,3 +136,19 @@ fun <T : Any, E : Throwable> Mono<T>.onErrorReturn(exceptionType: KClass<E>, val
  * @since 3.2
  */
 fun <T> Mono<T>.switchIfEmpty(s: () -> Mono<T>): Mono<T> = this.switchIfEmpty(Mono.defer { s() })
+
+/**
+ * Extension for [Mono.onErrorMap] providing a [KClass] based variant and predicate.
+ *
+ * @author Nikesh Shetty
+ * @since 3.3.1
+ */
+fun <E : Throwable, T> Mono<T>.onErrorMap(type: KClass<E>,
+                                          predicate: (E) -> Boolean,
+                                          mapper: (E) -> Throwable): Mono<T> {
+    val handler = Function<E, Throwable> { mapper(it) } as Function<in Throwable, out Throwable>
+    return onErrorMap(
+            Predicate<Any> { type.isInstance(it) && predicate(it as E) },
+            handler
+    )
+}
