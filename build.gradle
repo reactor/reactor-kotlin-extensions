@@ -28,14 +28,10 @@ buildscript {
 plugins {
   //NB: stdlib version is defined by this plugin's version
   id "org.jetbrains.kotlin.jvm" version "1.3.50"
-  id "org.jetbrains.dokka" version "0.9.18"
+  id "org.jetbrains.dokka" version "0.10.0"
 }
 
-ext {
-  reactorCoreVersion = "3.3.1.BUILD-SNAPSHOT"
-  reactorAddonsVersion = "3.3.1.BUILD-SNAPSHOT"
-}
-
+//NOTE: reactor dependency versions are now defined in gradle.properties
 
 configure(rootProject)  { project ->
   apply plugin: 'kotlin'
@@ -46,7 +42,7 @@ configure(rootProject)  { project ->
   group = 'io.projectreactor.kotlin'
 
   repositories {
-	if (version.endsWith('BUILD-SNAPSHOT') || project.hasProperty('platformVersion')) {
+	if (version.endsWith('BUILD-SNAPSHOT')) {
 	  maven { url 'https://repo.spring.io/libs-snapshot' }
 	}
 
@@ -76,63 +72,104 @@ configure(rootProject)  { project ->
 	dependsOn jar
 	group = "documentation"
 	description = "Generates Kotlin API documentation."
-	moduleName = "reactor-kotlin-extensions"
-	jdkVersion = 8
-
-	//work around https://github.com/Kotlin/dokka/issues/462, F you dokka!
-	outputFormat = "javadoc"
+	outputFormat = "html"
 	outputDirectory = new File(project.buildDir, "docs/kdoc")
 
-	externalDocumentationLink {
-	url = new URL("https://projectreactor.io/docs/core/release/api/")
+	configuration {
+		moduleName = "reactor-kotlin-extensions"
+		jdkVersion = 8
+
+		//due to https://github.com/Kotlin/dokka/issues/514 we now have to specify packageListUrl
+		//another dokka release, another regression...
+		externalDocumentationLink {
+			url = new URL("https://projectreactor.io/docs/core/release/api/")
+			packageListUrl = new URL(url, "package-list")
+		}
+		externalDocumentationLink {
+			url = new URL("https://projectreactor.io/docs/test/release/api/")
+			packageListUrl = new URL(url, "package-list")
+		}
+		externalDocumentationLink {
+			url = new URL("https://projectreactor.io/docs/extra/release/api/")
+			packageListUrl = new URL(url, "package-list")
+		}
+		externalDocumentationLink {
+			url = new URL("https://projectreactor.io/docs/adapter/release/api/")
+			packageListUrl = new URL(url, "package-list")
+		}
+		externalDocumentationLink {
+			url = new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/")
+			packageListUrl = new URL(url, "package-list")
+		}
+		externalDocumentationLink {
+			url = new URL("http://reactivex.io/RxJava/javadoc/")
+			packageListUrl = new URL(url, "package-list")
+		}
 	}
-	externalDocumentationLink {
-	url = new URL("https://projectreactor.io/docs/test/release/api/")
+}
+
+	task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+		group = "documentation"
+		description = "Generates javadoc for Kotlin API."
+		outputFormat = 'javadoc'
+		outputDirectory = "$buildDir/javadoc"
+
+		configuration {
+			moduleName = "reactor-kotlin-extensions"
+			jdkVersion = 8
+
+			//TODO javadoc output spams a little of Can't find node by signature `not implemented for <T
+			//see https://github.com/Kotlin/dokka/issues/525
+
+			//due to https://github.com/Kotlin/dokka/issues/514 we now have to specify packageListUrl
+			//another dokka release, another regression...
+			externalDocumentationLink {
+				url = new URL("https://projectreactor.io/docs/core/release/api/")
+				packageListUrl = new URL(url, "package-list")
+			}
+			externalDocumentationLink {
+				url = new URL("https://projectreactor.io/docs/test/release/api/")
+				packageListUrl = new URL(url, "package-list")
+			}
+			externalDocumentationLink {
+				url = new URL("https://projectreactor.io/docs/extra/release/api/")
+				packageListUrl = new URL(url, "package-list")
+			}
+			externalDocumentationLink {
+				url = new URL("https://projectreactor.io/docs/adapter/release/api/")
+				packageListUrl = new URL(url, "package-list")
+			}
+			externalDocumentationLink {
+				url = new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/")
+				packageListUrl = new URL(url, "package-list")
+			}
+			externalDocumentationLink {
+				url = new URL("http://reactivex.io/RxJava/javadoc/")
+				packageListUrl = new URL(url, "package-list")
+			}
+		}
 	}
-	externalDocumentationLink {
-	url = new URL("https://projectreactor.io/docs/extra/release/api/")
-	}
-	externalDocumentationLink {
-	url = new URL("https://projectreactor.io/docs/adapter/release/api/")
-	}
-	externalDocumentationLink {
-	url = new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/")
-	}
+
+  task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+	archiveClassifier.set('javadoc')
+	from dokkaJavadoc.outputDirectory
   }
 
-  //TODO reactivate separate javadoc creation when https://github.com/Kotlin/dokka/issues/462 is fixed
-//  task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-//	group = "documentation"
-//	description = "Generates javadoc for Kotlin API."
-//	outputFormat = 'javadoc'
-//	outputDirectory = "$buildDir/javadoc"
-//  }
-//  task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
-//	archiveClassifier = 'javadoc'
-//	from dokkaJavadoc.outputDirectory
-//  }
-
-  //work around https://github.com/Kotlin/dokka/issues/462, F you dokka!
-  task javadocJar(type: Jar, dependsOn: dokka) {
-	archiveClassifier = 'javadoc'
-	from dokka.outputDirectory //should be ultimately changed to a special dokkaJavadoc task directory
+  task kdocZip(type: Zip, dependsOn: dokka) {
+	//ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
+	archiveClassifier.set('kdoc')
+	from(dokka.outputDirectory)
   }
-
-  //TODO reactivate kdoc format and zipping when https://github.com/Kotlin/dokka/issues/462 is fixed
-//  task kdocZip(type: Zip, dependsOn: dokka) {
-//	//ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
-//	archiveClassifier = 'kdoc'
-//	from(dokka.outputDirectory)
-//  }
 
   task sourcesJar(type: Jar, dependsOn: classes) {
-	archiveClassifier = "sources"
+	archiveClassifier.set("sources")
 	from sourceSets.main.allSource
   }
 
   artifacts {
 	archives sourcesJar
 	archives javadocJar
+	archives kdocZip
   }
 
   dependencies {
