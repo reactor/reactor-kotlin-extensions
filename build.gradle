@@ -37,6 +37,7 @@ plugins {
 configure(rootProject)  { project ->
   apply plugin: 'kotlin'
   apply from: "gradle/publishing.gradle"
+  apply from: "gradle/releaser.gradle"
   apply plugin: 'propdeps'
 
   description = 'Kotlin extensions for Project Reactor'
