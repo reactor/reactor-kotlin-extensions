@@ -16,7 +16,6 @@
 
 configure(rootProject) { subproject ->
 
-	apply plugin: 'propdeps-maven'
 	apply plugin: 'maven-publish'
 	apply plugin: 'com.jfrog.artifactory'
 
@@ -117,6 +116,7 @@ configure(rootProject) { subproject ->
 	}
 
 	artifactoryPublish {
+		onlyIf { project.hasProperty("artifactory_publish_password") }
 		publications(publishing.publications.mavenJava)
 	}
 }
