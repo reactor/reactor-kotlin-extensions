@@ -18,8 +18,8 @@ With Gradle from repo.spring.io or Maven Central repositories (stable releases o
     }
 
     dependencies {
-      //compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.0.2.BUILD-SNAPSHOT"
-      compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.0.1.RELEASE"
+      //compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.0.3.BUILD-SNAPSHOT"
+      compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.0.2.RELEASE"
     }
 ```
 
