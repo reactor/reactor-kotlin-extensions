@@ -96,7 +96,7 @@ if (project.hasProperty("artifactory_publish_password")) {
 				}
 			}
 			clientConfig.setIncludeEnvVars(false)
-			clientConfig.info.setBuildName('Reactor - Releaser - Netty')
+			clientConfig.info.setBuildName('Reactor - Releaser - Kotlin Extensions')
 			clientConfig.info.setBuildNumber(buildNumber)
 		}
 	}
