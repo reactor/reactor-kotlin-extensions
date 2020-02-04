@@ -23,6 +23,48 @@ With Gradle from repo.spring.io or Maven Central repositories (stable releases o
     }
 ```
 
+With Maven from Maven Central repositories (stable releases):
+
+```xml
+<dependency>
+    <groupId>io.projectreactor.kotlin</groupId>
+    <artifactId>reactor-kotlin-extensions</artifactId>
+    <version>1.0.0.RELEASE</version>
+</dependency>
+```
+
+Or from repo.spring.io with access to SNAPSHOT: 
+
+```xml
+...
+<dependencies>
+
+	<dependency>
+	    <groupId>io.projectreactor.kotlin</groupId>
+	    <artifactId>reactor-kotlin-extensions</artifactId>
+	    <version>1.0.3.BUILD-SNAPSHOT</version>
+	</dependency>
+	
+</dependencies>
+...
+<repositories>
+	<repository>
+		<id>spring-milestones</id>
+		<name>Spring Milestones</name>
+		<url>https://repo.spring.io/milestone</url>
+	</repository>
+	<repository>
+		<id>spring-snapshots</id>
+		<name>Spring Snapshots</name>
+		<url>https://repo.spring.io/snapshot</url>
+		<snapshots>
+			<enabled>true</enabled>
+		</snapshots>
+	</repository>
+</repositories>
+
+```
+
 # Quick Examples
 
 Tuple destructure:
