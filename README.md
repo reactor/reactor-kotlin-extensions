@@ -12,14 +12,14 @@ With Gradle from repo.spring.io or Maven Central repositories (stable releases o
 
 ```groovy
     repositories {
-	// maven { url 'https://repo.spring.io/snapshot' }
-	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+	//maven { url 'https://repo.spring.io/milestone' }
 	mavenCentral()
     }
 
     dependencies {
-      //compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.0.3.BUILD-SNAPSHOT"
-      compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.0.2.RELEASE"
+      //compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.0-SNAPSHOT"
+      //compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.0"
     }
 ```
 
@@ -29,7 +29,7 @@ With Maven from Maven Central repositories (stable releases):
 <dependency>
     <groupId>io.projectreactor.kotlin</groupId>
     <artifactId>reactor-kotlin-extensions</artifactId>
-    <version>1.0.0.RELEASE</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -42,7 +42,7 @@ Or from repo.spring.io with access to SNAPSHOT:
 	<dependency>
 	    <groupId>io.projectreactor.kotlin</groupId>
 	    <artifactId>reactor-kotlin-extensions</artifactId>
-	    <version>1.0.3.BUILD-SNAPSHOT</version>
+	    <version>1.1.0-SNAPSHOT</version>
 	</dependency>
 	
 </dependencies>

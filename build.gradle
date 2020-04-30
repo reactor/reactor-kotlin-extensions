@@ -44,7 +44,7 @@ configure(rootProject)  { project ->
   group = 'io.projectreactor.kotlin'
 
   repositories {
-	if (version.endsWith('BUILD-SNAPSHOT')) {
+	if (version.endsWith('-SNAPSHOT')) {
 	  maven { url 'https://repo.spring.io/libs-snapshot' }
 	}
 
