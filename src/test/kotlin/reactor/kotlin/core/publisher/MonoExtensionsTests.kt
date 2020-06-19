@@ -23,6 +23,7 @@ import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.Operators
+import reactor.core.publisher.onErrorMap
 import reactor.kotlin.test.test
 import reactor.kotlin.test.verifyError
 import reactor.test.StepVerifier
@@ -248,6 +249,22 @@ class MonoExtensionsTests {
         StepVerifier.create(listOf("foo1", "foo2", "foo3").map { it.toMono() }.zip { it.joinToString() })
                 .expectNext("foo1, foo2, foo3")
                 .verifyComplete()
+    }
+
+    @Test
+    fun `onErrorMap with Kclass and Predicate matches`() {
+        StepVerifier.create(IOException("file not found")
+                .toMono<Any>()
+                .onErrorMap(IOException::class, { it.message == "file not found" }, { IllegalStateException("sa") }))
+                .verifyError<IllegalStateException>()
+    }
+
+    @Test
+    fun `onErrorMap with Kclass and Predicate does not match`() {
+        StepVerifier.create(IOException("file not found")
+                .toMono<Any>()
+                .onErrorMap(IOException::class, { it.message != "file not found" }, { IllegalStateException("sa") }))
+                .verifyError<IOException>()
     }
 
 }
