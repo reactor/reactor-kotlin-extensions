@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import reactor.test.StepVerifier.Assertions
 import reactor.test.StepVerifier.LastStep
+import reactor.test.StepVerifierOptions
 import java.time.Duration
 import kotlin.reflect.KClass
 
@@ -100,6 +101,13 @@ fun <T> Flux<T>.test(): StepVerifier.FirstStep<T> = StepVerifier.create(this)
 fun <T> Flux<T>.test(n: Long): StepVerifier.FirstStep<T> = StepVerifier.create(this, n)
 
 /**
+ * Extension for testing [Flux] with [StepVerifier] API.
+ *
+ * @author Cristian Romero
+ */
+fun <T> Flux<T>.test(options: StepVerifierOptions): StepVerifier.FirstStep<T> = StepVerifier.create(this, options)
+
+/**
  * Extension for testing [Mono] with [StepVerifier] API.
  *
  * @author Sebastien Deleuze
@@ -112,3 +120,12 @@ fun <T> Mono<T>.test(): StepVerifier.FirstStep<T> = StepVerifier.create(this)
  * @author Sebastien Deleuze
  */
 fun <T> Mono<T>.test(n: Long): StepVerifier.FirstStep<T> = StepVerifier.create(this, n)
+
+/**
+ * Extension for testing [Mono] with [StepVerifier] API.
+ *
+ * @author Cristian Romero
+ */
+fun <T> Mono<T>.test(options: StepVerifierOptions): StepVerifier.FirstStep<T> = StepVerifier.create(this, options)
+
+
