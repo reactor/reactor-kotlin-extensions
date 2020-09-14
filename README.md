@@ -18,7 +18,7 @@ With Gradle from repo.spring.io or Maven Central repositories (stable releases o
     }
 
     dependencies {
-      compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.0-M2"
+      compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.0-RC1"
       //compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.0"
     }
 ```
@@ -42,7 +42,7 @@ Or from repo.spring.io with access to SNAPSHOT:
 	<dependency>
 	    <groupId>io.projectreactor.kotlin</groupId>
 	    <artifactId>reactor-kotlin-extensions</artifactId>
-	    <version>1.1.0-M2</version>
+	    <version>1.1.0-RC1</version>
 	</dependency>
 	
 </dependencies>
