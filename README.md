@@ -13,13 +13,13 @@ With Gradle from repo.spring.io or Maven Central repositories (stable releases o
 ```groovy
     repositories {
 	//maven { url 'https://repo.spring.io/snapshot' }
-	maven { url 'https://repo.spring.io/milestone' }
+	//maven { url 'https://repo.spring.io/milestone' }
 	mavenCentral()
     }
 
     dependencies {
-      compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.0-RC1"
-      //compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.0"
+      //compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.1-SNAPSHOT"
+      compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.0"
     }
 ```
 
@@ -42,7 +42,7 @@ Or from repo.spring.io with access to SNAPSHOT:
 	<dependency>
 	    <groupId>io.projectreactor.kotlin</groupId>
 	    <artifactId>reactor-kotlin-extensions</artifactId>
-	    <version>1.1.0-RC1</version>
+	    <version>1.1.1-SNAPSHOT</version>
 	</dependency>
 	
 </dependencies>
