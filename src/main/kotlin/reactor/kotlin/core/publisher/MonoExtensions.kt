@@ -45,12 +45,12 @@ fun <T> Publisher<T>.toMono(): Mono<T> = Mono.from(this)
 fun <T> (() -> T?).toMono(): Mono<T> = Mono.fromSupplier(this)
 
 /**
- * Extension for transforming an object to a [Mono].
+ * Extension for transforming a nullable object to a [Mono].
  *
  * @author Sebastien Deleuze
  * @since 3.1
  */
-fun <T : Any> T.toMono(): Mono<T> = Mono.just(this)
+fun <T : Any> T?.toMono(): Mono<T> = Mono.justOrEmpty(this)
 
 /**
  * Extension for transforming an [CompletableFuture] to a [Mono].
