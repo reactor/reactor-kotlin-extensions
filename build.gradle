@@ -169,22 +169,29 @@ configure(rootProject)  { project ->
   }
 
   dependencies {
-	compile "io.projectreactor:reactor-core:${reactorCoreVersion}"
-	optional "io.projectreactor:reactor-test:${reactorCoreVersion}"
-	optional "io.projectreactor.addons:reactor-adapter:${reactorAddonsVersion}"
-	optional "io.projectreactor.addons:reactor-extra:${reactorAddonsVersion}"
-	testCompile "io.projectreactor:reactor-test:${reactorCoreVersion}"
+	api "io.projectreactor:reactor-core:${reactorCoreVersion}"
 
-	optional "io.reactivex.rxjava2:rxjava:2.2.8"
-	optional "org.eclipse.swt:org.eclipse.swt.${getPlatform()}:4.5.2"
+	compileOnly "io.projectreactor:reactor-test:${reactorCoreVersion}"
+	testImplementation "io.projectreactor:reactor-test:${reactorCoreVersion}"
+
+	compileOnly "io.projectreactor.addons:reactor-adapter:${reactorAddonsVersion}"
+	testImplementation "io.projectreactor.addons:reactor-adapter:${reactorAddonsVersion}"
+
+	compileOnly "io.projectreactor.addons:reactor-extra:${reactorAddonsVersion}"
+	testImplementation "io.projectreactor.addons:reactor-extra:${reactorAddonsVersion}"
+
+	compileOnly "io.reactivex.rxjava2:rxjava:2.2.8"
+	testImplementation "io.reactivex.rxjava2:rxjava:2.2.8"
+
+	compileOnly "org.eclipse.swt:org.eclipse.swt.${getPlatform()}:4.5.2"
 
 	//NB: stdlib version is defined by the kotlin jvm plugin's version
-	optional 'org.jetbrains.kotlin:kotlin-stdlib'
-	  testCompile 'org.jetbrains.kotlin:kotlin-reflect:1.3.50'
+	compileOnly 'org.jetbrains.kotlin:kotlin-stdlib'
+	testImplementation 'org.jetbrains.kotlin:kotlin-reflect:1.3.50'
 
 
-	testCompile 'junit:junit:4.12'
-	testCompile 'org.assertj:assertj-core:3.12.2'
+	testImplementation 'junit:junit:4.12'
+	testImplementation 'org.assertj:assertj-core:3.12.2'
   }
 
 }
