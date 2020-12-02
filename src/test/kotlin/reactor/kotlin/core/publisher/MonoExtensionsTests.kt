@@ -43,6 +43,14 @@ class MonoExtensionsTests {
     }
 
     @Test
+    fun nullableAnyToEmptyMono() {
+        val nullableString: String? = null
+        nullableString.toMono()
+                .test()
+                .verifyComplete()
+    }
+
+    @Test
     fun supplierToMono() {
         val supplier: () -> String = { "a" }
 
