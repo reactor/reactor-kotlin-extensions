@@ -15,9 +15,10 @@
  */
 
 buildscript {
-  ext.kotlinVersion = '1.3.50'
+  ext.kotlinVersion = '1.3.72'
   repositories {
-	maven { url "https://repo.spring.io/plugins-release" }
+		jcenter()
+		maven { url "https://repo.spring.io/plugins-release" }
   }
   dependencies {
 	classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
@@ -43,17 +44,16 @@ configure(rootProject)  { project ->
   description = 'Kotlin extensions for Project Reactor'
   group = 'io.projectreactor.kotlin'
 
-  repositories {
-	if (version.endsWith('BUILD-SNAPSHOT')) {
-	  maven { url 'https://repo.spring.io/libs-snapshot' }
+	repositories {
+		jcenter()
+		mavenCentral()
+		maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+		maven { url "https://maven-eclipse.github.io/maven" }
+		if (version.endsWith('BUILD-SNAPSHOT')) {
+			maven { url 'https://repo.spring.io/snapshot' }
+		}
+		maven { url 'https://repo.spring.io/milestone' }
 	}
-
-	maven { url 'https://repo.spring.io/libs-milestone' }
-	maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-	maven { url "https://maven-eclipse.github.io/maven" }
-	jcenter()
-	mavenCentral()
-  }
 
   compileJava {
 	sourceCompatibility = 1.8
