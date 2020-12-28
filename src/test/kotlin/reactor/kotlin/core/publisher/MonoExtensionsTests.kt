@@ -23,7 +23,6 @@ import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.Operators
-import reactor.core.publisher.onErrorMap
 import reactor.kotlin.test.test
 import reactor.kotlin.test.verifyError
 import reactor.test.StepVerifier
