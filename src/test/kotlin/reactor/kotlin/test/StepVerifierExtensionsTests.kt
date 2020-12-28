@@ -17,7 +17,12 @@
 package reactor.kotlin.test
 
 import org.junit.Test
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.toMono
+import reactor.test.StepVerifierOptions
+import reactor.test.scheduler.VirtualTimeScheduler
+import java.time.Duration
 
 class StepVerifierExtensionsTests {
 
@@ -53,4 +58,49 @@ class StepVerifierExtensionsTests {
                 .verifyError<IllegalStateException>()
     }
 
+    @Test
+    fun `testUsingVirtualTime()`() {
+        { Mono.just("foo").delayElement(Duration.ofDays(1)) }
+            .testUsingVirtualTime()
+            .thenAwait(Duration.ofDays(1))
+            .expectNext("foo")
+            .verifyComplete()
+    }
+
+    @Test
+    fun `testUsingVirtualTime() requesting n elements`() {
+        { Flux.just("foo", "bar").delayElements(Duration.ofDays(1)) }
+            .testUsingVirtualTime(1)
+            .thenAwait(Duration.ofDays(1))
+            .expectNext("foo")
+            .expectNoEvent(Duration.ofDays(7))
+            .thenRequest(1)
+            .thenAwait(Duration.ofDays(1))
+            .expectNext("bar")
+            .verifyComplete()
+    }
+
+    @Test
+    fun `testUsingVirtualTime() passing scheduler and requesting n elements`() {
+        val vts = VirtualTimeScheduler.create()
+        Flux.just("foo", "bar").delayElements(Duration.ofDays(1), vts)
+            .testUsingVirtualTime({vts}, 1)
+            .thenAwait(Duration.ofDays(1))
+            .expectNext("foo")
+            .expectNoEvent(Duration.ofDays(7))
+            .thenRequest(1)
+            .thenAwait(Duration.ofDays(1))
+            .expectNext("bar")
+            .verifyComplete()
+    }
+
+    @Test
+    fun `testUsingVirtualTime() passing options`() {
+        val vts = VirtualTimeScheduler.create()
+        Mono.just("foo").delayElement(Duration.ofDays(1), vts)
+            .testUsingVirtualTime(StepVerifierOptions.create().virtualTimeSchedulerSupplier { vts })
+            .thenAwait(Duration.ofDays(1))
+            .expectNext("foo")
+            .verifyComplete()
+    }
 }
