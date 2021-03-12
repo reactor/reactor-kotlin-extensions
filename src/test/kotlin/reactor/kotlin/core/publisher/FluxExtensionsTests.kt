@@ -249,5 +249,6 @@ class FluxExtensionsTests {
 
         flux.test()
             .expectError<RuntimeException>()
+            .verify()
     }
 }
