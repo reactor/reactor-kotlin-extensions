@@ -23,6 +23,7 @@ import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.Operators
+import reactor.kotlin.test.expectError
 import reactor.kotlin.test.test
 import reactor.kotlin.test.verifyError
 import reactor.test.StepVerifier
@@ -226,14 +227,28 @@ class FluxExtensionsTests {
     }
 
     @Test
-    fun `switchIfEmpty with defer execution`() {
+    fun `switchIfEmpty with deferred execution when flux is not empty`() {
         val flux: Flux<Int> = listOf(1, 2, 3)
-                .toFlux()
-                .switchIfEmpty { throw RuntimeException("error which should not happen due to defered execution") }
+            .toFlux()
+            .switchIfEmptyDeferred {
+                throw RuntimeException("error which should not happen due to deferred execution")
+            }
 
-        StepVerifier
-                .create(flux)
-                .expectNext(1, 2, 3)
-                .verifyComplete()
+        flux.test()
+            .expectNext(1, 2, 3)
+            .verifyComplete()
+    }
+
+    @Test
+    fun `switchIfEmpty with deferred execution when flux is empty`() {
+        val flux: Flux<Int> = listOf<Int>()
+            .toFlux()
+            .switchIfEmptyDeferred {
+                throw RuntimeException("Empty!")
+            }
+
+        flux.test()
+            .expectError<RuntimeException>()
+            .verify()
     }
 }
