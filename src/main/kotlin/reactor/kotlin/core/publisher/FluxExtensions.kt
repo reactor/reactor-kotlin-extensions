@@ -211,4 +211,4 @@ fun <T : Any> Flux<out Iterable<T>>.split(): Flux<T> = this.flatMapIterable { it
  * @author Kevin Davin
  * @since 3.2
  */
-fun <T> Flux<T>.switchIfEmpty(s: () -> Publisher<T>): Flux<T> = this.switchIfEmpty(Flux.defer { s() })
+fun <T> Flux<T>.switchIfEmptyDeferred(s: () -> Publisher<T>): Flux<T> = this.switchIfEmpty(Flux.defer { s() })
