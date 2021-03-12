@@ -221,6 +221,7 @@ fun <T> Flux<T>.switchIfEmpty(s: () -> Publisher<T>): Flux<T> = this.switchIfEmp
  * the [switchIfEmpty] operator
  *
  * @author Kevin Davin
- * @since 3.2
+ * @author Pavel Grigorenko
+ * @since 1.1.3
  */
 fun <T> Flux<T>.switchIfEmptyDeferred(s: () -> Publisher<T>): Flux<T> = this.switchIfEmpty(Flux.defer { s() })
