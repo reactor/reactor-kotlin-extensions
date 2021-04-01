@@ -17,8 +17,14 @@
 buildscript {
   ext.kotlinVersion = '1.3.72'
   repositories {
-		jcenter()
-		maven { url "https://repo.spring.io/plugins-release" }
+		mavenCentral()
+		maven {
+			//FIXME workaround propdeps not being published to Maven Central + otherwise Gradle somehow tries to load dokka from spring repo
+			url "https://repo.spring.io/plugins-release"
+			content {
+				includeGroup "org.springframework.build.gradle"
+			}
+		}
   }
   dependencies {
 	classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
@@ -45,7 +51,6 @@ configure(rootProject)  { project ->
   group = 'io.projectreactor.kotlin'
 
 	repositories {
-		jcenter()
 		mavenCentral()
 		maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 		maven { url "https://maven-eclipse.github.io/maven" }
