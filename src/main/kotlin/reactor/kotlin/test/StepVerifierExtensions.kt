@@ -16,12 +16,14 @@
 
 package reactor.kotlin.test
 
+import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import reactor.test.StepVerifier.Assertions
 import reactor.test.StepVerifier.LastStep
 import reactor.test.StepVerifierOptions
+import reactor.test.scheduler.VirtualTimeScheduler
 import java.time.Duration
 import kotlin.reflect.KClass
 
@@ -128,4 +130,38 @@ fun <T> Mono<T>.test(n: Long): StepVerifier.FirstStep<T> = StepVerifier.create(t
  */
 fun <T> Mono<T>.test(options: StepVerifierOptions): StepVerifier.FirstStep<T> = StepVerifier.create(this, options)
 
+/**
+ * Extension for testing the supplied [Publisher] with [StepVerifier] API, using a [VirtualTimeScheduler].
+ *
+ * @see [StepVerifier.withVirtualTime]
+ * @author Mikael Elm
+ */
+fun <T> (() -> Publisher<T>).testUsingVirtualTime(): StepVerifier.FirstStep<T> =
+    StepVerifier.withVirtualTime { invoke() }
 
+/**
+ * Extension for testing the supplied [Publisher] with [StepVerifier] API, using a [VirtualTimeScheduler].
+ *
+ * @see [StepVerifier.withVirtualTime]
+ * @author Mikael Elm
+ */
+fun <T> (() -> Publisher<T>).testUsingVirtualTime(n: Long): StepVerifier.FirstStep<T> =
+    StepVerifier.withVirtualTime({ invoke() }, n)
+
+/**
+ * Extension for testing a [Publisher] with [StepVerifier] API, using a [VirtualTimeScheduler].
+ *
+ * @see [StepVerifier.withVirtualTime]
+ * @author Mikael Elm
+ */
+fun <T> Publisher<T>.testUsingVirtualTime(vtsLookup: () -> VirtualTimeScheduler, n: Long): StepVerifier.FirstStep<T> =
+    StepVerifier.withVirtualTime({ this }, vtsLookup, n)
+
+/**
+ * Extension for testing a [Publisher] with [StepVerifier] API, using a [VirtualTimeScheduler].
+ *
+ * @see [StepVerifier.withVirtualTime]
+ * @author Mikael Elm
+ */
+fun <T> Publisher<T>.testUsingVirtualTime(options: StepVerifierOptions): StepVerifier.FirstStep<T> =
+    StepVerifier.withVirtualTime({ this }, options)
