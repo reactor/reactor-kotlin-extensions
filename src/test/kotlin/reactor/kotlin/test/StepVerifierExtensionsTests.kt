@@ -61,46 +61,50 @@ class StepVerifierExtensionsTests {
     @Test
     fun `testUsingVirtualTime()`() {
         { Mono.just("foo").delayElement(Duration.ofDays(1)) }
-            .testUsingVirtualTime()
-            .thenAwait(Duration.ofDays(1))
-            .expectNext("foo")
-            .verifyComplete()
+                .testUsingVirtualTime()
+                .thenAwait(Duration.ofDays(1))
+                .expectNext("foo")
+                .expectComplete()
+                .verify(Duration.ofSeconds(1))
     }
 
     @Test
     fun `testUsingVirtualTime() requesting n elements`() {
         { Flux.just("foo", "bar").delayElements(Duration.ofDays(1)) }
-            .testUsingVirtualTime(1)
-            .thenAwait(Duration.ofDays(1))
-            .expectNext("foo")
-            .expectNoEvent(Duration.ofDays(7))
-            .thenRequest(1)
-            .thenAwait(Duration.ofDays(1))
-            .expectNext("bar")
-            .verifyComplete()
+                .testUsingVirtualTime(1)
+                .thenAwait(Duration.ofDays(1))
+                .expectNext("foo")
+                .expectNoEvent(Duration.ofDays(7))
+                .thenRequest(1)
+                .thenAwait(Duration.ofDays(1))
+                .expectNext("bar")
+                .expectComplete()
+                .verify(Duration.ofSeconds(1))
     }
 
     @Test
     fun `testUsingVirtualTime() passing scheduler and requesting n elements`() {
         val vts = VirtualTimeScheduler.create()
         Flux.just("foo", "bar").delayElements(Duration.ofDays(1), vts)
-            .testUsingVirtualTime({vts}, 1)
-            .thenAwait(Duration.ofDays(1))
-            .expectNext("foo")
-            .expectNoEvent(Duration.ofDays(7))
-            .thenRequest(1)
-            .thenAwait(Duration.ofDays(1))
-            .expectNext("bar")
-            .verifyComplete()
+                .testUsingVirtualTime({ vts }, 1)
+                .thenAwait(Duration.ofDays(1))
+                .expectNext("foo")
+                .expectNoEvent(Duration.ofDays(7))
+                .thenRequest(1)
+                .thenAwait(Duration.ofDays(1))
+                .expectNext("bar")
+                .expectComplete()
+                .verify(Duration.ofSeconds(1))
     }
 
     @Test
     fun `testUsingVirtualTime() passing options`() {
         val vts = VirtualTimeScheduler.create()
         Mono.just("foo").delayElement(Duration.ofDays(1), vts)
-            .testUsingVirtualTime(StepVerifierOptions.create().virtualTimeSchedulerSupplier { vts })
-            .thenAwait(Duration.ofDays(1))
-            .expectNext("foo")
-            .verifyComplete()
+                .testUsingVirtualTime(StepVerifierOptions.create().virtualTimeSchedulerSupplier { vts })
+                .thenAwait(Duration.ofDays(1))
+                .expectNext("foo")
+                .expectComplete()
+                .verify(Duration.ofSeconds(1))
     }
 }
