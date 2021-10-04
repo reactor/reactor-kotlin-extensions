@@ -24,6 +24,32 @@ import java.math.BigInteger
 import java.util.function.Function
 
 /**
+ * General purpose extension function to compute the sum of all values emitted by a [Flux] of [Number]
+ * and return it as a [Mono]. The resultant [Mono] will have the same [Number] type as the input [Flux]
+ *
+ * If the result type (or precision) needs to be changed then a specific sumType() method
+ * should be used in preference to this method.
+ *
+ * @author Mark Pruden
+ * @since 1.1.5
+ */
+@Suppress("UNCHECKED_CAST")
+inline fun <reified T:Number> Flux<T>.sumJust(): Mono<T> =
+    when (T::class) {
+        BigDecimal::class -> MathFlux.sumBigDecimal(this) as Mono<T>
+        BigInteger::class -> MathFlux.sumBigInteger(this) as Mono<T>
+        Double::class -> MathFlux.sumDouble(this) as Mono<T>
+        Float::class -> MathFlux.sumFloat(this) as Mono<T>
+        Long::class -> MathFlux.sumLong(this) as Mono<T>
+        Int::class -> MathFlux.sumInt(this) as Mono<T>
+        Short::class -> MathFlux.sumInt(this)
+            .map(Int::toShort) as Mono<T>
+        Byte::class -> MathFlux.sumInt(this)
+            .map(Int::toByte) as Mono<T>
+        else -> Mono.error( IllegalArgumentException("Flux of ${T::class} is not supported for sumJust()") )
+    }
+
+/**
  * Extension to compute the [Long] sum of all values emitted by a [Flux] of [Number]
  * and return it as a [Mono] of [Long].
  *
@@ -113,6 +139,35 @@ fun <T: Number> Flux<T>.sumBigInt(): Mono<BigInteger> = MathFlux.sumBigInteger(t
 fun <T: Number> Flux<T>.sumBigDecimal(): Mono<BigDecimal> = MathFlux.sumBigDecimal(this)
 
 /**
+ * General purpose extension function to compute the average of all values emitted by a [Flux] of [Number]
+ * and return it as a [Mono]. The resultant [Mono] will have the same [Number] type as the input [Flux]
+ *
+ * If the result type (or precision) needs to be changed then a specific averageType() method
+ * should be used in preference to this method. e.g. averageDouble() can be used to compute average
+ * of any [Flux] of [Number] into a [Double]
+ *
+ * @author Mark Pruden
+ * @since 1.1.5
+ */
+@Suppress("UNCHECKED_CAST")
+inline fun <reified T:Number> Flux<T>.averageJust(): Mono<T> =
+    when (T::class) {
+        BigDecimal::class -> MathFlux.averageBigDecimal(this) as Mono<T>
+        BigInteger::class -> MathFlux.averageBigInteger(this) as Mono<T>
+        Double::class -> MathFlux.averageDouble(this) as Mono<T>
+        Float::class -> MathFlux.averageFloat(this) as Mono<T>
+        Long::class -> MathFlux.averageBigInteger(this)
+            .map(BigInteger::toLong) as Mono<T>
+        Int::class -> MathFlux.averageBigInteger(this)
+            .map(BigInteger::toInt) as Mono<T>
+        Short::class -> MathFlux.averageBigInteger(this)
+            .map(BigInteger::toShort) as Mono<T>
+        Byte::class -> MathFlux.averageBigInteger(this)
+            .map(BigInteger::toByte) as Mono<T>
+        else -> Mono.error( IllegalArgumentException("Flux of ${T::class} is not supported for averageJust()") )
+    }
+
+/**
  * Extension to compute the [Double] average of all values emitted by a [Flux] of [Number]
  * and return it as a [Mono] of [Double].
  *
@@ -192,6 +247,33 @@ fun <T: Comparable<T>> Flux<T>.min(): Mono<T> = MathFlux.min(this)
 fun <T: Comparable<T>> Flux<T>.max(): Mono<T> = MathFlux.max(this)
 
 //sum/sumDouble/average lambda versions where a converter is provided
+
+/**
+ * General purpose extension function to map arbitrary values in a [Flux] to [Number]s and
+ * return the sum of these Numbers as a [Mono] of [Number].
+ * The resultant [Mono] will have the same [Number] type as the output of the mapping function
+ *
+ * If the result type (or precision) needs to be changed then a specific sumType() method
+ * should be used in preference to this method. e.g. sumDouble(mapper) can be used to compute
+ * the average as a [Mono] of [Double]
+ *
+ * @param mapper a lambda converting values to [Number]
+ * @author Mark Pruden
+ * @since 1.1.5
+ */
+@Suppress("UNCHECKED_CAST")
+inline fun <T: Any, reified R: Number> Flux<T>.sumOf(noinline mapper: (T) -> R): Mono<R> =
+    when (R::class) {
+        BigDecimal::class -> MathFlux.sumBigDecimal(this, Function(mapper)) as Mono<R>
+        BigInteger::class -> MathFlux.sumBigInteger(this, Function(mapper)) as Mono<R>
+        Double::class -> MathFlux.sumDouble(this, Function(mapper)) as Mono<R>
+        Float::class -> MathFlux.sumFloat(this, Function(mapper)) as Mono<R>
+        Long::class -> MathFlux.sumLong(this, Function(mapper)) as Mono<R>
+        Int::class -> MathFlux.sumInt(this, Function(mapper)) as Mono<R>
+        Short::class -> MathFlux.sumInt(this, Function(mapper)).map(Int::toShort) as Mono<R>
+        Byte::class -> MathFlux.sumInt(this, Function(mapper)).map(Int::toByte) as Mono<R>
+        else -> Mono.error( IllegalArgumentException("Mapping of ${R::class} is not supported for sumOf()") )
+    }
 
 /**
  * Extension to map arbitrary values in a [Flux] to [Number]s and return the sum of these
@@ -297,6 +379,37 @@ fun <T> Flux<T>.sumBigInt(mapper: (T) -> Number): Mono<BigInteger>
  */
 fun <T> Flux<T>.sumBigDecimal(mapper: (T) -> Number): Mono<BigDecimal>
         = MathFlux.sumBigDecimal(this, Function(mapper))
+
+/**
+ * General purpose extension function to map arbitrary values in a [Flux] to [Number]s and
+ * return the average of these Numbers as a [Mono] of [Number].
+ * The resultant [Mono] will have the same [Number] type as the output of the mapping function
+ *
+ * If the result type (or precision) needs to be changed then a specific averageType() method
+ * should be used in preference to this method. e.g. averageDouble(mapper) can be used to compute
+ * the average as a [Mono] of [Double]
+ *
+ * @param mapper a lambda converting values to [Number]
+ * @author Mark Pruden
+ * @since 1.1.5
+ */
+@Suppress("UNCHECKED_CAST")
+inline fun <T: Any, reified R: Number> Flux<T>.averageOf(noinline mapper: (T) -> R): Mono<R> =
+    when (R::class) {
+        BigDecimal::class -> MathFlux.averageBigDecimal(this, Function(mapper)) as Mono<R>
+        BigInteger::class -> MathFlux.averageBigInteger(this, Function(mapper)) as Mono<R>
+        Double::class -> MathFlux.averageDouble(this, Function(mapper)) as Mono<R>
+        Float::class -> MathFlux.averageFloat(this, Function(mapper)) as Mono<R>
+        Long::class -> MathFlux.averageBigInteger(this, Function(mapper))
+            .map(BigInteger::toLong) as Mono<R>
+        Int::class -> MathFlux.averageBigInteger(this, Function(mapper))
+            .map(BigInteger::toInt) as Mono<R>
+        Short::class -> MathFlux.averageBigInteger(this, Function(mapper))
+            .map(BigInteger::toShort) as Mono<R>
+        Byte::class -> MathFlux.averageBigInteger(this, Function(mapper))
+            .map(BigInteger::toByte) as Mono<R>
+        else -> Mono.error( IllegalArgumentException("Mapping of ${R::class} is not supported for averageOf()") )
+    }
 
 /**
  * Extension to map arbitrary values in a [Flux] to [Number]s and return the average of

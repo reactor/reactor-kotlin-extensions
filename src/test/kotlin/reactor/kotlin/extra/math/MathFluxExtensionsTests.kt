@@ -40,6 +40,67 @@ class MathFluxExtensionsTests {
         val comparableList = listOf("AA", "A", "BB", "B", "AB")
     }
 
+    //== New sum Just and Of ==
+
+    @Test
+    fun sumJustShorts() {
+        shortArrayOf(15_000, 16_000)
+            .toFlux()
+            .sumJust()
+            .test()
+            .expectNext(31_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumJustInts() {
+        intArrayOf(200_000_000, 200_000_000)
+            .toFlux()
+            .sumJust()
+            .test()
+            .expectNext(400_000_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumJustLongs() {
+        longArrayOf(3_000_000_000, 2_000_000_000)
+            .toFlux()
+            .sumJust()
+            .test()
+            .expectNext(5_000_000_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumJustFloats() {
+        floatArrayOf(3.6f, 1.5f)
+            .toFlux()
+            .sumJust()
+            .test()
+            .expectNext(5.1f)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumJustDoubles() {
+        doubleArrayOf(3.5, 1.6)
+            .toFlux()
+            .sumJust()
+            .test()
+            .expectNext(5.1)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumOfMapped() {
+        userList.toFlux()
+            .sumOf { it.age }
+            .test()
+            .expectNext(99)
+            .verifyComplete()
+    }
+
     //== sum ==
     @Test
     fun sumShorts() {
@@ -462,6 +523,67 @@ class MathFluxExtensionsTests {
             .sumBigDecimal { it.age }
             .test()
             .expectNext(BigDecimal("99"))
+            .verifyComplete()
+    }
+
+    //== New average Just and Of ==
+
+    @Test
+    fun averageJustShorts() {
+        shortArrayOf(10, 11, 13, 14)
+            .toFlux()
+            .averageJust()
+            .test()
+            .expectNext(12)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageJustInts() {
+        intArrayOf(10, 11, 13, 14)
+            .toFlux()
+            .averageJust()
+            .test()
+            .expectNext(12)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageJustLongs() {
+        longArrayOf(10, 11, 13, 14)
+            .toFlux()
+            .averageJust()
+            .test()
+            .expectNext(12)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageJustFloats() {
+        floatArrayOf(10f, 11f)
+            .toFlux()
+            .averageJust()
+            .test()
+            .expectNext(10.5f)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageJustDoubles() {
+        doubleArrayOf(10.0, 11.0)
+            .toFlux()
+            .averageJust()
+            .test()
+            .expectNext(10.5)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageOfMapped() {
+        userList.toFlux()
+            .averageOf { it.age }
+            .test()
+            .expectNext(33)
             .verifyComplete()
     }
 
