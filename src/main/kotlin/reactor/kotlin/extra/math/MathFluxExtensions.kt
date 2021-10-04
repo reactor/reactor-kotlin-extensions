@@ -34,7 +34,7 @@ import java.util.function.Function
  * @since 1.1.5
  */
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T:Number> Flux<T>.sumJust(): Mono<T> =
+inline fun <reified T:Number> Flux<T>.sumAll(): Mono<T> =
     when (T::class) {
         BigDecimal::class -> MathFlux.sumBigDecimal(this) as Mono<T>
         BigInteger::class -> MathFlux.sumBigInteger(this) as Mono<T>
@@ -46,7 +46,7 @@ inline fun <reified T:Number> Flux<T>.sumJust(): Mono<T> =
             .map(Int::toShort) as Mono<T>
         Byte::class -> MathFlux.sumInt(this)
             .map(Int::toByte) as Mono<T>
-        else -> Mono.error( IllegalArgumentException("Flux of ${T::class} is not supported for sumJust()") )
+        else -> Mono.error( IllegalArgumentException("Flux of ${T::class} is not supported for sumAll()") )
     }
 
 /**
@@ -57,7 +57,7 @@ inline fun <reified T:Number> Flux<T>.sumJust(): Mono<T> =
  *
  * @author Simon Baslé
  * @since 1.0.0
- * @deprecated Please use sumLong() as a direct replacement of consider more general purpose sumJust()
+ * @deprecated Please use sumLong() as a direct replacement of consider more general purpose sumAll()
  */
 fun <T: Number> Flux<T>.sum(): Mono<Long> = MathFlux.sumLong(this)
 
@@ -151,7 +151,7 @@ fun <T: Number> Flux<T>.sumBigDecimal(): Mono<BigDecimal> = MathFlux.sumBigDecim
  * @since 1.1.5
  */
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T:Number> Flux<T>.averageJust(): Mono<T> =
+inline fun <reified T:Number> Flux<T>.averageAll(): Mono<T> =
     when (T::class) {
         BigDecimal::class -> MathFlux.averageBigDecimal(this) as Mono<T>
         BigInteger::class -> MathFlux.averageBigInteger(this) as Mono<T>
@@ -165,7 +165,7 @@ inline fun <reified T:Number> Flux<T>.averageJust(): Mono<T> =
             .map(BigInteger::toShort) as Mono<T>
         Byte::class -> MathFlux.averageBigInteger(this)
             .map(BigInteger::toByte) as Mono<T>
-        else -> Mono.error( IllegalArgumentException("Flux of ${T::class} is not supported for averageJust()") )
+        else -> Mono.error( IllegalArgumentException("Flux of ${T::class} is not supported for averageAll()") )
     }
 
 /**
@@ -178,7 +178,7 @@ inline fun <reified T:Number> Flux<T>.averageJust(): Mono<T> =
  *
  * @author Simon Baslé
  * @since 1.0.0
- * @deprecated Please use averageDouble() as a direct replacement of consider more general purpose averageJust()
+ * @deprecated Please use averageDouble() as a direct replacement of consider more general purpose averageAll()
  */
 fun <T: Number> Flux<T>.average(): Mono<Double> = MathFlux.averageDouble(this)
 
@@ -264,7 +264,7 @@ fun <T: Comparable<T>> Flux<T>.max(): Mono<T> = MathFlux.max(this)
  * @since 1.1.5
  */
 @Suppress("UNCHECKED_CAST")
-inline fun <T: Any, reified R: Number> Flux<T>.sumOf(noinline mapper: (T) -> R): Mono<R> =
+inline fun <T: Any, reified R: Number> Flux<T>.sumAll(noinline mapper: (T) -> R): Mono<R> =
     when (R::class) {
         BigDecimal::class -> MathFlux.sumBigDecimal(this, Function(mapper)) as Mono<R>
         BigInteger::class -> MathFlux.sumBigInteger(this, Function(mapper)) as Mono<R>
@@ -274,7 +274,7 @@ inline fun <T: Any, reified R: Number> Flux<T>.sumOf(noinline mapper: (T) -> R):
         Int::class -> MathFlux.sumInt(this, Function(mapper)) as Mono<R>
         Short::class -> MathFlux.sumInt(this, Function(mapper)).map(Int::toShort) as Mono<R>
         Byte::class -> MathFlux.sumInt(this, Function(mapper)).map(Int::toByte) as Mono<R>
-        else -> Mono.error( IllegalArgumentException("Mapping of ${R::class} is not supported for sumOf()") )
+        else -> Mono.error( IllegalArgumentException("Mapping of ${R::class} is not supported for sumAll()") )
     }
 
 /**
@@ -287,7 +287,7 @@ inline fun <T: Any, reified R: Number> Flux<T>.sumOf(noinline mapper: (T) -> R):
  * @param mapper a lambda converting values to [Number]
  * @author Simon Baslé
  * @since 1.0.0
- * @deprecated Please use sumLong() as a direct replacement of consider more general purpose sumOf()
+ * @deprecated Please use sumLong() as a direct replacement of consider more general purpose sumAll()
  */
 fun <T> Flux<T>.sum(mapper: (T) -> Number): Mono<Long>
         = MathFlux.sumLong(this, Function(mapper))
@@ -397,7 +397,7 @@ fun <T> Flux<T>.sumBigDecimal(mapper: (T) -> Number): Mono<BigDecimal>
  * @since 1.1.5
  */
 @Suppress("UNCHECKED_CAST")
-inline fun <T: Any, reified R: Number> Flux<T>.averageOf(noinline mapper: (T) -> R): Mono<R> =
+inline fun <T: Any, reified R: Number> Flux<T>.averageAll(noinline mapper: (T) -> R): Mono<R> =
     when (R::class) {
         BigDecimal::class -> MathFlux.averageBigDecimal(this, Function(mapper)) as Mono<R>
         BigInteger::class -> MathFlux.averageBigInteger(this, Function(mapper)) as Mono<R>
@@ -411,7 +411,7 @@ inline fun <T: Any, reified R: Number> Flux<T>.averageOf(noinline mapper: (T) ->
             .map(BigInteger::toShort) as Mono<R>
         Byte::class -> MathFlux.averageBigInteger(this, Function(mapper))
             .map(BigInteger::toByte) as Mono<R>
-        else -> Mono.error( IllegalArgumentException("Mapping of ${R::class} is not supported for averageOf()") )
+        else -> Mono.error( IllegalArgumentException("Mapping of ${R::class} is not supported for averageAll()") )
     }
 
 /**
@@ -425,7 +425,7 @@ inline fun <T: Any, reified R: Number> Flux<T>.averageOf(noinline mapper: (T) ->
  * @param mapper a lambda converting values to [Number]
  * @author Simon Baslé
  * @since 1.0.0
- * @deprecated Please use averageDouble() as a direct replacement of consider more general purpose averageOf()
+ * @deprecated Please use averageDouble() as a direct replacement of consider more general purpose averageAll()
  */
 fun <T> Flux<T>.average(mapper: (T) -> Number): Mono<Double>
         = MathFlux.averageDouble(this, Function(mapper))
