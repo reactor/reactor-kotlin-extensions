@@ -56,7 +56,8 @@ inline fun <reified T:Number> Flux<T>.sumJust(): Mono<T> =
  * Note that summing decimal numbers with this method loses precision, see [sumDouble].
  *
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
+ * @deprecated Please use sumLong() as a direct replacement of consider more general purpose sumJust()
  */
 fun <T: Number> Flux<T>.sum(): Mono<Long> = MathFlux.sumLong(this)
 
@@ -108,7 +109,7 @@ fun <T: Number> Flux<T>.sumFloat(): Mono<Float> = MathFlux.sumFloat(this)
  * unexpected sums.
  *
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
  */
 fun <T: Number> Flux<T>.sumDouble(): Mono<Double> = MathFlux.sumDouble(this)
 
@@ -176,7 +177,8 @@ inline fun <reified T:Number> Flux<T>.averageJust(): Mono<T> =
  * unexpected averages.
  *
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
+ * @deprecated Please use averageDouble() as a direct replacement of consider more general purpose averageJust()
  */
 fun <T: Number> Flux<T>.average(): Mono<Double> = MathFlux.averageDouble(this)
 
@@ -233,7 +235,7 @@ fun <T: Number> Flux<T>.averageBigDecimal(): Mono<BigDecimal> = MathFlux.average
  * as a [Mono] of [T].
  *
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
  */
 fun <T: Comparable<T>> Flux<T>.min(): Mono<T> = MathFlux.min(this)
 
@@ -242,7 +244,7 @@ fun <T: Comparable<T>> Flux<T>.min(): Mono<T> = MathFlux.min(this)
  * as a [Mono] of [T].
  *
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
  */
 fun <T: Comparable<T>> Flux<T>.max(): Mono<T> = MathFlux.max(this)
 
@@ -284,7 +286,8 @@ inline fun <T: Any, reified R: Number> Flux<T>.sumOf(noinline mapper: (T) -> R):
  *
  * @param mapper a lambda converting values to [Number]
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
+ * @deprecated Please use sumLong() as a direct replacement of consider more general purpose sumOf()
  */
 fun <T> Flux<T>.sum(mapper: (T) -> Number): Mono<Long>
         = MathFlux.sumLong(this, Function(mapper))
@@ -345,7 +348,7 @@ fun <T> Flux<T>.sumFloat(mapper: (T) -> Number): Mono<Float>
  *
  * @param mapper a lambda converting values to [Number]
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
  */
 fun <T> Flux<T>.sumDouble(mapper: (T) -> Number): Mono<Double>
         = MathFlux.sumDouble(this, Function(mapper))
@@ -421,7 +424,8 @@ inline fun <T: Any, reified R: Number> Flux<T>.averageOf(noinline mapper: (T) ->
  *
  * @param mapper a lambda converting values to [Number]
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
+ * @deprecated Please use averageDouble() as a direct replacement of consider more general purpose averageOf()
  */
 fun <T> Flux<T>.average(mapper: (T) -> Number): Mono<Double>
         = MathFlux.averageDouble(this, Function(mapper))
@@ -488,7 +492,7 @@ fun <T> Flux<T>.averageBigDecimal(mapper: (T) -> Number): Mono<BigDecimal>
  *
  * @param comp The [Comparator] to use
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
  */
 fun <T> Flux<T>.min(comp: Comparator<T>): Mono<T> = MathFlux.min(this, comp)
 /**
@@ -498,7 +502,7 @@ fun <T> Flux<T>.min(comp: Comparator<T>): Mono<T> = MathFlux.min(this, comp)
  *
  * @param comp The comparison function to use (similar to a [Comparator])
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
  */
 fun <T> Flux<T>.min(comp: (T, T) -> Int): Mono<T> = MathFlux.min(this, Comparator(comp))
 /**
@@ -507,7 +511,7 @@ fun <T> Flux<T>.min(comp: (T, T) -> Int): Mono<T> = MathFlux.min(this, Comparato
  *
  * @param comp The [Comparator] to use
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
  */
 fun <T> Flux<T>.max(comp: Comparator<T>): Mono<T> = MathFlux.max(this, comp)
 /**
@@ -517,6 +521,6 @@ fun <T> Flux<T>.max(comp: Comparator<T>): Mono<T> = MathFlux.max(this, comp)
  *
  * @param comp The comparison function to use (similar to a [Comparator])
  * @author Simon Baslé
- * @since 3.1.1
+ * @since 1.0.0
  */
 fun <T> Flux<T>.max(comp: (T, T) -> Int): Mono<T> = MathFlux.max(this, Comparator(comp))
