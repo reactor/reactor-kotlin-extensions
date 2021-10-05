@@ -27,8 +27,9 @@ import java.util.function.Function
  * General purpose extension function to compute the sum of all values emitted by a [Flux] of [Number]
  * and return it as a [Mono]. The resultant [Mono] will have the same [Number] type as the input [Flux]
  *
- * If the result type (or precision) needs to be changed then a specific sumType() method
- * should be used in preference to this method.
+ * If the result type (or precision) needs to be changed then a specific sumAsType() method
+ * should be used in preference to this method. e.g. sumAsDouble() can be used to compute
+ * the sum as a [Mono] of [Double]
  *
  * @author Mark Pruden
  * @since 1.1.5
@@ -57,8 +58,11 @@ inline fun <reified T:Number> Flux<T>.sumAll(): Mono<T> =
  *
  * @author Simon Baslé
  * @since 1.0.0
- * @deprecated Please use sumLong() as a direct replacement of consider more general purpose sumAll()
+ * @deprecated Please use sumLong() as a direct replacement, or consider more general purpose sumAll().
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "Use sumLong() instead",
+    replaceWith = ReplaceWith("sumLong()","reactor.kotlin.extra.math.sumLong"))
 fun <T: Number> Flux<T>.sum(): Mono<Long> = MathFlux.sumLong(this)
 
 /**
@@ -72,7 +76,7 @@ fun <T: Number> Flux<T>.sum(): Mono<Long> = MathFlux.sumLong(this)
  * @author Mark Pruden
  * @since 1.1.5
  */
-fun <T: Number> Flux<T>.sumInt(): Mono<Int> = MathFlux.sumInt(this)
+fun <T: Number> Flux<T>.sumAsInt(): Mono<Int> = MathFlux.sumInt(this)
 
 /**
  * Extension to compute the [Long] sum of all values emitted by a [Flux] of [Number]
@@ -85,7 +89,7 @@ fun <T: Number> Flux<T>.sumInt(): Mono<Int> = MathFlux.sumInt(this)
  * @author Mark Pruden
  * @since 1.1.5
  */
-fun <T: Number> Flux<T>.sumLong(): Mono<Long> = MathFlux.sumLong(this)
+fun <T: Number> Flux<T>.sumAsLong(): Mono<Long> = MathFlux.sumLong(this)
 
 /**
  * Extension to compute the [Float] sum of all values emitted by a [Flux] of [Number]
@@ -98,7 +102,20 @@ fun <T: Number> Flux<T>.sumLong(): Mono<Long> = MathFlux.sumLong(this)
  * @author Mark Pruden
  * @since 1.1.5
  */
-fun <T: Number> Flux<T>.sumFloat(): Mono<Float> = MathFlux.sumFloat(this)
+fun <T: Number> Flux<T>.sumAsFloat(): Mono<Float> = MathFlux.sumFloat(this)
+
+/**
+ * Extension to compute the [Double] sum of all values emitted by a [Flux] of [Number]
+ * and return it as a [Mono] of [Double].
+ *
+ * Note that numbers will be mapped to [Double] using Java standard conversions
+ * This may lead to arbitrary precision gain or loss if the source flux contains different types
+ * Please choose an appropriate method based on the expected types in the source flux.
+ *
+ * @author Mark Pruden
+ * @since 1.1.5
+ */
+fun <T: Number> Flux<T>.sumAsDouble(): Mono<Float> = MathFlux.sumFloat(this)
 
 /**
  * Extension to compute the [Double] sum of all values emitted by a [Flux] of [Number]
@@ -110,7 +127,11 @@ fun <T: Number> Flux<T>.sumFloat(): Mono<Float> = MathFlux.sumFloat(this)
  *
  * @author Simon Baslé
  * @since 1.0.0
+ * @deprecated Please use sumAsDouble() as a direct replacement, or consider more general purpose sumAll().
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "Use sumAsDouble() instead",
+    replaceWith = ReplaceWith("sumAsDouble()","reactor.kotlin.extra.math.sumAsDouble"))
 fun <T: Number> Flux<T>.sumDouble(): Mono<Double> = MathFlux.sumDouble(this)
 
 /**
@@ -124,7 +145,7 @@ fun <T: Number> Flux<T>.sumDouble(): Mono<Double> = MathFlux.sumDouble(this)
  * @author Mark Pruden
  * @since 1.1.5
  */
-fun <T: Number> Flux<T>.sumBigInt(): Mono<BigInteger> = MathFlux.sumBigInteger(this)
+fun <T: Number> Flux<T>.sumAsBigInt(): Mono<BigInteger> = MathFlux.sumBigInteger(this)
 
 /**
  * Extension to compute the [BigDecimal] sum of all values emitted by a [Flux] of [Number]
@@ -137,15 +158,15 @@ fun <T: Number> Flux<T>.sumBigInt(): Mono<BigInteger> = MathFlux.sumBigInteger(t
  * @author Mark Pruden
  * @since 1.1.5
  */
-fun <T: Number> Flux<T>.sumBigDecimal(): Mono<BigDecimal> = MathFlux.sumBigDecimal(this)
+fun <T: Number> Flux<T>.sumAsBigDecimal(): Mono<BigDecimal> = MathFlux.sumBigDecimal(this)
 
 /**
  * General purpose extension function to compute the average of all values emitted by a [Flux] of [Number]
  * and return it as a [Mono]. The resultant [Mono] will have the same [Number] type as the input [Flux]
  *
- * If the result type (or precision) needs to be changed then a specific averageType() method
- * should be used in preference to this method. e.g. averageDouble() can be used to compute average
- * of any [Flux] of [Number] into a [Double]
+ * If the result type (or precision) needs to be changed then a specific averageAsType() method
+ * should be used in preference to this method. e.g. averageAsDouble() can be used to compute
+ * the average as a [Mono] of [Double]
  *
  * @author Mark Pruden
  * @since 1.1.5
@@ -178,8 +199,11 @@ inline fun <reified T:Number> Flux<T>.averageAll(): Mono<T> =
  *
  * @author Simon Baslé
  * @since 1.0.0
- * @deprecated Please use averageDouble() as a direct replacement of consider more general purpose averageAll()
+ * @deprecated Please use averageDouble() as a direct replacement,
+ * or consider more general purpose averageAll(). To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "Use averageDouble() instead",
+    replaceWith = ReplaceWith("averageDouble()","reactor.kotlin.extra.math.averageDouble"))
 fun <T: Number> Flux<T>.average(): Mono<Double> = MathFlux.averageDouble(this)
 
 /**
@@ -193,7 +217,7 @@ fun <T: Number> Flux<T>.average(): Mono<Double> = MathFlux.averageDouble(this)
  * @author Mark Pruden
  * @since 1.1.5
  */
-fun <T: Number> Flux<T>.averageFloat(): Mono<Float> = MathFlux.averageFloat(this)
+fun <T: Number> Flux<T>.averageAsFloat(): Mono<Float> = MathFlux.averageFloat(this)
 
 /**
  * Extension to compute the [Double] average of all values emitted by a [Flux] of [Number]
@@ -206,7 +230,7 @@ fun <T: Number> Flux<T>.averageFloat(): Mono<Float> = MathFlux.averageFloat(this
  * @author Mark Pruden
  * @since 1.1.5
  */
-fun <T: Number> Flux<T>.averageDouble(): Mono<Double> = MathFlux.averageDouble(this)
+fun <T: Number> Flux<T>.averageAsDouble(): Mono<Double> = MathFlux.averageDouble(this)
 
 /**
  * Extension to compute the [BigInteger] average of all values emitted by a [Flux] of [Number]
@@ -218,7 +242,7 @@ fun <T: Number> Flux<T>.averageDouble(): Mono<Double> = MathFlux.averageDouble(t
  * @author Mark Pruden
  * @since 1.1.5
  */
-fun <T: Number> Flux<T>.averageBigInt(): Mono<BigInteger> = MathFlux.averageBigInteger(this)
+fun <T: Number> Flux<T>.averageAsBigInt(): Mono<BigInteger> = MathFlux.averageBigInteger(this)
 
 /**
  * Extension to compute the [BigDecimal] average of all values emitted by a [Flux] of [Number]
@@ -227,7 +251,7 @@ fun <T: Number> Flux<T>.averageBigInt(): Mono<BigInteger> = MathFlux.averageBigI
  * @author Mark Pruden
  * @since 1.1.5
  */
-fun <T: Number> Flux<T>.averageBigDecimal(): Mono<BigDecimal> = MathFlux.averageBigDecimal(this)
+fun <T: Number> Flux<T>.averageAsBigDecimal(): Mono<BigDecimal> = MathFlux.averageBigDecimal(this)
 
 //min and max that work on any comparable
 /**
@@ -255,9 +279,9 @@ fun <T: Comparable<T>> Flux<T>.max(): Mono<T> = MathFlux.max(this)
  * return the sum of these Numbers as a [Mono] of [Number].
  * The resultant [Mono] will have the same [Number] type as the output of the mapping function
  *
- * If the result type (or precision) needs to be changed then a specific sumType() method
- * should be used in preference to this method. e.g. sumDouble(mapper) can be used to compute
- * the average as a [Mono] of [Double]
+ * If the result type (or precision) needs to be changed then a specific sumAsType() method
+ * should be used in preference to this method. e.g. sumAsDouble() can be used to compute
+ * the sum as a [Mono] of [Double]
  *
  * @param mapper a lambda converting values to [Number]
  * @author Mark Pruden
@@ -287,55 +311,13 @@ inline fun <T: Any, reified R: Number> Flux<T>.sumAll(noinline mapper: (T) -> R)
  * @param mapper a lambda converting values to [Number]
  * @author Simon Baslé
  * @since 1.0.0
- * @deprecated Please use sumLong() as a direct replacement of consider more general purpose sumAll()
+ * @deprecated Please use sumAll(mapper) as a direct replacement,
+ * providing a mapping function that returns a Long. To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "Use sumAll(mapper) instead",
+    replaceWith = ReplaceWith("sumAll(mapper)","reactor.kotlin.extra.math.sumAll"))
 fun <T> Flux<T>.sum(mapper: (T) -> Number): Mono<Long>
         = MathFlux.sumLong(this, Function(mapper))
-
-/**
- * Extension to map arbitrary values in a [Flux] to [Number]s and return the sum of these
- * Numbers as a [Mono] of [Int].
- *
- * Note that numbers will be mapped to [Int] using Java standard conversions
- * This may lead to arbitrary precision gain or loss if the source flux contains different types
- * Please choose an appropriate method based on the expected types in the source flux.
- *
- * @param mapper a lambda converting values to [Number]
- * @author Mark Pruden
- * @since 1.1.5
- */
-fun <T> Flux<T>.sumInt(mapper: (T) -> Number): Mono<Int>
-        = MathFlux.sumInt(this, Function(mapper))
-
-/**
- * Extension to map arbitrary values in a [Flux] to [Number]s and return the sum of these
- * Numbers as a [Mono] of [Long].
- *
- * Note that numbers will be mapped to [Long] using Java standard conversions
- * This may lead to arbitrary precision gain or loss if the source flux contains different types
- * Please choose an appropriate method based on the expected types in the source flux.
- *
- * @param mapper a lambda converting values to [Number]
- * @author Mark Pruden
- * @since 1.1.5
- */
-fun <T> Flux<T>.sumLong(mapper: (T) -> Number): Mono<Long>
-        = MathFlux.sumLong(this, Function(mapper))
-
-/**
- * Extension to map arbitrary values in a [Flux] to [Number]s and return the sum of these
- * Numbers as a [Mono] of [Float].
- *
- * Note that numbers will be mapped to [Float] using Java standard conversions
- * This may lead to arbitrary precision gain or loss if the source flux contains different types
- * Please choose an appropriate method based on the expected types in the source flux.
- *
- * @param mapper a lambda converting values to [Number]
- * @author Mark Pruden
- * @since 1.1.5
- */
-fun <T> Flux<T>.sumFloat(mapper: (T) -> Number): Mono<Float>
-        = MathFlux.sumFloat(this, Function(mapper))
 
 /**
  * Extension to map arbitrary values in a [Flux] to [Number]s and return the sum of these
@@ -349,47 +331,21 @@ fun <T> Flux<T>.sumFloat(mapper: (T) -> Number): Mono<Float>
  * @param mapper a lambda converting values to [Number]
  * @author Simon Baslé
  * @since 1.0.0
+ * @deprecated Please use sumAll(mapper) as a direct replacement,
+ * providing a mapper function that returns a Double. To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "Use sumAll(mapper) instead",
+    replaceWith = ReplaceWith("sumAll(mapper)","reactor.kotlin.extra.math.sumAll"))
 fun <T> Flux<T>.sumDouble(mapper: (T) -> Number): Mono<Double>
         = MathFlux.sumDouble(this, Function(mapper))
-
-/**
- * Extension to map arbitrary values in a [Flux] to [Number]s and return the sum of these
- * Numbers as a [Mono] of [BigInteger]
- *
- * Note that numbers will be mapped to [BigInteger] using Java standard conversions
- * This may lead to arbitrary precision gain or loss if the source flux contains different types
- * Please choose an appropriate method based on the expected types in the source flux.
- *
- * @param mapper a lambda converting values to [Number]
- * @author Mark Pruden
- * @since 1.1.5
- */
-fun <T> Flux<T>.sumBigInt(mapper: (T) -> Number): Mono<BigInteger>
-        = MathFlux.sumBigInteger(this, Function(mapper))
-
-/**
- * Extension to map arbitrary values in a [Flux] to [Number]s and return the sum of these
- * Numbers as a [Mono] of [BigInteger]
- *
- * Note that numbers will be mapped to [BigInteger] using Java standard conversions
- * This may lead to arbitrary precision gain or loss if the source flux contains different types
- * Please choose an appropriate method based on the expected types in the source flux.
- *
- * @param mapper a lambda converting values to [Number]
- * @author Mark Pruden
- * @since 1.1.5
- */
-fun <T> Flux<T>.sumBigDecimal(mapper: (T) -> Number): Mono<BigDecimal>
-        = MathFlux.sumBigDecimal(this, Function(mapper))
 
 /**
  * General purpose extension function to map arbitrary values in a [Flux] to [Number]s and
  * return the average of these Numbers as a [Mono] of [Number].
  * The resultant [Mono] will have the same [Number] type as the output of the mapping function
  *
- * If the result type (or precision) needs to be changed then a specific averageType() method
- * should be used in preference to this method. e.g. averageDouble(mapper) can be used to compute
+ * If the result type (or precision) needs to be changed then a specific averageAsType() method
+ * should be used in preference to this method. e.g. averageAsDouble() can be used to compute
  * the average as a [Mono] of [Double]
  *
  * @param mapper a lambda converting values to [Number]
@@ -425,67 +381,16 @@ inline fun <T: Any, reified R: Number> Flux<T>.averageAll(noinline mapper: (T) -
  * @param mapper a lambda converting values to [Number]
  * @author Simon Baslé
  * @since 1.0.0
- * @deprecated Please use averageDouble() as a direct replacement of consider more general purpose averageAll()
+ * @deprecated Please use averageAll(mapper) as a direct replacement,
+ * providing a mapper function that returns a Double. To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "Use averageAll(mapper) instead",
+    replaceWith = ReplaceWith("averageAll(mapper)","reactor.kotlin.extra.math.averageAll"))
 fun <T> Flux<T>.average(mapper: (T) -> Number): Mono<Double>
         = MathFlux.averageDouble(this, Function(mapper))
 
-/**
- * Extension to map arbitrary values in a [Flux] to [Number]s and return the average of
- * these Numbers as a [Mono] of [Float].
- *
- * Note that numbers will be mapped to [Float] using Java standard conversions
- * This may lead to arbitrary precision gain or loss if the source flux contains different types
- * Please choose an appropriate method based on the expected types in the source flux.
- *
- * @param mapper a lambda converting values to [Number]
- * @author Mark Pruden
- * @since 1.1.5
- */
-fun <T> Flux<T>.averageFloat(mapper: (T) -> Number): Mono<Float>
-        = MathFlux.averageFloat(this, Function(mapper))
-
-/**
- * Extension to map arbitrary values in a [Flux] to [Number]s and return the average of
- * these Numbers as a [Mono] of [Double].
- *
- * Note that numbers will be mapped to [Double] using Java standard conversions
- * This may lead to arbitrary precision gain or loss if the source flux contains different types
- * Please choose an appropriate method based on the expected types in the source flux.
- *
- * @param mapper a lambda converting values to [Number]
- * @author Mark Pruden
- * @since 1.1.5
- */
-fun <T> Flux<T>.averageDouble(mapper: (T) -> Number): Mono<Double>
-        = MathFlux.averageDouble(this, Function(mapper))
-
-/**
- * Extension to map arbitrary values in a [Flux] to [Number]s and return the average of
- * these Numbers as a [Mono] of [BigInteger].
- *
- * Note that the result will be mapped to [BigInteger] and is likely to lose precision
- * during the calculation of the average
- *
- * @param mapper a lambda converting values to [Number]
- * @author Mark Pruden
- * @since 1.1.5
- */
-fun <T> Flux<T>.averageBigInt(mapper: (T) -> Number): Mono<BigInteger>
-        = MathFlux.averageBigInteger(this, Function(mapper))
-
-/**
- * Extension to map arbitrary values in a [Flux] to [Number]s and return the average of
- * these Numbers as a [Mono] of [BigDecimal].
- *
- * @param mapper a lambda converting values to [Number]
- * @author Mark Pruden
- * @since 1.1.5
- */
-fun <T> Flux<T>.averageBigDecimal(mapper: (T) -> Number): Mono<BigDecimal>
-        = MathFlux.averageBigDecimal(this, Function(mapper))
-
 //min/max lambda versions where a comparator or equivalent function is provided
+
 /**
  * Extension to find the lowest value in a [Flux] and return it as a [Mono]. The lowest
  * value is defined by comparisons made using a provided [Comparator].

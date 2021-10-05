@@ -46,7 +46,7 @@ class MathFluxExtensionsTests {
     fun sumJustShorts() {
         shortArrayOf(15_000, 16_000)
             .toFlux()
-            .sumJust()
+            .sumAll()
             .test()
             .expectNext(31_000)
             .verifyComplete()
@@ -56,7 +56,7 @@ class MathFluxExtensionsTests {
     fun sumJustInts() {
         intArrayOf(200_000_000, 200_000_000)
             .toFlux()
-            .sumJust()
+            .sumAll()
             .test()
             .expectNext(400_000_000)
             .verifyComplete()
@@ -66,7 +66,7 @@ class MathFluxExtensionsTests {
     fun sumJustLongs() {
         longArrayOf(3_000_000_000, 2_000_000_000)
             .toFlux()
-            .sumJust()
+            .sumAll()
             .test()
             .expectNext(5_000_000_000)
             .verifyComplete()
@@ -76,7 +76,7 @@ class MathFluxExtensionsTests {
     fun sumJustFloats() {
         floatArrayOf(3.6f, 1.5f)
             .toFlux()
-            .sumJust()
+            .sumAll()
             .test()
             .expectNext(5.1f)
             .verifyComplete()
@@ -86,7 +86,7 @@ class MathFluxExtensionsTests {
     fun sumJustDoubles() {
         doubleArrayOf(3.5, 1.6)
             .toFlux()
-            .sumJust()
+            .sumAll()
             .test()
             .expectNext(5.1)
             .verifyComplete()
@@ -95,7 +95,7 @@ class MathFluxExtensionsTests {
     @Test
     fun sumOfMapped() {
         userList.toFlux()
-            .sumOf { it.age }
+            .sumAll { it.age }
             .test()
             .expectNext(99)
             .verifyComplete()
@@ -167,7 +167,7 @@ class MathFluxExtensionsTests {
     fun sumIntShorts() {
         shortArrayOf(32_000, 32_000) //sum overflows a Short
             .toFlux()
-            .sumInt()
+            .sumAsInt()
             .test()
             .expectNext(64_000)
             .verifyComplete()
@@ -177,7 +177,7 @@ class MathFluxExtensionsTests {
     fun sumIntInts() {
         intArrayOf(300_000_000, 200_000_000)
             .toFlux()
-            .sumInt()
+            .sumAsInt()
             .test()
             .expectNext(500_000_000)
             .verifyComplete()
@@ -187,7 +187,7 @@ class MathFluxExtensionsTests {
     fun sumIntLongs() {
         longArrayOf(300_000_000, 200_000_000)
             .toFlux()
-            .sumInt()
+            .sumAsInt()
             .test()
             .expectNext(500_000_000)
             .verifyComplete()
@@ -197,7 +197,7 @@ class MathFluxExtensionsTests {
     fun sumIntFloats() {
         floatArrayOf(3.5f, 1.9f)
             .toFlux()
-            .sumInt()
+            .sumAsInt()
             .test()
             .expectNext(4)
             .verifyComplete()
@@ -207,18 +207,9 @@ class MathFluxExtensionsTests {
     fun sumIntDoubles() {
         doubleArrayOf(3.5, 1.5)
             .toFlux()
-            .sumInt()
+            .sumAsInt()
             .test()
             .expectNext(4)
-            .verifyComplete()
-    }
-
-    @Test
-    fun sumIntMapped() {
-        userList.toFlux()
-            .sumInt { it.age }
-            .test()
-            .expectNext(99)
             .verifyComplete()
     }
 
@@ -228,7 +219,7 @@ class MathFluxExtensionsTests {
     fun sumLongShorts() {
         shortArrayOf(32_000, 32_000) //sum overflows a Short
             .toFlux()
-            .sumLong()
+            .sumAsLong()
             .test()
             .expectNext(64_000)
             .verifyComplete()
@@ -238,7 +229,7 @@ class MathFluxExtensionsTests {
     fun sumLongInts() {
         intArrayOf(2_000_000_000, 2_000_000_000) //sum overflows an Int
             .toFlux()
-            .sumLong()
+            .sumAsLong()
             .test()
             .expectNext(4_000_000_000)
             .verifyComplete()
@@ -248,7 +239,7 @@ class MathFluxExtensionsTests {
     fun sumLongLongs() {
         longArrayOf(300_000_000_000, 200_000_000_000)
             .toFlux()
-            .sumLong()
+            .sumAsLong()
             .test()
             .expectNext(500_000_000_000)
             .verifyComplete()
@@ -258,7 +249,7 @@ class MathFluxExtensionsTests {
     fun sumLongFloats() {
         floatArrayOf(3.5f, 1.9f)
             .toFlux()
-            .sumLong()
+            .sumAsLong()
             .test()
             .expectNext(4)
             .verifyComplete()
@@ -268,18 +259,9 @@ class MathFluxExtensionsTests {
     fun sumLongDoubles() {
         doubleArrayOf(3.5, 1.5)
             .toFlux()
-            .sumLong()
+            .sumAsLong()
             .test()
             .expectNext(4)
-            .verifyComplete()
-    }
-
-    @Test
-    fun sumLongMapped() {
-        userList.toFlux()
-            .sumLong { it.age }
-            .test()
-            .expectNext(99)
             .verifyComplete()
     }
 
@@ -289,7 +271,7 @@ class MathFluxExtensionsTests {
     fun sumFloatShorts() {
         shortArrayOf(32_000, 32_000) //sum overflows a Short
             .toFlux()
-            .sumFloat()
+            .sumAsFloat()
             .test()
             .expectNext(64000F)
             .verifyComplete()
@@ -299,7 +281,7 @@ class MathFluxExtensionsTests {
     fun sumFloatInts() {
         intArrayOf(2_000_000_000, 2_000_000_000) //sum overflows an Int
             .toFlux()
-            .sumFloat()
+            .sumAsFloat()
             .test()
             .expectNext(4E9F)
             .verifyComplete()
@@ -309,7 +291,7 @@ class MathFluxExtensionsTests {
     fun sumFloatLongs() {
         longArrayOf(30_000_000_000, 20_000_000_000) // There is some precision loss in these conversions.
             .toFlux()
-            .sumFloat()
+            .sumAsFloat()
             .test()
             .expectNext(5.0000003E10F)
             .verifyComplete()
@@ -319,7 +301,7 @@ class MathFluxExtensionsTests {
     fun sumFloatFloats() {
         floatArrayOf(3.5f, 1.9f)
             .toFlux()
-            .sumFloat()
+            .sumAsFloat()
             .test()
             .expectNext(5.4F)
             .verifyComplete()
@@ -329,18 +311,9 @@ class MathFluxExtensionsTests {
     fun sumFloatDoubles() {
         doubleArrayOf(3.5, 1.9)
             .toFlux()
-            .sumFloat()
+            .sumAsFloat()
             .test()
             .expectNext(5.4F)
-            .verifyComplete()
-    }
-
-    @Test
-    fun sumFloatMapped() {
-        userList.toFlux()
-            .sumFloat { it.age }
-            .test()
-            .expectNext(99.0F)
             .verifyComplete()
     }
 
@@ -410,7 +383,7 @@ class MathFluxExtensionsTests {
     fun sumBigIntegerShorts() {
         shortArrayOf(32_000, 32_000)
             .toFlux()
-            .sumBigInt()
+            .sumAsBigInt()
             .test()
             .expectNext(BigInteger("64000"))
             .verifyComplete()
@@ -420,7 +393,7 @@ class MathFluxExtensionsTests {
     fun sumBigIntegerInts() {
         intArrayOf(2_000_000_000, 2_000_000_000)
             .toFlux()
-            .sumBigInt()
+            .sumAsBigInt()
             .test()
             .expectNext(BigInteger("4000000000"))
             .verifyComplete()
@@ -430,7 +403,7 @@ class MathFluxExtensionsTests {
     fun sumBigIntegerLongs() {
         longArrayOf(30_000_000_000, 20_000_000_000)
             .toFlux()
-            .sumBigInt()
+            .sumAsBigInt()
             .test()
             .expectNext(BigInteger("50000000000"))
             .verifyComplete()
@@ -440,7 +413,7 @@ class MathFluxExtensionsTests {
     fun sumBigIntegerFloats() {
         floatArrayOf(3.9f, 1.9f)
             .toFlux()
-            .sumBigInt()
+            .sumAsBigInt()
             .test()
             .expectNext(BigInteger("4"))
             .verifyComplete()
@@ -450,18 +423,9 @@ class MathFluxExtensionsTests {
     fun sumBigIntegerDoubles() {
         doubleArrayOf(3.9, 1.9)
             .toFlux()
-            .sumBigInt()
+            .sumAsBigInt()
             .test()
             .expectNext(BigInteger("4"))
-            .verifyComplete()
-    }
-
-    @Test
-    fun sumBigIntegerMapped() {
-        userList.toFlux()
-            .sumBigInt { it.age }
-            .test()
-            .expectNext(BigInteger("99"))
             .verifyComplete()
     }
 
@@ -471,7 +435,7 @@ class MathFluxExtensionsTests {
     fun sumBigDecimalShorts() {
         shortArrayOf(32_000, 32_000)
             .toFlux()
-            .sumBigDecimal()
+            .sumAsBigDecimal()
             .test()
             .expectNext(BigDecimal("64000"))
             .verifyComplete()
@@ -481,7 +445,7 @@ class MathFluxExtensionsTests {
     fun sumBigDecimalInts() {
         intArrayOf(2_000_000_000, 2_000_000_000)
             .toFlux()
-            .sumBigDecimal()
+            .sumAsBigDecimal()
             .test()
             .expectNext(BigDecimal("4000000000"))
             .verifyComplete()
@@ -491,7 +455,7 @@ class MathFluxExtensionsTests {
     fun sumBigDecimalLongs() {
         longArrayOf(30_000_000_000, 20_000_000_000)
             .toFlux()
-            .sumBigDecimal()
+            .sumAsBigDecimal()
             .test()
             .expectNext(BigDecimal("50000000000"))
             .verifyComplete()
@@ -501,7 +465,7 @@ class MathFluxExtensionsTests {
     fun sumBigDecimalFloats() {
         floatArrayOf(3.5f, 1.99f)
             .toFlux()
-            .sumBigDecimal()
+            .sumAsBigDecimal()
             .test()
             .expectNext(BigDecimal("5.49"))
             .verifyComplete()
@@ -511,18 +475,9 @@ class MathFluxExtensionsTests {
     fun sumBigDecimalDoubles() {
         doubleArrayOf(3.5, 1.99)
             .toFlux()
-            .sumBigDecimal()
+            .sumAsBigDecimal()
             .test()
             .expectNext(BigDecimal("5.49"))
-            .verifyComplete()
-    }
-
-    @Test
-    fun sumBigDecimalMapped() {
-        userList.toFlux()
-            .sumBigDecimal { it.age }
-            .test()
-            .expectNext(BigDecimal("99"))
             .verifyComplete()
     }
 
@@ -532,7 +487,7 @@ class MathFluxExtensionsTests {
     fun averageJustShorts() {
         shortArrayOf(10, 11, 13, 14)
             .toFlux()
-            .averageJust()
+            .averageAll()
             .test()
             .expectNext(12)
             .verifyComplete()
@@ -542,7 +497,7 @@ class MathFluxExtensionsTests {
     fun averageJustInts() {
         intArrayOf(10, 11, 13, 14)
             .toFlux()
-            .averageJust()
+            .averageAll()
             .test()
             .expectNext(12)
             .verifyComplete()
@@ -552,7 +507,7 @@ class MathFluxExtensionsTests {
     fun averageJustLongs() {
         longArrayOf(10, 11, 13, 14)
             .toFlux()
-            .averageJust()
+            .averageAll()
             .test()
             .expectNext(12)
             .verifyComplete()
@@ -562,7 +517,7 @@ class MathFluxExtensionsTests {
     fun averageJustFloats() {
         floatArrayOf(10f, 11f)
             .toFlux()
-            .averageJust()
+            .averageAll()
             .test()
             .expectNext(10.5f)
             .verifyComplete()
@@ -572,7 +527,7 @@ class MathFluxExtensionsTests {
     fun averageJustDoubles() {
         doubleArrayOf(10.0, 11.0)
             .toFlux()
-            .averageJust()
+            .averageAll()
             .test()
             .expectNext(10.5)
             .verifyComplete()
@@ -581,7 +536,7 @@ class MathFluxExtensionsTests {
     @Test
     fun averageOfMapped() {
         userList.toFlux()
-            .averageOf { it.age }
+            .averageAll { it.age }
             .test()
             .expectNext(33)
             .verifyComplete()
@@ -654,7 +609,7 @@ class MathFluxExtensionsTests {
     fun averageFloatShorts() {
         shortArrayOf(10, 11)
             .toFlux()
-            .averageFloat()
+            .averageAsFloat()
             .test()
             .expectNext(10.5f)
             .verifyComplete()
@@ -664,7 +619,7 @@ class MathFluxExtensionsTests {
     fun averageFloatInts() {
         intArrayOf(10, 11)
             .toFlux()
-            .averageFloat()
+            .averageAsFloat()
             .test()
             .expectNext(10.5f)
             .verifyComplete()
@@ -674,7 +629,7 @@ class MathFluxExtensionsTests {
     fun averageFloatLongs() {
         longArrayOf(10, 11)
             .toFlux()
-            .averageFloat()
+            .averageAsFloat()
             .test()
             .expectNext(10.5f)
             .verifyComplete()
@@ -684,7 +639,7 @@ class MathFluxExtensionsTests {
     fun averageFloatFloats() {
         floatArrayOf(10f, 11f)
             .toFlux()
-            .averageFloat()
+            .averageAsFloat()
             .test()
             .expectNext(10.5f)
             .verifyComplete()
@@ -694,18 +649,9 @@ class MathFluxExtensionsTests {
     fun averageFloatDoubles() {
         doubleArrayOf(10.0, 11.0)
             .toFlux()
-            .averageFloat()
+            .averageAsFloat()
             .test()
             .expectNext(10.5f)
-            .verifyComplete()
-    }
-
-    @Test
-    fun averageFloatMapped() {
-        userList.toFlux()
-            .averageFloat { it.age }
-            .test()
-            .expectNext(33.0f)
             .verifyComplete()
     }
 
@@ -715,7 +661,7 @@ class MathFluxExtensionsTests {
     fun averageDoubleShorts() {
         shortArrayOf(10, 11)
             .toFlux()
-            .averageDouble()
+            .averageAsDouble()
             .test()
             .expectNext(10.5)
             .verifyComplete()
@@ -725,7 +671,7 @@ class MathFluxExtensionsTests {
     fun averageDoubleInts() {
         intArrayOf(10, 11)
             .toFlux()
-            .averageDouble()
+            .averageAsDouble()
             .test()
             .expectNext(10.5)
             .verifyComplete()
@@ -735,7 +681,7 @@ class MathFluxExtensionsTests {
     fun averageDoubleLongs() {
         longArrayOf(10, 11)
             .toFlux()
-            .averageDouble()
+            .averageAsDouble()
             .test()
             .expectNext(10.5)
             .verifyComplete()
@@ -745,7 +691,7 @@ class MathFluxExtensionsTests {
     fun averageDoubleFloats() {
         floatArrayOf(10f, 11f)
             .toFlux()
-            .averageDouble()
+            .averageAsDouble()
             .test()
             .expectNext(10.5)
             .verifyComplete()
@@ -755,18 +701,9 @@ class MathFluxExtensionsTests {
     fun averageDoubleDoubles() {
         doubleArrayOf(10.0, 11.0)
             .toFlux()
-            .averageDouble()
+            .averageAsDouble()
             .test()
             .expectNext(10.5)
-            .verifyComplete()
-    }
-
-    @Test
-    fun averageDoubleMapped() {
-        userList.toFlux()
-            .averageDouble { it.age }
-            .test()
-            .expectNext(33.0)
             .verifyComplete()
     }
 
@@ -776,7 +713,7 @@ class MathFluxExtensionsTests {
     fun averageBigIntShorts() {
         shortArrayOf(10, 11, 12)
             .toFlux()
-            .averageBigInt()
+            .averageAsBigInt()
             .test()
             .expectNext(BigInteger("11"))
             .verifyComplete()
@@ -786,7 +723,7 @@ class MathFluxExtensionsTests {
     fun averageBigIntInts() {
         intArrayOf(10, 11, 12)
             .toFlux()
-            .averageBigInt()
+            .averageAsBigInt()
             .test()
             .expectNext(BigInteger("11"))
             .verifyComplete()
@@ -796,7 +733,7 @@ class MathFluxExtensionsTests {
     fun averageBigIntLongs() {
         longArrayOf(10, 11, 12)
             .toFlux()
-            .averageBigInt()
+            .averageAsBigInt()
             .test()
             .expectNext(BigInteger("11"))
             .verifyComplete()
@@ -806,7 +743,7 @@ class MathFluxExtensionsTests {
     fun averageBigIntFloats() {
         floatArrayOf(10f, 11f, 12f)
             .toFlux()
-            .averageBigInt()
+            .averageAsBigInt()
             .test()
             .expectNext(BigInteger("11"))
             .verifyComplete()
@@ -816,18 +753,9 @@ class MathFluxExtensionsTests {
     fun averageBigIntDoubles() {
         doubleArrayOf(10.0, 11.0, 12.0)
             .toFlux()
-            .averageBigInt()
+            .averageAsBigInt()
             .test()
             .expectNext(BigInteger("11"))
-            .verifyComplete()
-    }
-
-    @Test
-    fun averageBigIntMapped() {
-        userList.toFlux()
-            .averageBigInt { it.age }
-            .test()
-            .expectNext(BigInteger("33"))
             .verifyComplete()
     }
 
@@ -837,7 +765,7 @@ class MathFluxExtensionsTests {
     fun averageBigDecimalShorts() {
         shortArrayOf(10, 11, 11, 11)
             .toFlux()
-            .averageBigDecimal()
+            .averageAsBigDecimal()
             .test()
             .expectNext(BigDecimal("10.75"))
             .verifyComplete()
@@ -847,7 +775,7 @@ class MathFluxExtensionsTests {
     fun averageBigDecimalInts() {
         intArrayOf(10, 11, 11, 11)
             .toFlux()
-            .averageBigDecimal()
+            .averageAsBigDecimal()
             .test()
             .expectNext(BigDecimal("10.75"))
             .verifyComplete()
@@ -857,7 +785,7 @@ class MathFluxExtensionsTests {
     fun averageBigDecimalLongs() {
         longArrayOf(10, 11, 11, 11)
             .toFlux()
-            .averageBigDecimal()
+            .averageAsBigDecimal()
             .test()
             .expectNext(BigDecimal("10.75"))
             .verifyComplete()
@@ -867,7 +795,7 @@ class MathFluxExtensionsTests {
     fun averageBigDecimalFloats() {
         floatArrayOf(10f, 11f, 12f, 13.5f)
             .toFlux()
-            .averageBigDecimal()
+            .averageAsBigDecimal()
             .test()
             .expectNext(BigDecimal("11.625"))
             .verifyComplete()
@@ -877,18 +805,9 @@ class MathFluxExtensionsTests {
     fun averageBigDecimalDoubles() {
         doubleArrayOf(10.0, 11.0, 12.0, 13.5)
             .toFlux()
-            .averageBigDecimal()
+            .averageAsBigDecimal()
             .test()
             .expectNext(BigDecimal("11.625"))
-            .verifyComplete()
-    }
-
-    @Test
-    fun averageBigDecimalMapped() {
-        userList.toFlux()
-            .averageBigDecimal { it.age }
-            .test()
-            .expectNext(BigDecimal("33"))
             .verifyComplete()
     }
 
