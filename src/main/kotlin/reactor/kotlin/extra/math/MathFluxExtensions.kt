@@ -58,11 +58,11 @@ inline fun <reified T:Number> Flux<T>.sumAll(): Mono<T> =
  *
  * @author Simon Baslé
  * @since 1.0.0
- * @deprecated Please use sumLong() as a direct replacement, or consider more general purpose sumAll().
+ * @deprecated Please use sumAsLong() as a direct replacement, or consider more general purpose sumAll().
  * To be removed at the earliest in 1.3.0.
  */
-@Deprecated(message = "Use sumLong() instead",
-    replaceWith = ReplaceWith("sumLong()","reactor.kotlin.extra.math.sumLong"))
+@Deprecated(message = "Use sumAsLong() instead",
+    replaceWith = ReplaceWith("sumAsLong()","reactor.kotlin.extra.math.sumAsLong"))
 fun <T: Number> Flux<T>.sum(): Mono<Long> = MathFlux.sumLong(this)
 
 /**
@@ -199,11 +199,11 @@ inline fun <reified T:Number> Flux<T>.averageAll(): Mono<T> =
  *
  * @author Simon Baslé
  * @since 1.0.0
- * @deprecated Please use averageDouble() as a direct replacement,
+ * @deprecated Please use averageAsDouble() as a direct replacement,
  * or consider more general purpose averageAll(). To be removed at the earliest in 1.3.0.
  */
-@Deprecated(message = "Use averageDouble() instead",
-    replaceWith = ReplaceWith("averageDouble()","reactor.kotlin.extra.math.averageDouble"))
+@Deprecated(message = "Use averageAsDouble() instead",
+    replaceWith = ReplaceWith("averageAsDouble()","reactor.kotlin.extra.math.averageAsDouble"))
 fun <T: Number> Flux<T>.average(): Mono<Double> = MathFlux.averageDouble(this)
 
 /**
