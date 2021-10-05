@@ -20,6 +20,8 @@ import org.junit.Test
 import reactor.core.publisher.Flux
 import reactor.kotlin.core.publisher.toFlux
 import reactor.kotlin.test.test
+import java.math.BigDecimal
+import java.math.BigInteger
 
 /**
  * @author Simon Baslé
@@ -36,6 +38,67 @@ class MathFluxExtensionsTests {
         val comparator: Comparator<User> = Comparator({ u1: User, u2:User -> u1.age - u2.age})
 
         val comparableList = listOf("AA", "A", "BB", "B", "AB")
+    }
+
+    //== New sum Just and Of ==
+
+    @Test
+    fun sumJustShorts() {
+        shortArrayOf(15_000, 16_000)
+            .toFlux()
+            .sumAll()
+            .test()
+            .expectNext(31_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumJustInts() {
+        intArrayOf(200_000_000, 200_000_000)
+            .toFlux()
+            .sumAll()
+            .test()
+            .expectNext(400_000_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumJustLongs() {
+        longArrayOf(3_000_000_000, 2_000_000_000)
+            .toFlux()
+            .sumAll()
+            .test()
+            .expectNext(5_000_000_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumJustFloats() {
+        floatArrayOf(3.6f, 1.5f)
+            .toFlux()
+            .sumAll()
+            .test()
+            .expectNext(5.1f)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumJustDoubles() {
+        doubleArrayOf(3.5, 1.6)
+            .toFlux()
+            .sumAll()
+            .test()
+            .expectNext(5.1)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumOfMapped() {
+        userList.toFlux()
+            .sumAll { it.age }
+            .test()
+            .expectNext(99)
+            .verifyComplete()
     }
 
     //== sum ==
@@ -98,6 +161,162 @@ class MathFluxExtensionsTests {
                 .verifyComplete()
     }
 
+    //== sumInt ==
+
+    @Test
+    fun sumIntShorts() {
+        shortArrayOf(32_000, 32_000) //sum overflows a Short
+            .toFlux()
+            .sumAsInt()
+            .test()
+            .expectNext(64_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumIntInts() {
+        intArrayOf(300_000_000, 200_000_000)
+            .toFlux()
+            .sumAsInt()
+            .test()
+            .expectNext(500_000_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumIntLongs() {
+        longArrayOf(300_000_000, 200_000_000)
+            .toFlux()
+            .sumAsInt()
+            .test()
+            .expectNext(500_000_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumIntFloats() {
+        floatArrayOf(3.5f, 1.9f)
+            .toFlux()
+            .sumAsInt()
+            .test()
+            .expectNext(4)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumIntDoubles() {
+        doubleArrayOf(3.5, 1.5)
+            .toFlux()
+            .sumAsInt()
+            .test()
+            .expectNext(4)
+            .verifyComplete()
+    }
+
+    //== sumLong ==
+
+    @Test
+    fun sumLongShorts() {
+        shortArrayOf(32_000, 32_000) //sum overflows a Short
+            .toFlux()
+            .sumAsLong()
+            .test()
+            .expectNext(64_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumLongInts() {
+        intArrayOf(2_000_000_000, 2_000_000_000) //sum overflows an Int
+            .toFlux()
+            .sumAsLong()
+            .test()
+            .expectNext(4_000_000_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumLongLongs() {
+        longArrayOf(300_000_000_000, 200_000_000_000)
+            .toFlux()
+            .sumAsLong()
+            .test()
+            .expectNext(500_000_000_000)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumLongFloats() {
+        floatArrayOf(3.5f, 1.9f)
+            .toFlux()
+            .sumAsLong()
+            .test()
+            .expectNext(4)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumLongDoubles() {
+        doubleArrayOf(3.5, 1.5)
+            .toFlux()
+            .sumAsLong()
+            .test()
+            .expectNext(4)
+            .verifyComplete()
+    }
+
+    //== sumFloat ==
+
+    @Test
+    fun sumFloatShorts() {
+        shortArrayOf(32_000, 32_000) //sum overflows a Short
+            .toFlux()
+            .sumAsFloat()
+            .test()
+            .expectNext(64000F)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumFloatInts() {
+        intArrayOf(2_000_000_000, 2_000_000_000) //sum overflows an Int
+            .toFlux()
+            .sumAsFloat()
+            .test()
+            .expectNext(4E9F)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumFloatLongs() {
+        longArrayOf(30_000_000_000, 20_000_000_000) // There is some precision loss in these conversions.
+            .toFlux()
+            .sumAsFloat()
+            .test()
+            .expectNext(5.0000003E10F)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumFloatFloats() {
+        floatArrayOf(3.5f, 1.9f)
+            .toFlux()
+            .sumAsFloat()
+            .test()
+            .expectNext(5.4F)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumFloatDoubles() {
+        doubleArrayOf(3.5, 1.9)
+            .toFlux()
+            .sumAsFloat()
+            .test()
+            .expectNext(5.4F)
+            .verifyComplete()
+    }
+
     //== sumDouble ==
     @Test
     fun sumDoubleShorts() {
@@ -158,7 +377,173 @@ class MathFluxExtensionsTests {
                 .verifyComplete()
     }
 
+    //== sumBigInt ==
+
+    @Test
+    fun sumBigIntegerShorts() {
+        shortArrayOf(32_000, 32_000)
+            .toFlux()
+            .sumAsBigInt()
+            .test()
+            .expectNext(BigInteger("64000"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumBigIntegerInts() {
+        intArrayOf(2_000_000_000, 2_000_000_000)
+            .toFlux()
+            .sumAsBigInt()
+            .test()
+            .expectNext(BigInteger("4000000000"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumBigIntegerLongs() {
+        longArrayOf(30_000_000_000, 20_000_000_000)
+            .toFlux()
+            .sumAsBigInt()
+            .test()
+            .expectNext(BigInteger("50000000000"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumBigIntegerFloats() {
+        floatArrayOf(3.9f, 1.9f)
+            .toFlux()
+            .sumAsBigInt()
+            .test()
+            .expectNext(BigInteger("4"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumBigIntegerDoubles() {
+        doubleArrayOf(3.9, 1.9)
+            .toFlux()
+            .sumAsBigInt()
+            .test()
+            .expectNext(BigInteger("4"))
+            .verifyComplete()
+    }
+
+    //== sumBigDecimal ==
+
+    @Test
+    fun sumBigDecimalShorts() {
+        shortArrayOf(32_000, 32_000)
+            .toFlux()
+            .sumAsBigDecimal()
+            .test()
+            .expectNext(BigDecimal("64000"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumBigDecimalInts() {
+        intArrayOf(2_000_000_000, 2_000_000_000)
+            .toFlux()
+            .sumAsBigDecimal()
+            .test()
+            .expectNext(BigDecimal("4000000000"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumBigDecimalLongs() {
+        longArrayOf(30_000_000_000, 20_000_000_000)
+            .toFlux()
+            .sumAsBigDecimal()
+            .test()
+            .expectNext(BigDecimal("50000000000"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumBigDecimalFloats() {
+        floatArrayOf(3.5f, 1.99f)
+            .toFlux()
+            .sumAsBigDecimal()
+            .test()
+            .expectNext(BigDecimal("5.49"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumBigDecimalDoubles() {
+        doubleArrayOf(3.5, 1.99)
+            .toFlux()
+            .sumAsBigDecimal()
+            .test()
+            .expectNext(BigDecimal("5.49"))
+            .verifyComplete()
+    }
+
+    //== New average Just and Of ==
+
+    @Test
+    fun averageJustShorts() {
+        shortArrayOf(10, 11, 13, 14)
+            .toFlux()
+            .averageAll()
+            .test()
+            .expectNext(12)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageJustInts() {
+        intArrayOf(10, 11, 13, 14)
+            .toFlux()
+            .averageAll()
+            .test()
+            .expectNext(12)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageJustLongs() {
+        longArrayOf(10, 11, 13, 14)
+            .toFlux()
+            .averageAll()
+            .test()
+            .expectNext(12)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageJustFloats() {
+        floatArrayOf(10f, 11f)
+            .toFlux()
+            .averageAll()
+            .test()
+            .expectNext(10.5f)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageJustDoubles() {
+        doubleArrayOf(10.0, 11.0)
+            .toFlux()
+            .averageAll()
+            .test()
+            .expectNext(10.5)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageOfMapped() {
+        userList.toFlux()
+            .averageAll { it.age }
+            .test()
+            .expectNext(33)
+            .verifyComplete()
+    }
+
     //== average ==
+
     @Test
     fun averageShorts() {
         shortArrayOf(10, 11)
@@ -216,6 +601,214 @@ class MathFluxExtensionsTests {
                 .test()
                 .expectNext(33.0)
                 .verifyComplete()
+    }
+
+    //== averageFloat ==
+
+    @Test
+    fun averageFloatShorts() {
+        shortArrayOf(10, 11)
+            .toFlux()
+            .averageAsFloat()
+            .test()
+            .expectNext(10.5f)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageFloatInts() {
+        intArrayOf(10, 11)
+            .toFlux()
+            .averageAsFloat()
+            .test()
+            .expectNext(10.5f)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageFloatLongs() {
+        longArrayOf(10, 11)
+            .toFlux()
+            .averageAsFloat()
+            .test()
+            .expectNext(10.5f)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageFloatFloats() {
+        floatArrayOf(10f, 11f)
+            .toFlux()
+            .averageAsFloat()
+            .test()
+            .expectNext(10.5f)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageFloatDoubles() {
+        doubleArrayOf(10.0, 11.0)
+            .toFlux()
+            .averageAsFloat()
+            .test()
+            .expectNext(10.5f)
+            .verifyComplete()
+    }
+
+    //== averageDouble ==
+
+    @Test
+    fun averageDoubleShorts() {
+        shortArrayOf(10, 11)
+            .toFlux()
+            .averageAsDouble()
+            .test()
+            .expectNext(10.5)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageDoubleInts() {
+        intArrayOf(10, 11)
+            .toFlux()
+            .averageAsDouble()
+            .test()
+            .expectNext(10.5)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageDoubleLongs() {
+        longArrayOf(10, 11)
+            .toFlux()
+            .averageAsDouble()
+            .test()
+            .expectNext(10.5)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageDoubleFloats() {
+        floatArrayOf(10f, 11f)
+            .toFlux()
+            .averageAsDouble()
+            .test()
+            .expectNext(10.5)
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageDoubleDoubles() {
+        doubleArrayOf(10.0, 11.0)
+            .toFlux()
+            .averageAsDouble()
+            .test()
+            .expectNext(10.5)
+            .verifyComplete()
+    }
+
+    //== averageBigInt ==
+
+    @Test
+    fun averageBigIntShorts() {
+        shortArrayOf(10, 11, 12)
+            .toFlux()
+            .averageAsBigInt()
+            .test()
+            .expectNext(BigInteger("11"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageBigIntInts() {
+        intArrayOf(10, 11, 12)
+            .toFlux()
+            .averageAsBigInt()
+            .test()
+            .expectNext(BigInteger("11"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageBigIntLongs() {
+        longArrayOf(10, 11, 12)
+            .toFlux()
+            .averageAsBigInt()
+            .test()
+            .expectNext(BigInteger("11"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageBigIntFloats() {
+        floatArrayOf(10f, 11f, 12f)
+            .toFlux()
+            .averageAsBigInt()
+            .test()
+            .expectNext(BigInteger("11"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageBigIntDoubles() {
+        doubleArrayOf(10.0, 11.0, 12.0)
+            .toFlux()
+            .averageAsBigInt()
+            .test()
+            .expectNext(BigInteger("11"))
+            .verifyComplete()
+    }
+
+    //== averageBigDecimal ==
+
+    @Test
+    fun averageBigDecimalShorts() {
+        shortArrayOf(10, 11, 11, 11)
+            .toFlux()
+            .averageAsBigDecimal()
+            .test()
+            .expectNext(BigDecimal("10.75"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageBigDecimalInts() {
+        intArrayOf(10, 11, 11, 11)
+            .toFlux()
+            .averageAsBigDecimal()
+            .test()
+            .expectNext(BigDecimal("10.75"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageBigDecimalLongs() {
+        longArrayOf(10, 11, 11, 11)
+            .toFlux()
+            .averageAsBigDecimal()
+            .test()
+            .expectNext(BigDecimal("10.75"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageBigDecimalFloats() {
+        floatArrayOf(10f, 11f, 12f, 13.5f)
+            .toFlux()
+            .averageAsBigDecimal()
+            .test()
+            .expectNext(BigDecimal("11.625"))
+            .verifyComplete()
+    }
+
+    @Test
+    fun averageBigDecimalDoubles() {
+        doubleArrayOf(10.0, 11.0, 12.0, 13.5)
+            .toFlux()
+            .averageAsBigDecimal()
+            .test()
+            .expectNext(BigDecimal("11.625"))
+            .verifyComplete()
     }
 
     //== min ==
