@@ -179,7 +179,7 @@ class MonoExtensionsTests {
         var invoked = false
         monoOnError.doOnError(IllegalStateException::class) {
             invoked = true
-        }.subscribe()
+        }.subscribe({}, {})
         Assert.assertTrue(invoked)
     }
 
