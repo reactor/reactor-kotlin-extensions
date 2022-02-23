@@ -40,6 +40,22 @@ configure(rootProject) { subproject ->
 		manifest.attributes["Implementation-Version"] = project.version
 	}
 
+	task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+		archiveClassifier.set('javadoc')
+		from dokkaJavadoc.outputDirectory
+	}
+
+	task kdocZip(type: Zip, dependsOn: dokkaHtml) {
+		//ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
+		archiveClassifier.set('kdoc')
+		from(dokkaHtml.outputDirectory)
+	}
+
+	task sourcesJar(type: Jar, dependsOn: classes) {
+		archiveClassifier.set("sources")
+		from sourceSets.main.allSource
+	}
+
 	task qualifyVersionGha() {
 		doLast {
 			def versionType = qualifyVersion("$version")

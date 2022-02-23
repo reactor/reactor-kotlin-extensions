@@ -1,0 +1,83 @@
+/*
+ * Copyright (c) 2022 VMware Inc. or its affiliates, All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+dokkaHtml {
+	dependsOn jar
+	group = "documentation"
+	description = "Generates Kotlin API documentation."
+
+	outputDirectory.set(new File(project.buildDir, "docs/kdoc"))
+	moduleName.set("reactor-kotlin-extensions")
+
+	dokkaSourceSets {
+		configureEach {
+			jdkVersion.set(8)
+
+			externalDocumentationLink {
+				url.set(new URL("https://projectreactor.io/docs/core/release/api/"))
+			}
+			externalDocumentationLink {
+				url.set(new URL("https://projectreactor.io/docs/test/release/api/"))
+			}
+			externalDocumentationLink {
+				url.set(new URL("https://projectreactor.io/docs/extra/release/api/"))
+			}
+			externalDocumentationLink {
+				url.set(new URL("https://projectreactor.io/docs/adapter/release/api/"))
+			}
+			externalDocumentationLink {
+				url.set(new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/"))
+			}
+			externalDocumentationLink {
+				url.set(new URL("http://reactivex.io/RxJava/javadoc/"))
+			}
+		}
+	}
+}
+
+dokkaJavadoc {
+	dependsOn jar
+	group = "documentation"
+	description = "Generates javadoc for Kotlin API."
+
+	outputDirectory.set(new File(project.buildDir, "docs/javadoc"))
+	moduleName.set("reactor-kotlin-extensions")
+
+	dokkaSourceSets {
+		configureEach {
+			jdkVersion.set(8)
+
+			externalDocumentationLink {
+				url.set(new URL("https://projectreactor.io/docs/core/release/api/"))
+			}
+			externalDocumentationLink {
+				url.set(new URL("https://projectreactor.io/docs/test/release/api/"))
+			}
+			externalDocumentationLink {
+				url.set(new URL("https://projectreactor.io/docs/extra/release/api/"))
+			}
+			externalDocumentationLink {
+				url.set(new URL("https://projectreactor.io/docs/adapter/release/api/"))
+			}
+			externalDocumentationLink {
+				url.set(new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/"))
+			}
+			externalDocumentationLink {
+				url.set(new URL("http://reactivex.io/RxJava/javadoc/"))
+			}
+		}
+	}
+}
