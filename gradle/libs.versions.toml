@@ -1,0 +1,27 @@
+[versions]
+reactorCore = "3.4.16-SNAPSHOT"
+reactorAddons = "3.4.6-SNAPSHOT"
+# Other shared versions
+kotlin = "1.5.32"
+swt = "4.5.2"
+
+[libraries]
+reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactorCore" }
+reactor-test = { module = "io.projectreactor:reactor-test", version.ref = "reactorCore" }
+reactor-adapter = { module = "io.projectreactor.addons:reactor-adapter", version.ref = "reactorAddons" }
+reactor-extra = { module = "io.projectreactor.addons:reactor-extra", version.ref = "reactorAddons" }
+assertj = "org.assertj:assertj-core:3.22.0"
+jsr305 = "com.google.code.findbugs:jsr305:3.0.1"
+junit4 = "junit:junit:4.12"
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+rxJava2 = "io.reactivex.rxjava2:rxjava:2.2.8"
+swt-windows = { module = "org.eclipse.swt:org.eclipse.swt.win32.win32.x86", version.ref = "swt" }
+swt-windows64 = { module = "org.eclipse.swt:org.eclipse.swt.win32.win32.x86_64", version.ref = "swt" }
+swt-linux = { module = "org.eclipse.swt:org.eclipse.swt.gtk.linux.x86", version.ref = "swt" }
+swt-linux64 = { module = "org.eclipse.swt:org.eclipse.swt.gtk.linux.x86_64", version.ref = "swt" }
+swt-mac = { module = "org.eclipse.swt:org.eclipse.swt.cocoa.macosx.x86_64", version.ref = "swt" }
+
+[plugins]
+artifactory = { id = "com.jfrog.artifactory", version = "4.27.1" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-dokka = { id = "org.jetbrains.dokka", version = "1.5.31" }
