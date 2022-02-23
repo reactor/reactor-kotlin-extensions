@@ -15,4 +15,4 @@ jobs:
     - uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7 # renovate: tag=v2
       name: gradle
       with:
-        arguments: check dokka dokkaJavadoc
+        arguments: check dokkaHtml dokkaJavadoc
