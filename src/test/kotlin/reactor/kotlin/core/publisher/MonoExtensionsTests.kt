@@ -109,7 +109,7 @@ class MonoExtensionsTests {
     fun nullableCompletableFutureToMonoWithMap() {
         val future = CompletableFuture<String?>()
 
-        val verifier = StepVerifier.create(future.toMono().map { it.toUpperCase() })
+        val verifier = StepVerifier.create(future.toMono().map { it.length })
             .expectComplete()
         future.complete(null)
         verifier.verify()
@@ -127,8 +127,8 @@ class MonoExtensionsTests {
     @Test
     fun nullableCallableToMonoWithMap() {
         val callable = Callable<String?> { "foo" }
-        val verifier = StepVerifier.create(callable.toMono().map { it.toUpperCase() })
-            .expectNext("FOO")
+        val verifier = StepVerifier.create(callable.toMono().map { it.length })
+            .expectNext(3)
             .expectComplete()
         verifier.verify()
     }
@@ -136,7 +136,7 @@ class MonoExtensionsTests {
     @Test
     fun nullableCallableToEmptyMonoWitMap() {
         val callable = Callable<String?> { null }
-        val verifier = StepVerifier.create(callable.toMono().map { it.toUpperCase() })
+        val verifier = StepVerifier.create(callable.toMono().map { it.length })
             .expectComplete()
         verifier.verify()
     }
@@ -151,9 +151,8 @@ class MonoExtensionsTests {
 
     @Test
     fun nullableLambdaToEmptyMonoWithMap() {
-        @Suppress("USELESS_CAST")
-        val callable = { null as String? }
-        val verifier = StepVerifier.create(callable.toMono().map { it.toUpperCase() })
+        val callable = { null }
+        val verifier = StepVerifier.create(callable.toMono().map { it.hashCode() })
             .expectComplete()
         verifier.verify()
     }

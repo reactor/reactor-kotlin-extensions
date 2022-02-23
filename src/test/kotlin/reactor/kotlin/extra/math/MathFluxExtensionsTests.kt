@@ -104,6 +104,7 @@ class MathFluxExtensionsTests {
     //== sum ==
     @Test
     fun sumShorts() {
+        @Suppress("DEPRECATION")
         shortArrayOf(32_000, 8_000) //sum overflows a Short
                 .toFlux()
                 .sum()
@@ -114,6 +115,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun sumInts() {
+        @Suppress("DEPRECATION")
         intArrayOf(2_000_000_000, 200_000_000) //sum overflows an Int
                 .toFlux()
                 .sum()
@@ -124,6 +126,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun sumLongs() {
+        @Suppress("DEPRECATION")
         longArrayOf(3_000_000_000, 2_000_000_000)
                 .toFlux()
                 .sum()
@@ -134,6 +137,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun sumFloatsPrecisionLoss() {
+        @Suppress("DEPRECATION")
         floatArrayOf(3.5f, 1.5f)
                 .toFlux()
                 .sum()
@@ -144,6 +148,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun sumDoublesPrecisionLoss() {
+        @Suppress("DEPRECATION")
         doubleArrayOf(3.5, 1.5)
                 .toFlux()
                 .sum()
@@ -154,6 +159,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun sumMapped() {
+        @Suppress("DEPRECATION")
         userList.toFlux()
                 .sum { it.age }
                 .test()
@@ -371,6 +377,7 @@ class MathFluxExtensionsTests {
     //== sumDouble ==
     @Test
     fun sumDoubleShorts() {
+        @Suppress("DEPRECATION")
         shortArrayOf(32_000, 8_000) //sum overflows a Short
                 .toFlux()
                 .sumDouble()
@@ -381,6 +388,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun sumDoubleInts() {
+        @Suppress("DEPRECATION")
         intArrayOf(2_000_000_000, 200_000_000) //sum overflows an Int
                 .toFlux()
                 .sumDouble()
@@ -391,6 +399,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun sumDoubleLongs() {
+        @Suppress("DEPRECATION")
         longArrayOf(3_000_000_000, 2_000_000_000)
                 .toFlux()
                 .sumDouble()
@@ -401,6 +410,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun sumDoubleFloats() {
+        @Suppress("DEPRECATION")
         floatArrayOf(3.5f, 1.5f)
                 .toFlux()
                 .sumDouble()
@@ -411,6 +421,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun sumDoubleDoubles() {
+        @Suppress("DEPRECATION")
         doubleArrayOf(3.5, 1.5)
                 .toFlux()
                 .sumDouble()
@@ -421,6 +432,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun sumDoubleMapped() {
+        @Suppress("DEPRECATION")
         userList.toFlux()
                 .sumDouble { it.age }
                 .test()
@@ -597,6 +609,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun averageShorts() {
+        @Suppress("DEPRECATION")
         shortArrayOf(10, 11)
                 .toFlux()
                 .average()
@@ -607,6 +620,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun averageInts() {
+        @Suppress("DEPRECATION")
         intArrayOf(10, 11)
                 .toFlux()
                 .average()
@@ -617,6 +631,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun averageLongs() {
+        @Suppress("DEPRECATION")
         longArrayOf(10, 11)
                 .toFlux()
                 .average()
@@ -627,6 +642,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun averageFloats() {
+        @Suppress("DEPRECATION")
         floatArrayOf(10f, 11f)
                 .toFlux()
                 .average()
@@ -637,6 +653,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun averageDoubles() {
+        @Suppress("DEPRECATION")
         doubleArrayOf(10.0, 11.0)
                 .toFlux()
                 .average()
@@ -647,6 +664,7 @@ class MathFluxExtensionsTests {
 
     @Test
     fun averageMapped() {
+        @Suppress("DEPRECATION")
         userList.toFlux()
                 .average { it.age }
                 .test()
@@ -1025,15 +1043,15 @@ class MathFluxExtensionsTests {
 //// == collection of numbers ==
 
     @Test
-    fun numberCollectionSum() {
+    fun numberCollectionLongSum() {
         val longs: List<Long> = listOf(1L, 2L, 3L)
         val floats: List<Float> = listOf(1.5f, 2.5f)
         val doubles: List<Double> = listOf(1.6, 2.6)
 
         Flux.concat(
-                longs.toFlux().sum(),
-                floats.toFlux().sum(),
-                doubles.toFlux().sum())
+                longs.toFlux().sumAsLong(),
+                floats.toFlux().sumAsLong(),
+                doubles.toFlux().sumAsLong())
                 .test()
                 .expectNext(6L)
                 .expectNext(3L).`as`("floats rounded down")
@@ -1048,6 +1066,7 @@ class MathFluxExtensionsTests {
         val floats: List<Float> = listOf(1.5f, 2.5f)
         val doubles: List<Double> = listOf(1.6, 2.6)
 
+        @Suppress("DEPRECATION")
         Flux.concat(
                 longs.toFlux().sumDouble(),
                 floats.toFlux().sumDouble(),
