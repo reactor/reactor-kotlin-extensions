@@ -317,6 +317,57 @@ class MathFluxExtensionsTests {
             .verifyComplete()
     }
 
+    //== sumAsDouble ==
+    @Test
+    fun sumAsDoubleShorts() {
+        shortArrayOf(32_000, 8_000) //sum overflows a Short
+            .toFlux()
+            .sumAsDouble()
+            .test()
+            .expectNext(40_000.0)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumAsDoubleInts() {
+        intArrayOf(2_000_000_000, 200_000_000) //sum overflows an Int
+            .toFlux()
+            .sumAsDouble()
+            .test()
+            .expectNext(2_200_000_000.0)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumAsDoubleLongs() {
+        longArrayOf(3_000_000_000, 2_000_000_000)
+            .toFlux()
+            .sumAsDouble()
+            .test()
+            .expectNext(5_000_000_000.0)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumAsDoubleFloats() {
+        floatArrayOf(3.5f, 1.5f)
+            .toFlux()
+            .sumAsDouble()
+            .test()
+            .expectNext(5.0)
+            .verifyComplete()
+    }
+
+    @Test
+    fun sumAsDoubleDoubles() {
+        doubleArrayOf(3.5, 1.5)
+            .toFlux()
+            .sumAsDouble()
+            .test()
+            .expectNext(5.0)
+            .verifyComplete()
+    }
+
     //== sumDouble ==
     @Test
     fun sumDoubleShorts() {
