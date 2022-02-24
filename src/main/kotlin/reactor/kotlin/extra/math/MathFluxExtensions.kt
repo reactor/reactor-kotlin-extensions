@@ -115,7 +115,7 @@ fun <T: Number> Flux<T>.sumAsFloat(): Mono<Float> = MathFlux.sumFloat(this)
  * @author Mark Pruden
  * @since 1.1.5
  */
-fun <T: Number> Flux<T>.sumAsDouble(): Mono<Float> = MathFlux.sumFloat(this)
+fun <T: Number> Flux<T>.sumAsDouble(): Mono<Double> = MathFlux.sumDouble(this)
 
 /**
  * Extension to compute the [Double] sum of all values emitted by a [Flux] of [Number]
