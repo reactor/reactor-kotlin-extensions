@@ -64,7 +64,7 @@ configure(rootProject)  { project ->
   }
 
 	dependencies {
-		implementation libs.reactor.core
+		api libs.reactor.core
 
 		compileOnly libs.reactor.test
 
