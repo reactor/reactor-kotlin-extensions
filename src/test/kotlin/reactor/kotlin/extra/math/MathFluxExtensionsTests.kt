@@ -1048,10 +1048,11 @@ class MathFluxExtensionsTests {
         val floats: List<Float> = listOf(1.5f, 2.5f)
         val doubles: List<Double> = listOf(1.6, 2.6)
 
+        @Suppress("DEPRECATION")
         Flux.concat(
-                longs.toFlux().sumAsLong(),
-                floats.toFlux().sumAsLong(),
-                doubles.toFlux().sumAsLong())
+                longs.toFlux().sum(),
+                floats.toFlux().sum(),
+                doubles.toFlux().sum())
                 .test()
                 .expectNext(6L)
                 .expectNext(3L).`as`("floats rounded down")
