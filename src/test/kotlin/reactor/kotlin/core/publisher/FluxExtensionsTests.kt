@@ -141,7 +141,7 @@ class FluxExtensionsTests {
         var invoked = false
         fluxOnError.doOnError(IllegalStateException::class) {
             invoked = true
-        }.subscribe()
+        }.subscribe({}, {})
         Assert.assertTrue(invoked)
     }
 

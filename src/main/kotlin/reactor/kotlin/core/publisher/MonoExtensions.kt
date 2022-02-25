@@ -143,6 +143,7 @@ fun <T> Mono<T>.switchIfEmpty(s: () -> Mono<T>): Mono<T> = this.switchIfEmpty(Mo
  * @author Nikesh Shetty
  * @since 3.3.1
  */
+@Suppress("UNCHECKED_CAST")
 fun <E : Throwable, T> Mono<T>.onErrorMap(type: KClass<E>,
                                           predicate: (E) -> Boolean,
                                           mapper: (E) -> Throwable): Mono<T> {

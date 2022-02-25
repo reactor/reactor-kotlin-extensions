@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2019-2022 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,40 +15,28 @@
  */
 
 buildscript {
-  ext.kotlinVersion = '1.3.72'
-  repositories {
+	repositories {
 		mavenCentral()
-		maven {
-			//FIXME workaround propdeps not being published to Maven Central + otherwise Gradle somehow tries to load dokka from spring repo
-			url "https://repo.spring.io/plugins-release"
-			content {
-				includeGroup "org.springframework.build.gradle"
-			}
-		}
-  }
-  dependencies {
-	classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
-	classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
-  }
+	}
 }
 
 plugins {
   //NB: stdlib version is defined by this plugin's version
-  id "org.jetbrains.kotlin.jvm" version "1.3.50"
-  id "org.jetbrains.dokka" version "0.10.0"
-  id "com.jfrog.artifactory" version "4.15.2" apply false
+	alias(libs.plugins.kotlin.jvm)
+	alias(libs.plugins.kotlin.dokka)
+	alias(libs.plugins.artifactory) apply false
 }
 
 //NOTE: reactor dependency versions are now defined in gradle.properties
 
 configure(rootProject)  { project ->
-  apply plugin: 'kotlin'
-  apply plugin: 'propdeps'
-  apply from: "gradle/publishing.gradle"
-  apply from: "gradle/releaser.gradle"
+	apply plugin: 'kotlin'
+	apply from: "gradle/dokka.gradle"
+	apply from: "gradle/publishing.gradle"
+	apply from: "gradle/releaser.gradle"
 
-  description = 'Kotlin extensions for Project Reactor'
-  group = 'io.projectreactor.kotlin'
+	description = 'Kotlin extensions for Project Reactor'
+	group = 'io.projectreactor.kotlin'
 
 	repositories {
 		mavenCentral()
@@ -75,143 +63,49 @@ configure(rootProject)  { project ->
 	kotlinOptions.freeCompilerArgs = ["-Xjsr305=strict"]
   }
 
-  dokka {
-	dependsOn jar
-	group = "documentation"
-	description = "Generates Kotlin API documentation."
-	outputFormat = "html"
-	outputDirectory = new File(project.buildDir, "docs/kdoc")
+	dependencies {
+		api libs.reactor.core
 
-	configuration {
-		moduleName = "reactor-kotlin-extensions"
-		jdkVersion = 8
+		compileOnly libs.reactor.test
 
-		//due to https://github.com/Kotlin/dokka/issues/514 we now have to specify packageListUrl
-		//another dokka release, another regression...
-		externalDocumentationLink {
-			url = new URL("https://projectreactor.io/docs/core/release/api/")
-			packageListUrl = new URL(url, "package-list")
-		}
-		externalDocumentationLink {
-			url = new URL("https://projectreactor.io/docs/test/release/api/")
-			packageListUrl = new URL(url, "package-list")
-		}
-		externalDocumentationLink {
-			url = new URL("https://projectreactor.io/docs/extra/release/api/")
-			packageListUrl = new URL(url, "package-list")
-		}
-		externalDocumentationLink {
-			url = new URL("https://projectreactor.io/docs/adapter/release/api/")
-			packageListUrl = new URL(url, "package-list")
-		}
-		externalDocumentationLink {
-			url = new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/")
-			packageListUrl = new URL(url, "package-list")
-		}
-		externalDocumentationLink {
-			url = new URL("http://reactivex.io/RxJava/javadoc/")
-			packageListUrl = new URL(url, "package-list")
-		}
+		compileOnly libs.reactor.extra
+		testImplementation libs.reactor.extra
+
+		compileOnly libs.reactor.adapter
+		testImplementation libs.reactor.adapter
+		compileOnly libs.rxJava2
+		testImplementation libs.rxJava2
+		compileOnly getSwtPlatform()
+		testImplementation getSwtPlatform()
+
+		//NB: stdlib version is defined by the kotlin jvm plugin's version
+		compileOnly libs.kotlin.stdlib
+		testImplementation libs.kotlin.stdlib
+
+		testImplementation libs.reactor.test
+		testImplementation libs.junit4
+		testImplementation libs.assertj
 	}
 }
 
-	task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-		group = "documentation"
-		description = "Generates javadoc for Kotlin API."
-		outputFormat = 'javadoc'
-		outputDirectory = "$buildDir/javadoc"
 
-		configuration {
-			moduleName = "reactor-kotlin-extensions"
-			jdkVersion = 8
-
-			//TODO javadoc output spams a little of Can't find node by signature `not implemented for <T
-			//see https://github.com/Kotlin/dokka/issues/525
-
-			//due to https://github.com/Kotlin/dokka/issues/514 we now have to specify packageListUrl
-			//another dokka release, another regression...
-			externalDocumentationLink {
-				url = new URL("https://projectreactor.io/docs/core/release/api/")
-				packageListUrl = new URL(url, "package-list")
-			}
-			externalDocumentationLink {
-				url = new URL("https://projectreactor.io/docs/test/release/api/")
-				packageListUrl = new URL(url, "package-list")
-			}
-			externalDocumentationLink {
-				url = new URL("https://projectreactor.io/docs/extra/release/api/")
-				packageListUrl = new URL(url, "package-list")
-			}
-			externalDocumentationLink {
-				url = new URL("https://projectreactor.io/docs/adapter/release/api/")
-				packageListUrl = new URL(url, "package-list")
-			}
-			externalDocumentationLink {
-				url = new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/")
-				packageListUrl = new URL(url, "package-list")
-			}
-			externalDocumentationLink {
-				url = new URL("http://reactivex.io/RxJava/javadoc/")
-				packageListUrl = new URL(url, "package-list")
-			}
+def getSwtPlatform() {
+	String osname = System.properties['os.name']
+	String osarch = System.properties['os.arch']
+	if (osname.toLowerCase(Locale.ROOT).contains('win')) {
+		if (osarch.contains("64")) {
+			return libs.swt.windows64
 		}
+		return libs.swt.windows
 	}
-
-  task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
-	archiveClassifier.set('javadoc')
-	from dokkaJavadoc.outputDirectory
-  }
-
-  task kdocZip(type: Zip, dependsOn: dokka) {
-	//ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
-	archiveClassifier.set('kdoc')
-	from(dokka.outputDirectory)
-  }
-
-  task sourcesJar(type: Jar, dependsOn: classes) {
-	archiveClassifier.set("sources")
-	from sourceSets.main.allSource
-  }
-
-  dependencies {
-	compile "io.projectreactor:reactor-core:${reactorCoreVersion}"
-	optional "io.projectreactor:reactor-test:${reactorCoreVersion}"
-	optional "io.projectreactor.addons:reactor-adapter:${reactorAddonsVersion}"
-	optional "io.projectreactor.addons:reactor-extra:${reactorAddonsVersion}"
-	testCompile "io.projectreactor:reactor-test:${reactorCoreVersion}"
-
-	optional "io.reactivex.rxjava2:rxjava:2.2.8"
-	optional "org.eclipse.swt:org.eclipse.swt.${getPlatform()}:4.5.2"
-
-	//NB: stdlib version is defined by the kotlin jvm plugin's version
-	optional 'org.jetbrains.kotlin:kotlin-stdlib'
-	  testCompile 'org.jetbrains.kotlin:kotlin-reflect:1.3.50'
-
-
-	testCompile 'junit:junit:4.12'
-	testCompile 'org.assertj:assertj-core:3.12.2'
-  }
-
-}
-
-
-def getPlatform() {
-  String osname = System.properties['os.name']
-  String osarch = System.properties['os.arch']
-  if (osname.toLowerCase(Locale.ROOT).contains('win')) {
-	if (osarch.contains("64")) {
-	  return "win32.win32.x86_64"
+	if (osname.toLowerCase(Locale.ROOT).contains("nux")) {
+		if (osarch.contains("64")) {
+			return libs.swt.linux64
+		}
+		return libs.swt.linux
 	}
-	return "win32.win32.x86"
-  }
-  if (osname.toLowerCase(Locale.ROOT).contains("nux")) {
-	if (osarch.contains("64")) {
-	  return "gtk.linux.x86_64"
+	if (osname.toLowerCase(Locale.ROOT).contains("mac")) {
+		return libs.swt.mac
 	}
-	return "gtk.linux.x86"
-  }
-  if (osname.toLowerCase(Locale.ROOT).contains("mac")) {
-	return "cocoa.macosx.x86_64"
-  }
-  throw new RuntimeException("Unknown OS/Arch: " + osname + ", " + osarch)
+	throw new RuntimeException("Unknown OS/Arch: " + osname + ", " + osarch)
 }
