@@ -25,5 +25,7 @@ import reactor.swing.SwtScheduler
  *
  * @author Simon Baslé
  * @since 3.1.1
+ * @deprecated To be removed exceptionally fast in 3.5.0. See https://github.com/reactor/reactor-addons/issues/273
  */
+@Deprecated
 fun Display.toScheduler(): Scheduler = SwtScheduler.from(this)
