@@ -25,5 +25,8 @@ import reactor.swing.SwtScheduler
  *
  * @author Simon Baslé
  * @since 3.1.1
+ * @deprecated To be removed aggressively in 3.5.0. See https://github.com/reactor/reactor-addons/issues/273
  */
+@Deprecated(message = "To be removed aggressively in 3.5.0. SWT support is being removed in addons",
+    level = DeprecationLevel.ERROR)
 fun Display.toScheduler(): Scheduler = SwtScheduler.from(this)
