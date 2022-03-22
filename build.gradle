@@ -75,8 +75,6 @@ configure(rootProject)  { project ->
 		testImplementation libs.reactor.adapter
 		compileOnly libs.rxJava2
 		testImplementation libs.rxJava2
-		compileOnly getSwtPlatform()
-		testImplementation getSwtPlatform()
 
 		//NB: stdlib version is defined by the kotlin jvm plugin's version
 		compileOnly libs.kotlin.stdlib
@@ -86,26 +84,4 @@ configure(rootProject)  { project ->
 		testImplementation libs.junit4
 		testImplementation libs.assertj
 	}
-}
-
-
-def getSwtPlatform() {
-	String osname = System.properties['os.name']
-	String osarch = System.properties['os.arch']
-	if (osname.toLowerCase(Locale.ROOT).contains('win')) {
-		if (osarch.contains("64")) {
-			return libs.swt.windows64
-		}
-		return libs.swt.windows
-	}
-	if (osname.toLowerCase(Locale.ROOT).contains("nux")) {
-		if (osarch.contains("64")) {
-			return libs.swt.linux64
-		}
-		return libs.swt.linux
-	}
-	if (osname.toLowerCase(Locale.ROOT).contains("mac")) {
-		return libs.swt.mac
-	}
-	throw new RuntimeException("Unknown OS/Arch: " + osname + ", " + osarch)
 }
