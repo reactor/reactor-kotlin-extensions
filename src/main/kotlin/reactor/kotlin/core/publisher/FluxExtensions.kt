@@ -209,18 +209,6 @@ fun <T : Any> Flux<out Iterable<T>>.split(): Flux<T> = this.flatMapIterable { it
  * the [switchIfEmpty] operator
  *
  * @author Kevin Davin
- * @since 3.2
- */
-@Deprecated(
-    "Conflicts with Flux.switchIfEmpty(), use switchIfEmptyDeferred() extension",
-    ReplaceWith("switchIfEmptyDeferred(s)", "reactor.kotlin.core.publisher.switchIfEmptyDeferred"))
-fun <T> Flux<T>.switchIfEmpty(s: () -> Publisher<T>): Flux<T> = this.switchIfEmptyDeferred(s)
-
-/**
- * Extension for [Flux.switchIfEmpty] accepting a function providing a Publisher. This allows having a deferred execution with
- * the [switchIfEmpty] operator
- *
- * @author Kevin Davin
  * @author Pavel Grigorenko
  * @since 1.1.3
  */
