@@ -12,14 +12,14 @@ With Gradle from repo.spring.io or Maven Central repositories (stable releases o
 
 ```groovy
     repositories {
-	//maven { url 'https://repo.spring.io/snapshot' }
-	maven { url 'https://repo.spring.io/milestone' }
-	mavenCentral()
+        //maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
+        mavenCentral()
     }
 
     dependencies {
-      //compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.0-SNAPSHOT"
-      compile "io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.0-M1"
+        //implementation "io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.0-SNAPSHOT"
+        implementation "io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.0-M1"
     }
 ```
 
@@ -39,28 +39,28 @@ Or from repo.spring.io with access to SNAPSHOT:
 ...
 <dependencies>
 
-	<dependency>
-	    <groupId>io.projectreactor.kotlin</groupId>
-	    <artifactId>reactor-kotlin-extensions</artifactId>
-	    <version>1.2.0-M1</version>
-	</dependency>
-	
+    <dependency>
+        <groupId>io.projectreactor.kotlin</groupId>
+        <artifactId>reactor-kotlin-extensions</artifactId>
+        <version>1.2.0-M1</version>
+    </dependency>
+
 </dependencies>
 ...
 <repositories>
-	<repository>
-		<id>spring-milestones</id>
-		<name>Spring Milestones</name>
-		<url>https://repo.spring.io/milestone</url>
-	</repository>
-	<repository>
-		<id>spring-snapshots</id>
-		<name>Spring Snapshots</name>
-		<url>https://repo.spring.io/snapshot</url>
-		<snapshots>
-			<enabled>true</enabled>
-		</snapshots>
-	</repository>
+    <repository>
+        <id>spring-milestones</id>
+        <name>Spring Milestones</name>
+        <url>https://repo.spring.io/milestone</url>
+    </repository>
+    <repository>
+        <id>spring-snapshots</id>
+        <name>Spring Snapshots</name>
+        <url>https://repo.spring.io/snapshot</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
 </repositories>
 
 ```
@@ -77,19 +77,19 @@ assertEquals(t3, O3)
 
 Convert, sum (*requires reactor-extra*) and test (*requires reactor-test*):
 ```kotlin
- intArrayOf(2_000_000_000, 200_000_000) //sum overflows an Int
-	.toFlux()
-	.sum()
-	.test()
-	.expectNext(2_200_000_000)
-	.verifyComplete()
+intArrayOf(2_000_000_000, 200_000_000) //sum overflows an Int
+    .toFlux()
+    .sum()
+    .test()
+    .expectNext(2_200_000_000)
+    .verifyComplete()
 ```
 
 Coordinating when two mono completes:
 ```kotlin
 whenComplete("foo1".toMono(), "foo2".toMono())
-	.test()
-	.verifyComplete()
+    .test()
+    .verifyComplete()
 ```
 
 ## License
