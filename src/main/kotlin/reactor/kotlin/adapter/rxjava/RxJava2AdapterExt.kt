@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2021 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2011-2022 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,10 @@ import reactor.core.publisher.Mono
  * properties of the Flowable through.
  * @param <T> the value type
  * @return the new Flux instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun <T> Flowable<T>.toFlux(): Flux<T> {
     return RxJava2Adapter.flowableToFlux<T>(this)
 }
@@ -37,7 +40,10 @@ fun <T> Flowable<T>.toFlux(): Flux<T> {
  * properties of the Flux through.
  * @param <T> the value type
  * @return the new Flux instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun <T> Flux<T>.toFlowable(): Flowable<T> {
     return RxJava2Adapter.fluxToFlowable(this)
 }
@@ -47,7 +53,10 @@ fun <T> Flux<T>.toFlowable(): Flowable<T> {
  * properties of the Flux through.
  * @param <T> the value type
  * @return the new Flux instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun <T> Mono<T>.toFlowable(): Flowable<T> {
     return RxJava2Adapter.monoToFlowable<T>(this)
 }
@@ -55,7 +64,10 @@ fun <T> Mono<T>.toFlowable(): Flowable<T> {
 /**
  * Wraps a void-Mono instance into a RxJava Completable.
  * @return the new Completable instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun Mono<*>.toCompletable(): Completable {
     return RxJava2Adapter.monoToCompletable(this)
 }
@@ -63,7 +75,10 @@ fun Mono<*>.toCompletable(): Completable {
 /**
  * Wraps a RxJava Completable into a Mono instance.
  * @return the new Mono instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun Completable.toMono(): Mono<Void> {
     return RxJava2Adapter.completableToMono(this)
 }
@@ -75,7 +90,10 @@ fun Completable.toMono(): Mono<Void> {
  * [NoSuchElementException].
  * @param <T> the value type
  * @return the new Single instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun <T> Mono<T>.toSingle(): Single<T> {
     return RxJava2Adapter.monoToSingle(this)
 }
@@ -84,7 +102,10 @@ fun <T> Mono<T>.toSingle(): Single<T> {
  * Wraps a RxJava Single into a Mono instance.
  * @param <T> the value type
  * @return the new Mono instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun <T> Single<T>.toMono(): Mono<T> {
     return RxJava2Adapter.singleToMono<T>(this)
 }
@@ -94,7 +115,10 @@ fun <T> Single<T>.toMono(): Mono<T> {
  * @param <T> the value type
  * @param strategy the back-pressure strategy, default is BUFFER
  * @return the new Flux instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun <T> Observable<T>.toFlux(strategy: BackpressureStrategy = BackpressureStrategy.BUFFER): Flux<T> {
     return RxJava2Adapter.observableToFlux(this, strategy)
 }
@@ -103,7 +127,10 @@ fun <T> Observable<T>.toFlux(strategy: BackpressureStrategy = BackpressureStrate
  * Wraps a Flux instance into a RxJava Observable.
  * @param <T> the value type
  * @return the new Observable instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun <T> Flux<T>.toObservable(): Observable<T> {
     return RxJava2Adapter.fluxToFlowable(this).toObservable()
 }
@@ -112,7 +139,10 @@ fun <T> Flux<T>.toObservable(): Observable<T> {
  * Wraps an RxJava Maybe into a Mono instance.
  * @param <T> the value type
  * @return the new Mono instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun <T> Maybe<T>.toMono(): Mono<T> {
     return RxJava2Adapter.maybeToMono(this)
 }
@@ -121,7 +151,10 @@ fun <T> Maybe<T>.toMono(): Mono<T> {
  * WRaps Mono instance into an RxJava Maybe.
  * @param <T> the value type
  * @return the new Maybe instance
+ * @deprecated RxJava adapters are being removed from the scope of extensions.
+ * To be removed at the earliest in 1.3.0.
  */
+@Deprecated(message = "RxJava adapters are being removed from the scope of extensions.")
 fun <T> Mono<T>.toMaybe(): Maybe<T> {
     return RxJava2Adapter.monoToMaybe(this)
 }
