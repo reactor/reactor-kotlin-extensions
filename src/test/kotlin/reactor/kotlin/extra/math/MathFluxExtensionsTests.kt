@@ -478,7 +478,8 @@ class MathFluxExtensionsTests {
             .toFlux()
             .sumAsBigInt()
             .test()
-            .expectNext(BigInteger("4"))
+            // 5.8 which now gets rounded down to 5 as sum drops the fractional part
+            .expectNext(BigInteger("5"))
             .verifyComplete()
     }
 
@@ -488,7 +489,8 @@ class MathFluxExtensionsTests {
             .toFlux()
             .sumAsBigInt()
             .test()
-            .expectNext(BigInteger("4"))
+            // == 5.8 which now gets rounded down to 5 as sum drops the fractional part
+            .expectNext(BigInteger("5"))
             .verifyComplete()
     }
 
