@@ -19,7 +19,7 @@ With Gradle from repo.spring.io or Maven Central repositories (stable releases o
 
     dependencies {
         //implementation "io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.0-SNAPSHOT"
-        implementation "io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.0-M1"
+        implementation "io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.0-M3"
     }
 ```
 
@@ -42,7 +42,7 @@ Or from repo.spring.io with access to SNAPSHOT:
     <dependency>
         <groupId>io.projectreactor.kotlin</groupId>
         <artifactId>reactor-kotlin-extensions</artifactId>
-        <version>1.2.0-M1</version>
+        <version>1.2.0-M3</version>
     </dependency>
 
 </dependencies>
