@@ -29,7 +29,7 @@ With Maven from Maven Central repositories (stable releases):
 <dependency>
     <groupId>io.projectreactor.kotlin</groupId>
     <artifactId>reactor-kotlin-extensions</artifactId>
-    <version>1.1.6</version>
+    <version>1.1.7</version>
 </dependency>
 ```
 
