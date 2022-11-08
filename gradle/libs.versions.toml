@@ -1,6 +1,6 @@
 [versions]
-reactorCore = "3.5.0"
-reactorAddons = "3.5.0"
+reactorCore = "3.5.1-SNAPSHOT"
+reactorAddons = "3.5.1-SNAPSHOT"
 # Other shared versions
 kotlin = "1.7.0"
 
