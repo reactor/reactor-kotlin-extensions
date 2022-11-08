@@ -98,16 +98,16 @@ class RxJava2AdapterExtTest {
     }
 
 // FIXME
-//    @Test
-//    fun `Single to Mono`() {
-//        Single.just(1)
-//                .toMono()
-//                .test()
+    @Test
+    fun `Single to Mono`() {
+        Single.just(1)
+                .toMono()
+                .test()
 //                .expectFusion(Fuseable.ANY, Fuseable.ASYNC)
-//                .expectNext(1)
-//                .expectComplete()
-//                .verify()
-//    }
+                .expectNext(1)
+                .expectComplete()
+                .verify()
+    }
 
     @Test
     fun `Observable to Flux`() {
