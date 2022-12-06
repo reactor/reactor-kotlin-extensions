@@ -18,6 +18,7 @@ package reactor.kotlin.core.publisher
 
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import java.util.stream.Stream
 import kotlin.reflect.KClass
 
@@ -213,3 +214,11 @@ fun <T : Any> Flux<out Iterable<T>>.split(): Flux<T> = this.flatMapIterable { it
  * @since 1.1.3
  */
 fun <T> Flux<T>.switchIfEmptyDeferred(s: () -> Publisher<T>): Flux<T> = this.switchIfEmpty(Flux.defer { s() })
+
+/**
+ * Extension for [Flux.collectMap] to collect Kotlin [Pair]s into a [Map]
+ *
+ * @author Aram Messdaghi
+ * @since 1.1.9
+ */
+fun <K, V> Flux<Pair<K, V>>.collectMap(): Mono<Map<K, V>> = collectMap(Pair<K, V>::first, Pair<K, V>::second)

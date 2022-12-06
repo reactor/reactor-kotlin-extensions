@@ -251,4 +251,15 @@ class FluxExtensionsTests {
             .expectError<RuntimeException>()
             .verify()
     }
+
+    @Test
+    fun `collectMap with pairs`() {
+        val inputPairs: List<Pair<String, Int>> = listOf("a" to 1, "b" to 2, "c" to 3)
+        val collectedMap: Mono<Map<String, Int>> = inputPairs.toFlux()
+            .collectMap()
+
+        collectedMap.test()
+            .expectNext(inputPairs.toMap())
+            .verifyComplete()
+    }
 }
