@@ -29,6 +29,24 @@ static def qualifyVersion(String v) {
 	return "BAD"
 }
 
+static def outputToGha(String versionType, String fullVersion) {
+	def ghaFilename = System.getenv("GITHUB_OUTPUT")
+	if (ghaFilename == null) {
+		println "::set-output name=versionType::$versionType"
+		println "::set-output name=fullVersion::$fullVersion"
+	}
+	else {
+		println "using GITHUB_OUTPUT file"
+		def ghaFile = new File(ghaFilename)
+		ghaFile.withWriterAppend {
+			it.newLine()
+			it.append("versionType=$versionType")
+			it.newLine()
+			it.append("fullVersion=$fullVersion")
+		}
+	}
+}
+
 configure(rootProject) { subproject ->
 
 	apply plugin: 'maven-publish'
@@ -54,24 +72,6 @@ configure(rootProject) { subproject ->
 	task sourcesJar(type: Jar, dependsOn: classes) {
 		archiveClassifier.set("sources")
 		from sourceSets.main.allSource
-	}
-
-	static def outputToGha(String versionType, String fullVersion) {
-		def ghaFilename = System.getenv("GITHUB_OUTPUT")
-		if (ghaFilename == null) {
-			println "::set-output name=versionType::$versionType"
-			println "::set-output name=fullVersion::$fullVersion"
-		}
-		else {
-			println "using GITHUB_OUTPUT file"
-			def ghaFile = new File(ghaFilename)
-			ghaFile.withWriterAppend {
-				it.newLine()
-				it.append("versionType=$versionType")
-				it.newLine()
-				it.append("fullVersion=$fullVersion")
-			}
-		}
 	}
 
 	task qualifyVersionGha() {
