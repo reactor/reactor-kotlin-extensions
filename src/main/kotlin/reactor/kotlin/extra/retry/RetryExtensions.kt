@@ -38,7 +38,7 @@ import java.util.function.Consumer
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra retry features have been replaced by a core alternative and will be removed.
- *   If you still need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   If you still need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.
  *   To be removed at the earliest in 1.3.0.
  */
 @Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed. " +
@@ -70,7 +70,7 @@ fun <T> Flux<T>.retryExponentialBackoff(times: Long, first: Duration, max: Durat
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra retry features have been replaced by a core alternative and will be removed.
- *   If you still need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   If you still need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.
  *   To be removed at the earliest in 1.3.0.
  */
 @Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed. " +
@@ -101,7 +101,7 @@ fun <T> Flux<T>.retryRandomBackoff(times: Long, first: Duration, max: Duration? 
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra retry features have been replaced by a core alternative and will be removed.
- *   If you still need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   If you still need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.
  *   To be removed at the earliest in 1.3.0.
  */
 @Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed. " +
@@ -133,7 +133,7 @@ fun <T> Mono<T>.retryExponentialBackoff(times: Long, first: Duration, max: Durat
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra retry features have been replaced by a core alternative and will be removed.
- *   If you still need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   If you still need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.
  *   To be removed at the earliest in 1.3.0.
  */
 @Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed. " +

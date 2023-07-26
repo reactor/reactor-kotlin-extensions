@@ -38,11 +38,11 @@ import java.util.function.Consumer
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra repeat features are being phased out. If you still
- *   need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.
  *   To be removed at the earliest in 1.3.0.
  */
 @Deprecated(message = "Reactor-Extra repeat features are being phased out. " +
-        "If you still need to call it, io.projectreactor:reactor-extras " +
+        "If you still need to call this method, io.projectreactor:reactor-extras " +
         "runtime dependency is needed.")
 fun <T> Flux<T>.repeatExponentialBackoff(times: Long, first: Duration, max: Duration? = null,
                                          jitter: Boolean = false,
@@ -70,11 +70,11 @@ fun <T> Flux<T>.repeatExponentialBackoff(times: Long, first: Duration, max: Dura
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra repeat features are being phased out. If you still
- *   need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.
  *   To be removed at the earliest in 1.3.0.
  */
 @Deprecated(message = "Reactor-Extra repeat features are being phased out. " +
-        "If you still need to call it, io.projectreactor:reactor-extras " +
+        "If you still need to call this method, io.projectreactor:reactor-extras " +
         "runtime dependency is needed.")
 fun <T> Flux<T>.repeatRandomBackoff(times: Long, first: Duration, max: Duration? = null,
                                     doOnRepeat: ((RepeatContext<T>) -> Unit)? = null): Flux<T> {
@@ -102,11 +102,11 @@ fun <T> Flux<T>.repeatRandomBackoff(times: Long, first: Duration, max: Duration?
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra repeat features are being phased out. If you still
- *   need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.
  *   To be removed at the earliest in 1.3.0.
  */
 @Deprecated(message = "Reactor-Extra repeat features are being phased out. " +
-        "If you still need to call it, io.projectreactor:reactor-extras " +
+        "If you still need to call this method, io.projectreactor:reactor-extras " +
         "runtime dependency is needed.")
 fun <T> Mono<T>.repeatExponentialBackoff(times: Long, first: Duration, max: Duration? = null,
                                          jitter: Boolean = false,
@@ -134,11 +134,11 @@ fun <T> Mono<T>.repeatExponentialBackoff(times: Long, first: Duration, max: Dura
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra repeat features are being phased out. If you still
- *   need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.
  *   To be removed at the earliest in 1.3.0.
  */
 @Deprecated(message = "Reactor-Extra repeat features are being phased out. " +
-        "If you still need to call it, io.projectreactor:reactor-extras " +
+        "If you still need to call this method, io.projectreactor:reactor-extras " +
         "runtime dependency is needed.")
 fun <T> Mono<T>.repeatRandomBackoff(times: Long, first: Duration, max: Duration? = null,
                                     doOnRepeat: ((RepeatContext<T>) -> Unit)? = null): Flux<T> {
