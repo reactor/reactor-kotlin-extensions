@@ -38,9 +38,11 @@ import java.util.function.Consumer
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra retry features have been replaced by a core alternative and will be removed.
- * To be removed at the earliest in 1.3.0.
+ *   If you still need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   To be removed at the earliest in 1.3.0.
  */
-@Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed.")
+@Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed. " +
+        "If you still need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.")
 fun <T> Flux<T>.retryExponentialBackoff(times: Long, first: Duration, max: Duration? = null,
                                         jitter: Boolean = false,
                                         doOnRetry: ((RetryContext<T>) -> Unit)? = null): Flux<T> {
@@ -68,9 +70,11 @@ fun <T> Flux<T>.retryExponentialBackoff(times: Long, first: Duration, max: Durat
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra retry features have been replaced by a core alternative and will be removed.
- * To be removed at the earliest in 1.3.0.
+ *   If you still need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   To be removed at the earliest in 1.3.0.
  */
-@Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed.")
+@Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed. " +
+        "If you still need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.")
 fun <T> Flux<T>.retryRandomBackoff(times: Long, first: Duration, max: Duration? = null,
                                    doOnRetry: ((RetryContext<T>) -> Unit)? = null): Flux<T> {
     val retry = Retry.any<T>()
@@ -97,9 +101,11 @@ fun <T> Flux<T>.retryRandomBackoff(times: Long, first: Duration, max: Duration? 
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra retry features have been replaced by a core alternative and will be removed.
- * To be removed at the earliest in 1.3.0.
+ *   If you still need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   To be removed at the earliest in 1.3.0.
  */
-@Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed.")
+@Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed. " +
+        "If you still need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.")
 fun <T> Mono<T>.retryExponentialBackoff(times: Long, first: Duration, max: Duration? = null,
                                         jitter: Boolean = false,
                                         doOnRetry: ((RetryContext<T>) -> Unit)? = null): Mono<T> {
@@ -127,9 +133,11 @@ fun <T> Mono<T>.retryExponentialBackoff(times: Long, first: Duration, max: Durat
  * @author Simon Baslé
  * @since 3.1.1
  * @deprecated Reactor-Extra retry features have been replaced by a core alternative and will be removed.
- * To be removed at the earliest in 1.3.0.
+ *   If you still need to call it, io.projectreactor:reactor-extras runtime dependency is needed.
+ *   To be removed at the earliest in 1.3.0.
  */
-@Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed.")
+@Deprecated(message = "Reactor-Extra retry features have been replaced by a core alternative and will be removed. " +
+        "If you still need to call this method, io.projectreactor:reactor-extras runtime dependency is needed.")
 fun <T> Mono<T>.retryRandomBackoff(times: Long, first: Duration, max: Duration? = null,
                                    doOnRetry: ((RetryContext<T>) -> Unit)? = null): Mono<T> {
     val retry = Retry.any<T>()
