@@ -28,6 +28,7 @@ import reactor.kotlin.test.verifyError
 import reactor.test.StepVerifier
 import reactor.test.publisher.TestPublisher
 import java.io.IOException
+import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.CompletableFuture
 
@@ -162,6 +163,25 @@ class MonoExtensionsTests {
         StepVerifier.create(IllegalStateException()
                 .toMono<Any>())
                 .verifyError(IllegalStateException::class)
+    }
+
+    @Test
+    fun optionalToMono() {
+        StepVerifier.create(Optional.of(42).toMono())
+                .expectNext(42)
+                .verifyComplete()
+    }
+
+    @Test
+    fun optionalEmptyToMono() {
+        StepVerifier.create(Optional.empty<Any>().toMono())
+                .verifyComplete()
+    }
+
+    @Test
+    fun runnableToMono() {
+        StepVerifier.create(Runnable { }.toMono<Any>())
+                .verifyComplete()
     }
 
     @Test
