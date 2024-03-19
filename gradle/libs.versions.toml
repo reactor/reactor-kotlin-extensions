@@ -9,7 +9,7 @@ reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "react
 reactor-test = { module = "io.projectreactor:reactor-test", version.ref = "reactorCore" }
 reactor-adapter = { module = "io.projectreactor.addons:reactor-adapter", version.ref = "reactorAddons" }
 reactor-extra = { module = "io.projectreactor.addons:reactor-extra", version.ref = "reactorAddons" }
-assertj = "org.assertj:assertj-core:3.22.0"
+assertj = "org.assertj:assertj-core:3.25.3"
 jsr305 = "com.google.code.findbugs:jsr305:3.0.1"
 junit4 = "junit:junit:4.13.2"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
