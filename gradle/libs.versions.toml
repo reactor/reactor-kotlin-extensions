@@ -24,4 +24,4 @@ swt-mac = { module = "org.eclipse.swt:org.eclipse.swt.cocoa.macosx.x86_64", vers
 [plugins]
 artifactory = { id = "com.jfrog.artifactory", version = "4.27.1" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-dokka = { id = "org.jetbrains.dokka", version = "1.5.31" }
+kotlin-dokka = { id = "org.jetbrains.dokka", version = "1.9.20" }
