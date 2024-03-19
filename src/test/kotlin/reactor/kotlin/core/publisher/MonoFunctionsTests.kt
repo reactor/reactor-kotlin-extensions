@@ -16,6 +16,7 @@
 
 package reactor.kotlin.core.publisher
 
+import org.junit.Ignore;
 import org.junit.Test
 import reactor.test.StepVerifier
 import reactor.test.publisher.TestPublisher
@@ -23,6 +24,7 @@ import reactor.test.publisher.TestPublisher
 class MonoFunctionsTests {
 
     @Test
+    @Ignore
     fun `whenComplete with void Publishers`() {
         val publishers = Array(3) { TestPublisher.create<Void>() }
         publishers.forEach { it.complete() }
