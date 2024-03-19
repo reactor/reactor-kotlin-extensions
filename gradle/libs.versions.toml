@@ -22,6 +22,6 @@ swt-linux64 = { module = "org.eclipse.swt:org.eclipse.swt.gtk.linux.x86_64", ver
 swt-mac = { module = "org.eclipse.swt:org.eclipse.swt.cocoa.macosx.x86_64", version.ref = "swt" }
 
 [plugins]
-artifactory = { id = "com.jfrog.artifactory", version = "4.27.1" }
+artifactory = { id = "com.jfrog.artifactory", version = "4.31.0" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-dokka = { id = "org.jetbrains.dokka", version = "1.5.31" }
