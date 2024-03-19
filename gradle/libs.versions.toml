@@ -2,7 +2,7 @@
 reactorCore = "3.4.29-SNAPSHOT"
 reactorAddons = "3.4.11-SNAPSHOT"
 # Other shared versions
-kotlin = "1.5.32"
+kotlin = "1.9.23"
 swt = "4.5.2"
 
 [libraries]
