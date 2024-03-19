@@ -12,7 +12,7 @@ reactor-adapter = { module = "io.projectreactor.addons:reactor-adapter", version
 reactor-extra = { module = "io.projectreactor.addons:reactor-extra", version.ref = "reactorAddons" }
 assertj = "org.assertj:assertj-core:3.22.0"
 jsr305 = "com.google.code.findbugs:jsr305:3.0.1"
-junit4 = "junit:junit:4.12"
+junit4 = "junit:junit:4.13.2"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 rxJava2 = "io.reactivex.rxjava2:rxjava:2.2.8"
 swt-windows = { module = "org.eclipse.swt:org.eclipse.swt.win32.win32.x86", version.ref = "swt" }
