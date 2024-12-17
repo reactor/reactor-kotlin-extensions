@@ -17,6 +17,6 @@ kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "
 rxJava2 = "io.reactivex.rxjava2:rxjava:2.2.21"
 
 [plugins]
-artifactory = { id = "com.jfrog.artifactory", version = "4.31.0" }
+artifactory = { id = "com.jfrog.artifactory", version = "4.33.1" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-dokka = { id = "org.jetbrains.dokka", version = "1.7.0" }
