@@ -18,6 +18,7 @@ package reactor.kotlin.core.publisher
 
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Mono
+import java.util.Optional
 import java.util.concurrent.Callable
 import java.util.concurrent.CompletableFuture
 import java.util.function.Function
@@ -67,6 +68,20 @@ fun <T> CompletableFuture<out T?>.toMono(): Mono<T> = Mono.fromFuture(this)
  * @since 3.1
  */
 fun <T> Callable<T?>.toMono(): Mono<T> = Mono.fromCallable(this::call)
+
+/**
+ * Extension for transforming a [Runnable] to a [Mono].
+ *
+ * @author Cyril Delmas
+ */
+fun <T> Runnable.toMono(): Mono<T> = Mono.fromRunnable(this)
+
+/**
+ * Extension for transforming an [Optional] to a [Mono].
+ *
+ * @author Cyril Delmas
+ */
+fun <T> Optional<out T?>.toMono(): Mono<T> = Mono.justOrEmpty(this)
 
 /**
  * Extension for transforming an exception to a [Mono] that completes with the specified error.
