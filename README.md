@@ -8,12 +8,11 @@ want to adapt the core functional programming API further.
 
 # Maven Artifacts
 
-With Gradle from repo.spring.io or Maven Central repositories (stable releases only):
+With Gradle from repo.spring.io or Maven Central repositories:
 
 ```groovy
     repositories {
         //maven { url 'https://repo.spring.io/snapshot' }
-        maven { url 'https://repo.spring.io/milestone' }
         mavenCentral()
     }
 

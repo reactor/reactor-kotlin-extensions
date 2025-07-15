@@ -98,7 +98,7 @@ configure(rootProject) { subproject ->
 				name = "mock"
 				url = "${rootProject.buildDir}/repo"
 			}
-			if (qualifyVersion("$version") == "RELEASE") {
+			if (qualifyVersion("$version") in ["RELEASE", "MILESTONE"]) {
 				maven {
 					name = "sonatype"
 					url = "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
