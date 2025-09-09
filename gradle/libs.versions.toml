@@ -1,7 +1,7 @@
 [versions]
 # Reactor Core 3.5.20 is the last OSS release for 3.5.x series
 reactorCore = "3.5.20"
-reactorAddons = "3.5.3"
+reactorAddons = "3.5.4-SNAPSHOT"
 # Other shared versions
 kotlin = "1.7.0"
 
