@@ -56,22 +56,37 @@ configure(rootProject) { subproject ->
 		manifest.attributes["Created-By"] = "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
 		manifest.attributes["Implementation-Title"] = project.name
 		manifest.attributes["Implementation-Version"] = project.version
+		from("${rootDir}/docs/src/docs/dist") {
+			include "LICENSE"
+			into "META-INF"
+		}
 	}
 
 	task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
 		archiveClassifier.set('javadoc')
 		from dokkaJavadoc.outputDirectory
+		from("${rootDir}/docs/src/docs/dist") {
+			include "LICENSE"
+			into "META-INF"
+		}
 	}
 
 	task kdocZip(type: Zip, dependsOn: dokkaHtml) {
 		//ends up similar to javadoc jar: reactor-core-xxxx.RELEASE-kdoc.zip
 		archiveClassifier.set('kdoc')
 		from(dokkaHtml.outputDirectory)
+		from("${rootDir}/docs/src/docs/dist") {
+			include "LICENSE"
+		}
 	}
 
 	task sourcesJar(type: Jar, dependsOn: classes) {
 		archiveClassifier.set("sources")
 		from sourceSets.main.allSource
+		from("${rootDir}/docs/src/docs/dist") {
+			include "LICENSE"
+			into "META-INF"
+		}
 	}
 
 	task qualifyVersionGha() {
