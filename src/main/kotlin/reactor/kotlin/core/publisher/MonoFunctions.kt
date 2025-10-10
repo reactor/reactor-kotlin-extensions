@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2021 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2011-2025 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ fun Iterable<Publisher<*>>.whenComplete(): Mono<Void> = Mono.`when`(this)
  * @since 3.1
  */
 @Suppress("UNCHECKED_CAST")
-inline fun <T, R> Iterable<Mono<T>>.zip(crossinline combinator: (List<T>) -> R): Mono<R> =
+inline fun <T : Any, R : Any> Iterable<Mono<T>>.zip(crossinline combinator: (List<T>) -> R): Mono<R> =
         Mono.zip(this) { combinator(it.asList() as List<T>) }
 
 /**
@@ -62,5 +62,5 @@ fun whenComplete(vararg sources: Publisher<*>): Mono<Void> = MonoBridges.`when`(
  * @since 3.1
  */
 @Suppress("UNCHECKED_CAST")
-fun <R> zip(vararg monos: Mono<*>, combinator: (Array<*>) -> R): Mono<R> =
+fun <R : Any> zip(vararg monos: Mono<*>, combinator: (Array<*>) -> R): Mono<R> =
         MonoBridges.zip(combinator, monos)
