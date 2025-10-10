@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2021 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2011-2025 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,14 +35,14 @@ import kotlin.reflect.KClass
  * @author Simon Baslé
  * @since 3.1.1
  */
-fun <T> Publisher<T>.toMono(): Mono<T> = Mono.from(this)
+fun <T : Any> Publisher<T>.toMono(): Mono<T> = Mono.from(this)
 
 /**
  * Extension to convert any [Supplier] of [T] to a [Mono] that emits supplied element.
  *
  * @author Sergio Dos Santos
  */
-fun <T> (() -> T?).toMono(): Mono<T> = Mono.fromSupplier(this)
+fun <T : Any> (() -> T?).toMono(): Mono<T> = Mono.fromSupplier(this)
 
 /**
  * Extension for transforming a nullable object to a [Mono].
@@ -58,7 +58,7 @@ fun <T : Any> T?.toMono(): Mono<T> = Mono.justOrEmpty(this)
  * @author Sebastien Deleuze
  * @since 3.1
  */
-fun <T> CompletableFuture<out T?>.toMono(): Mono<T> = Mono.fromFuture(this)
+fun <T : Any> CompletableFuture<out T?>.toMono(): Mono<T> = Mono.fromFuture(this)
 
 /**
  * Extension for transforming an [Callable] to a [Mono].
@@ -66,7 +66,7 @@ fun <T> CompletableFuture<out T?>.toMono(): Mono<T> = Mono.fromFuture(this)
  * @author Sebastien Deleuze
  * @since 3.1
  */
-fun <T> Callable<T?>.toMono(): Mono<T> = Mono.fromCallable(this::call)
+fun <T : Any> Callable<T?>.toMono(): Mono<T> = Mono.fromCallable(this::call)
 
 /**
  * Extension for transforming an exception to a [Mono] that completes with the specified error.
@@ -74,7 +74,7 @@ fun <T> Callable<T?>.toMono(): Mono<T> = Mono.fromCallable(this::call)
  * @author Sebastien Deleuze
  * @since 3.1
  */
-fun <T> Throwable.toMono(): Mono<T> = Mono.error(this)
+fun <T : Any> Throwable.toMono(): Mono<T> = Mono.error(this)
 
 /**
  * Extension for [Mono.cast] providing a `cast<Foo>()` variant.
@@ -90,7 +90,7 @@ inline fun <reified T : Any> Mono<*>.cast(): Mono<T> = cast(T::class.java)
  * @author Sebastien Deleuze
  * @since 3.1
  */
-fun <T, E : Throwable> Mono<T>.doOnError(exceptionType: KClass<E>, onError: (E) -> Unit): Mono<T> =
+fun <T : Any, E : Throwable> Mono<T>.doOnError(exceptionType: KClass<E>, onError: (E) -> Unit): Mono<T> =
         doOnError(exceptionType.java) { onError(it) }
 
 /**
@@ -99,7 +99,7 @@ fun <T, E : Throwable> Mono<T>.doOnError(exceptionType: KClass<E>, onError: (E) 
  * @author Sebastien Deleuze
  * @since 3.1
  */
-fun <T, E : Throwable> Mono<T>.onErrorMap(exceptionType: KClass<E>, mapper: (E) -> Throwable): Mono<T> =
+fun <T : Any, E : Throwable> Mono<T>.onErrorMap(exceptionType: KClass<E>, mapper: (E) -> Throwable): Mono<T> =
         onErrorMap(exceptionType.java) { mapper(it) }
 
 /**
@@ -135,7 +135,7 @@ fun <T : Any, E : Throwable> Mono<T>.onErrorReturn(exceptionType: KClass<E>, val
  * @author Kevin Davin
  * @since 3.2
  */
-fun <T> Mono<T>.switchIfEmpty(s: () -> Mono<T>): Mono<T> = this.switchIfEmpty(Mono.defer { s() })
+fun <T : Any> Mono<T>.switchIfEmpty(s: () -> Mono<T>): Mono<T> = this.switchIfEmpty(Mono.defer { s() })
 
 /**
  * Extension for [Mono.onErrorMap] providing a [KClass] based variant and predicate.
@@ -144,7 +144,7 @@ fun <T> Mono<T>.switchIfEmpty(s: () -> Mono<T>): Mono<T> = this.switchIfEmpty(Mo
  * @since 3.3.1
  */
 @Suppress("UNCHECKED_CAST")
-fun <E : Throwable, T> Mono<T>.onErrorMap(type: KClass<E>,
+fun <E : Throwable, T : Any> Mono<T>.onErrorMap(type: KClass<E>,
                                           predicate: (E) -> Boolean,
                                           mapper: (E) -> Throwable): Mono<T> {
     val handler = Function<E, Throwable> { mapper(it) } as Function<in Throwable, out Throwable>

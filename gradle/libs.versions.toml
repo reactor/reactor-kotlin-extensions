@@ -2,7 +2,7 @@
 reactorCore = "3.8.0-SNAPSHOT"
 reactorAddons = "3.6.0-SNAPSHOT"
 # Other shared versions
-kotlin = "1.7.0"
+kotlin = "2.2.0"
 
 [libraries]
 reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactorCore" }
@@ -13,9 +13,8 @@ assertj = "org.assertj:assertj-core:3.27.6"
 jsr305 = "com.google.code.findbugs:jsr305:3.0.1"
 junit4 = "junit:junit:4.13.2"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
-rxJava2 = "io.reactivex.rxjava2:rxjava:2.2.21"
 
 [plugins]
 artifactory = { id = "com.jfrog.artifactory", version = "4.33.1" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-dokka = { id = "org.jetbrains.dokka", version = "1.7.0" }
+kotlin-dokka = { id = "org.jetbrains.dokka", version = "2.0.0" }
