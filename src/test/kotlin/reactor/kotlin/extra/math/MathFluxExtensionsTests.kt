@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2021 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2011-2025 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package reactor.kotlin.extra.math
 
 import org.junit.Test
-import reactor.core.publisher.Flux
 import reactor.kotlin.core.publisher.toFlux
 import reactor.kotlin.test.test
 import java.math.BigDecimal
@@ -35,7 +34,7 @@ class MathFluxExtensionsTests {
                 User(80, "grandpa"),
                 User(1, "baby"))
 
-        val comparator: Comparator<User> = Comparator({ u1: User, u2:User -> u1.age - u2.age})
+        val comparator: Comparator<User> = Comparator { u1: User, u2: User -> u1.age - u2.age }
 
         val comparableList = listOf("AA", "A", "BB", "B", "AB")
     }
@@ -99,72 +98,6 @@ class MathFluxExtensionsTests {
             .test()
             .expectNext(99)
             .verifyComplete()
-    }
-
-    //== sum ==
-    @Test
-    fun sumShorts() {
-        @Suppress("DEPRECATION")
-        shortArrayOf(32_000, 8_000) //sum overflows a Short
-                .toFlux()
-                .sum()
-                .test()
-                .expectNext(40_000)
-                .verifyComplete()
-    }
-
-    @Test
-    fun sumInts() {
-        @Suppress("DEPRECATION")
-        intArrayOf(2_000_000_000, 200_000_000) //sum overflows an Int
-                .toFlux()
-                .sum()
-                .test()
-                .expectNext(2_200_000_000)
-                .verifyComplete()
-    }
-
-    @Test
-    fun sumLongs() {
-        @Suppress("DEPRECATION")
-        longArrayOf(3_000_000_000, 2_000_000_000)
-                .toFlux()
-                .sum()
-                .test()
-                .expectNext(5_000_000_000)
-                .verifyComplete()
-    }
-
-    @Test
-    fun sumFloatsPrecisionLoss() {
-        @Suppress("DEPRECATION")
-        floatArrayOf(3.5f, 1.5f)
-                .toFlux()
-                .sum()
-                .test()
-                .expectNext(4)
-                .verifyComplete()
-    }
-
-    @Test
-    fun sumDoublesPrecisionLoss() {
-        @Suppress("DEPRECATION")
-        doubleArrayOf(3.5, 1.5)
-                .toFlux()
-                .sum()
-                .test()
-                .expectNext(4)
-                .verifyComplete()
-    }
-
-    @Test
-    fun sumMapped() {
-        @Suppress("DEPRECATION")
-        userList.toFlux()
-                .sum { it.age }
-                .test()
-                .expectNext(99)
-                .verifyComplete()
     }
 
     //== sumInt ==
@@ -374,72 +307,6 @@ class MathFluxExtensionsTests {
             .verifyComplete()
     }
 
-    //== sumDouble ==
-    @Test
-    fun sumDoubleShorts() {
-        @Suppress("DEPRECATION")
-        shortArrayOf(32_000, 8_000) //sum overflows a Short
-                .toFlux()
-                .sumDouble()
-                .test()
-                .expectNext(40_000.0)
-                .verifyComplete()
-    }
-
-    @Test
-    fun sumDoubleInts() {
-        @Suppress("DEPRECATION")
-        intArrayOf(2_000_000_000, 200_000_000) //sum overflows an Int
-                .toFlux()
-                .sumDouble()
-                .test()
-                .expectNext(2_200_000_000.0)
-                .verifyComplete()
-    }
-
-    @Test
-    fun sumDoubleLongs() {
-        @Suppress("DEPRECATION")
-        longArrayOf(3_000_000_000, 2_000_000_000)
-                .toFlux()
-                .sumDouble()
-                .test()
-                .expectNext(5_000_000_000.0)
-                .verifyComplete()
-    }
-
-    @Test
-    fun sumDoubleFloats() {
-        @Suppress("DEPRECATION")
-        floatArrayOf(3.5f, 1.5f)
-                .toFlux()
-                .sumDouble()
-                .test()
-                .expectNext(5.0)
-                .verifyComplete()
-    }
-
-    @Test
-    fun sumDoubleDoubles() {
-        @Suppress("DEPRECATION")
-        doubleArrayOf(3.5, 1.5)
-                .toFlux()
-                .sumDouble()
-                .test()
-                .expectNext(5.0)
-                .verifyComplete()
-    }
-
-    @Test
-    fun sumDoubleMapped() {
-        @Suppress("DEPRECATION")
-        userList.toFlux()
-                .sumDouble { it.age }
-                .test()
-                .expectNext(99.0)
-                .verifyComplete()
-    }
-
     //== sumBigInt ==
 
     @Test
@@ -605,73 +472,6 @@ class MathFluxExtensionsTests {
             .test()
             .expectNext(33)
             .verifyComplete()
-    }
-
-    //== average ==
-
-    @Test
-    fun averageShorts() {
-        @Suppress("DEPRECATION")
-        shortArrayOf(10, 11)
-                .toFlux()
-                .average()
-                .test()
-                .expectNext(10.5)
-                .verifyComplete()
-    }
-
-    @Test
-    fun averageInts() {
-        @Suppress("DEPRECATION")
-        intArrayOf(10, 11)
-                .toFlux()
-                .average()
-                .test()
-                .expectNext(10.5)
-                .verifyComplete()
-    }
-
-    @Test
-    fun averageLongs() {
-        @Suppress("DEPRECATION")
-        longArrayOf(10, 11)
-                .toFlux()
-                .average()
-                .test()
-                .expectNext(10.5)
-                .verifyComplete()
-    }
-
-    @Test
-    fun averageFloats() {
-        @Suppress("DEPRECATION")
-        floatArrayOf(10f, 11f)
-                .toFlux()
-                .average()
-                .test()
-                .expectNext(10.5)
-                .verifyComplete()
-    }
-
-    @Test
-    fun averageDoubles() {
-        @Suppress("DEPRECATION")
-        doubleArrayOf(10.0, 11.0)
-                .toFlux()
-                .average()
-                .test()
-                .expectNext(10.5)
-                .verifyComplete()
-    }
-
-    @Test
-    fun averageMapped() {
-        @Suppress("DEPRECATION")
-        userList.toFlux()
-                .average { it.age }
-                .test()
-                .expectNext(33.0)
-                .verifyComplete()
     }
 
     //== averageFloat ==
@@ -1041,44 +841,4 @@ class MathFluxExtensionsTests {
                 .expectNext("baby")
                 .verifyComplete()
     }
-
-//// == collection of numbers ==
-
-    @Test
-    fun numberCollectionLongSum() {
-        val longs: List<Long> = listOf(1L, 2L, 3L)
-        val floats: List<Float> = listOf(1.5f, 2.5f)
-        val doubles: List<Double> = listOf(1.6, 2.6)
-
-        @Suppress("DEPRECATION")
-        Flux.concat(
-                longs.toFlux().sum(),
-                floats.toFlux().sum(),
-                doubles.toFlux().sum())
-                .test()
-                .expectNext(6L)
-                .expectNext(3L).`as`("floats rounded down")
-                .expectNext(3L).`as`("doubles rounded down")
-                .verifyComplete()
-    }
-
-    @Test
-    fun numberCollectionDoubleSum() {
-        val longs: List<Long> = listOf(1L, 2L, 3L)
-        //avoid weird 1.6f == 1.600000023841858 precision artifacts
-        val floats: List<Float> = listOf(1.5f, 2.5f)
-        val doubles: List<Double> = listOf(1.6, 2.6)
-
-        @Suppress("DEPRECATION")
-        Flux.concat(
-                longs.toFlux().sumDouble(),
-                floats.toFlux().sumDouble(),
-                doubles.toFlux().sumDouble())
-                .test()
-                .expectNext(6.0)
-                .expectNext(4.0).`as`("floats")
-                .expectNext(4.2).`as`("doubles")
-                .verifyComplete()
-    }
-
 }

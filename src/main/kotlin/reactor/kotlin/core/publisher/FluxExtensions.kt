@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2021 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2011-2025 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -130,7 +130,7 @@ fun DoubleArray.toFlux(): Flux<Double> = this.toList().toFlux()
  * @author Sebastien Deleuze
  * @since 3.1
  */
-fun <T> Array<out T>.toFlux(): Flux<T> = Flux.fromArray(this)
+fun <T : Any> Array<out T>.toFlux(): Flux<T> = Flux.fromArray(this)
 
 private fun <T> Iterator<T>.toIterable() = object : Iterable<T> {
     override fun iterator(): Iterator<T> = this@toIterable
@@ -142,7 +142,7 @@ private fun <T> Iterator<T>.toIterable() = object : Iterable<T> {
  * @author Sebastien Deleuze
  * @since 3.1
  */
-fun <T> Throwable.toFlux(): Flux<T> = Flux.error(this)
+fun <T : Any> Throwable.toFlux(): Flux<T> = Flux.error(this)
 
 /**
  * Extension for [Flux.cast] providing a `cast<Foo>()` variant.
@@ -159,7 +159,7 @@ inline fun <reified T : Any> Flux<*>.cast(): Flux<T> = cast(T::class.java)
  * @author Sebastien Deleuze
  * @since 3.1
  */
-fun <T, E : Throwable> Flux<T>.doOnError(exceptionType: KClass<E>, onError: (E) -> Unit): Flux<T> =
+fun <T : Any, E : Throwable> Flux<T>.doOnError(exceptionType: KClass<E>, onError: (E) -> Unit): Flux<T> =
         doOnError(exceptionType.java) { onError(it) }
 
 /**
@@ -168,7 +168,7 @@ fun <T, E : Throwable> Flux<T>.doOnError(exceptionType: KClass<E>, onError: (E) 
  * @author Sebastien Deleuze
  * @since 3.1
  */
-fun <T, E : Throwable> Flux<T>.onErrorMap(exceptionType: KClass<E>, mapper: (E) -> Throwable): Flux<T> =
+fun <T : Any, E : Throwable> Flux<T>.onErrorMap(exceptionType: KClass<E>, mapper: (E) -> Throwable): Flux<T> =
         onErrorMap(exceptionType.java) { mapper(it) }
 
 /**
@@ -213,7 +213,8 @@ fun <T : Any> Flux<out Iterable<T>>.split(): Flux<T> = this.flatMapIterable { it
  * @author Pavel Grigorenko
  * @since 1.1.3
  */
-fun <T> Flux<T>.switchIfEmptyDeferred(s: () -> Publisher<T>): Flux<T> = this.switchIfEmpty(Flux.defer { s() })
+fun <T : Any> Flux<T>.switchIfEmptyDeferred(s: () -> Publisher<T>): Flux<T> =
+    this.switchIfEmpty(Flux.defer { s() })
 
 /**
  * Extension for [Flux.collectMap] to collect Kotlin [Pair]s into a [Map]
@@ -221,4 +222,5 @@ fun <T> Flux<T>.switchIfEmptyDeferred(s: () -> Publisher<T>): Flux<T> = this.swi
  * @author Aram Messdaghi
  * @since 1.1.9
  */
-fun <K, V> Flux<Pair<K, V>>.collectMap(): Mono<Map<K, V>> = collectMap(Pair<K, V>::first, Pair<K, V>::second)
+fun <K : Any, V : Any> Flux<Pair<K, V>>.collectMap(): Mono<Map<K, V>> =
+    collectMap(Pair<K, V>::first, Pair<K, V>::second)

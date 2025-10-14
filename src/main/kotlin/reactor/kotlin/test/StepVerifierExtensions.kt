@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2021 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2011-2025 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,42 +93,46 @@ inline fun <reified T : Throwable> Assertions.hasOperatorErrorOfType(): Assertio
  *
  * @author Sebastien Deleuze
  */
-fun <T> Flux<T>.test(): StepVerifier.FirstStep<T> = StepVerifier.create(this)
+fun <T : Any> Flux<T>.test(): StepVerifier.FirstStep<T> = StepVerifier.create(this)
 
 /**
  * Extension for testing [Flux] with [StepVerifier] API.
  *
  * @author Sebastien Deleuze
  */
-fun <T> Flux<T>.test(n: Long): StepVerifier.FirstStep<T> = StepVerifier.create(this, n)
+fun <T : Any> Flux<T>.test(n: Long): StepVerifier.FirstStep<T> =
+    StepVerifier.create(this, n)
 
 /**
  * Extension for testing [Flux] with [StepVerifier] API.
  *
  * @author Cristian Romero
  */
-fun <T> Flux<T>.test(options: StepVerifierOptions): StepVerifier.FirstStep<T> = StepVerifier.create(this, options)
+fun <T : Any> Flux<T>.test(options: StepVerifierOptions): StepVerifier.FirstStep<T> =
+    StepVerifier.create(this, options)
 
 /**
  * Extension for testing [Mono] with [StepVerifier] API.
  *
  * @author Sebastien Deleuze
  */
-fun <T> Mono<T>.test(): StepVerifier.FirstStep<T> = StepVerifier.create(this)
+fun <T : Any> Mono<T>.test(): StepVerifier.FirstStep<T> = StepVerifier.create(this)
 
 /**
  * Extension for testing [Mono] with [StepVerifier] API.
  *
  * @author Sebastien Deleuze
  */
-fun <T> Mono<T>.test(n: Long): StepVerifier.FirstStep<T> = StepVerifier.create(this, n)
+fun <T : Any> Mono<T>.test(n: Long): StepVerifier.FirstStep<T> =
+    StepVerifier.create(this, n)
 
 /**
  * Extension for testing [Mono] with [StepVerifier] API.
  *
  * @author Cristian Romero
  */
-fun <T> Mono<T>.test(options: StepVerifierOptions): StepVerifier.FirstStep<T> = StepVerifier.create(this, options)
+fun <T : Any> Mono<T>.test(options: StepVerifierOptions): StepVerifier.FirstStep<T> =
+    StepVerifier.create(this, options)
 
 /**
  * Extension for testing the supplied [Publisher] with [StepVerifier] API, using a [VirtualTimeScheduler].
@@ -136,7 +140,7 @@ fun <T> Mono<T>.test(options: StepVerifierOptions): StepVerifier.FirstStep<T> = 
  * @see [StepVerifier.withVirtualTime]
  * @author Mikael Elm
  */
-fun <T> (() -> Publisher<T>).testUsingVirtualTime(): StepVerifier.FirstStep<T> =
+fun <T : Any> (() -> Publisher<T>).testUsingVirtualTime(): StepVerifier.FirstStep<T> =
     StepVerifier.withVirtualTime { invoke() }
 
 /**
@@ -145,7 +149,7 @@ fun <T> (() -> Publisher<T>).testUsingVirtualTime(): StepVerifier.FirstStep<T> =
  * @see [StepVerifier.withVirtualTime]
  * @author Mikael Elm
  */
-fun <T> (() -> Publisher<T>).testUsingVirtualTime(n: Long): StepVerifier.FirstStep<T> =
+fun <T : Any> (() -> Publisher<T>).testUsingVirtualTime(n: Long): StepVerifier.FirstStep<T> =
     StepVerifier.withVirtualTime({ invoke() }, n)
 
 /**
@@ -154,7 +158,7 @@ fun <T> (() -> Publisher<T>).testUsingVirtualTime(n: Long): StepVerifier.FirstSt
  * @see [StepVerifier.withVirtualTime]
  * @author Mikael Elm
  */
-fun <T> Publisher<T>.testUsingVirtualTime(vtsLookup: () -> VirtualTimeScheduler, n: Long): StepVerifier.FirstStep<T> =
+fun <T : Any> Publisher<T>.testUsingVirtualTime(vtsLookup: () -> VirtualTimeScheduler, n: Long): StepVerifier.FirstStep<T> =
     StepVerifier.withVirtualTime({ this }, vtsLookup, n)
 
 /**
@@ -163,5 +167,5 @@ fun <T> Publisher<T>.testUsingVirtualTime(vtsLookup: () -> VirtualTimeScheduler,
  * @see [StepVerifier.withVirtualTime]
  * @author Mikael Elm
  */
-fun <T> Publisher<T>.testUsingVirtualTime(options: StepVerifierOptions): StepVerifier.FirstStep<T> =
+fun <T : Any> Publisher<T>.testUsingVirtualTime(options: StepVerifierOptions): StepVerifier.FirstStep<T> =
     StepVerifier.withVirtualTime({ this }, options)

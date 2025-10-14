@@ -41,9 +41,6 @@ dokkaHtml {
 			externalDocumentationLink {
 				url.set(new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/"))
 			}
-			externalDocumentationLink {
-				url.set(new URL("http://reactivex.io/RxJava/javadoc/"))
-			}
 		}
 	}
 }
@@ -74,9 +71,6 @@ dokkaJavadoc {
 			}
 			externalDocumentationLink {
 				url.set(new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/"))
-			}
-			externalDocumentationLink {
-				url.set(new URL("http://reactivex.io/RxJava/javadoc/"))
 			}
 		}
 	}

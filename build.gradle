@@ -73,8 +73,6 @@ configure(rootProject)  { project ->
 
 		compileOnly libs.reactor.adapter
 		testImplementation libs.reactor.adapter
-		compileOnly libs.rxJava2
-		testImplementation libs.rxJava2
 
 		//NB: stdlib version is defined by the kotlin jvm plugin's version
 		compileOnly libs.kotlin.stdlib
