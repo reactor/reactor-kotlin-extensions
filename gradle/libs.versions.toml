@@ -3,7 +3,7 @@
 reactorCore = "3.5.20"
 reactorAddons = "3.5.4-SNAPSHOT"
 # Other shared versions
-kotlin = "1.7.0"
+kotlin = "2.2.20"
 
 [libraries]
 reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactorCore" }
