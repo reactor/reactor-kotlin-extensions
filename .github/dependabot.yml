@@ -18,6 +18,12 @@ updates:
   - dependency-name: "com.jfrog.artifactory"
     versions:
     - ">= 5.0.a"
+  - dependency-name: "org.jetbrains.kotlin*"
+    versions:
+    - "[1.8.0,)"
+  - dependency-name: "org.jetbrains.dokka*"
+    versions:
+    - "[1.8.0,)"
   rebase-strategy: disabled
 - package-ecosystem: github-actions
   directory: "/"
