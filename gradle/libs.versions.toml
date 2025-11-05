@@ -1,9 +1,9 @@
 [versions]
 # Reactor Core 3.5.20 is the last OSS release for 3.5.x series
 reactorCore = "3.5.20"
-reactorAddons = "3.5.4-SNAPSHOT"
+reactorAddons = "3.5.5-SNAPSHOT"
 # Other shared versions
-kotlin = "1.7.0"
+kotlin = "1.7.20"
 
 [libraries]
 reactor-core = { module = "io.projectreactor:reactor-core", version.ref = "reactorCore" }
@@ -19,4 +19,4 @@ rxJava2 = "io.reactivex.rxjava2:rxjava:2.2.21"
 [plugins]
 artifactory = { id = "com.jfrog.artifactory", version = "4.33.1" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-dokka = { id = "org.jetbrains.dokka", version = "1.7.0" }
+kotlin-dokka = { id = "org.jetbrains.dokka", version = "1.7.20" }
