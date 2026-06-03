@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2021 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2011-2026 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,15 @@ final class MonoBridges {
 	}
 
 	static Mono<Void> when(Publisher<?>[] sources) {
-		return Mono.when(sources);
+		Publisher<?>[] tmp = sources;
+		// Ensure the Java array is Publisher[] and not a more specific subtype array.
+		// Kotlin's Array(1) { TestPublisher.create<Void>() } would result in TestPublisher[] at runtime
+		// and as a consequence fail since the internal operator logic can modify the array and wrap the Publisher
+		// instances as Mono.
+		if (!(sources.getClass().getComponentType().isAssignableFrom(Publisher.class))) {
+			tmp = new Publisher[sources.length];
+			System.arraycopy(sources, 0, tmp, 0, sources.length);
+		}
+		return Mono.when(tmp);
 	}
 }
