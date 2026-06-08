@@ -17,8 +17,8 @@ With Gradle from repo.spring.io or Maven Central repositories:
     }
 
     dependencies {
-        //implementation "io.projectreactor.kotlin:reactor-kotlin-extensions:1.3.1-SNAPSHOT"
-        implementation "io.projectreactor.kotlin:reactor-kotlin-extensions:1.3.0"
+        //implementation "io.projectreactor.kotlin:reactor-kotlin-extensions:1.3.2-SNAPSHOT"
+        implementation "io.projectreactor.kotlin:reactor-kotlin-extensions:1.3.1"
     }
 ```
 
@@ -28,7 +28,7 @@ With Maven from Maven Central repositories (stable releases):
 <dependency>
     <groupId>io.projectreactor.kotlin</groupId>
     <artifactId>reactor-kotlin-extensions</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
 </dependency>
 ```
 
@@ -41,7 +41,7 @@ Or from repo.spring.io with access to SNAPSHOT:
     <dependency>
         <groupId>io.projectreactor.kotlin</groupId>
         <artifactId>reactor-kotlin-extensions</artifactId>
-        <version>1.3.1-SNAPSHOT</version>
+        <version>1.3.2-SNAPSHOT</version>
     </dependency>
 
 </dependencies>
