@@ -31,4 +31,3 @@ updates:
   target-branch: "main"
   labels:
       - type/dependency-upgrade
-  rebase-strategy: disabled
