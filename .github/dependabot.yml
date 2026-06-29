@@ -4,31 +4,6 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-  open-pull-requests-limit: 10
-  target-branch: "1.2.x"
-  labels:
-  - type/dependency-upgrade
-  ignore:
-  # Don't update Reactor projects
-  - dependency-name: io.projectreactor:*
-  - dependency-name: io.projectreactor.addons:*
-  # JSR305 backport is fixed to last version with annotations (3.0.1)
-  - dependency-name: "com.google.code.findbugs:jsr305"
-  # artifactory: don't upgrade to v5
-  - dependency-name: "com.jfrog.artifactory"
-    versions:
-    - ">= 5.0.a"
-  - dependency-name: "org.jetbrains.kotlin*"
-    versions:
-    - "[1.8.0,)"
-  - dependency-name: "org.jetbrains.dokka*"
-    versions:
-    - "[1.8.0,)"
-  rebase-strategy: disabled
-- package-ecosystem: gradle
-  directory: "/"
-  schedule:
-    interval: daily
   target-branch: "main"
   labels:
   - type/dependency-upgrade
@@ -53,7 +28,7 @@ updates:
   schedule:
       interval: daily
   open-pull-requests-limit: 10
-  target-branch: "1.2.x"
+  target-branch: "main"
   labels:
       - type/dependency-upgrade
   rebase-strategy: disabled
