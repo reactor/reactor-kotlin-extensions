@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2019-2026 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,10 +40,30 @@ configure(rootProject)  { project ->
 
 	repositories {
 		mavenCentral()
+		if (System.getenv()["GITHUB_ACTION"] != null) {
+			maven {
+				name "spring-commercial-release"
+				url System.env.COMMERCIAL_RELEASE_REPO_URL
+				credentials {
+					username System.env.COMMERCIAL_REPO_USERNAME
+					password System.env.COMMERCIAL_REPO_PASSWORD
+				}
+			}
+		}
 		maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 		maven { url "https://maven-eclipse.github.io/maven" }
 		if (version.endsWith('-SNAPSHOT')) {
 			maven { url 'https://repo.spring.io/snapshot' }
+			if (System.getenv()["GITHUB_ACTION"] != null) {
+				maven {
+					name "spring-commercial-snapshot"
+					url System.env.COMMERCIAL_SNAPSHOT_REPO_URL
+					credentials {
+						username System.env.COMMERCIAL_REPO_USERNAME
+						password System.env.COMMERCIAL_REPO_PASSWORD
+					}
+				}
+			}
 		}
 		maven { url 'https://repo.spring.io/milestone' }
 	}
