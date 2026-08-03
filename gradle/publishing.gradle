@@ -113,6 +113,12 @@ configure(rootProject) { subproject ->
 				name = "mock"
 				url = "${rootProject.buildDir}/repo"
 			}
+			if (project.hasProperty("deploymentRepository")) {
+				maven {
+					name = 'Deployment'
+					url = project.property("deploymentRepository")
+				}
+			}
 		}
 
 		publications {
