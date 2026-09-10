@@ -21,7 +21,7 @@ buildscript {
 }
 
 plugins {
-  //NB: stdlib version is defined by this plugin's version
+	//NB: stdlib version is defined by this plugin's version
 	alias(libs.plugins.kotlin.jvm)
 	alias(libs.plugins.kotlin.dokka)
 	alias(libs.plugins.artifactory) apply false
@@ -29,7 +29,7 @@ plugins {
 
 //NOTE: reactor dependency versions are now defined in gradle.properties
 
-configure(rootProject)  { project ->
+configure(rootProject) { project ->
 	apply plugin: 'kotlin'
 	apply from: "gradle/dokka.gradle"
 	apply from: "gradle/publishing.gradle"
@@ -48,20 +48,20 @@ configure(rootProject)  { project ->
 		maven { url 'https://repo.spring.io/milestone' }
 	}
 
-  compileJava {
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
-  }
+	compileJava {
+		sourceCompatibility = 1.8
+		targetCompatibility = 1.8
+	}
 
-  compileTestJava {
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
-  }
+	compileTestJava {
+		sourceCompatibility = 1.8
+		targetCompatibility = 1.8
+	}
 
-  tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-	kotlinOptions.jvmTarget = "1.8"
-	kotlinOptions.freeCompilerArgs = ["-Xjsr305=strict"]
-  }
+	tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+		kotlinOptions.jvmTarget = "1.8"
+		kotlinOptions.freeCompilerArgs = ["-Xjsr305=strict"]
+	}
 
 	dependencies {
 		api libs.reactor.core
