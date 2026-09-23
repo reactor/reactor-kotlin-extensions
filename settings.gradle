@@ -7,4 +7,15 @@
  * in the user manual at https://docs.gradle.org/5.4/userguide/multi_project_builds.html
  */
 
+pluginManagement {
+	repositories {
+		gradlePluginPortal()
+		mavenCentral()
+	}
+}
+
+plugins {
+	id "io.spring.develocity.conventions" version "0.0.26"
+}
+
 rootProject.name = 'reactor-kotlin-extensions'
