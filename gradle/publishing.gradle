@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2025 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2019-2026 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-import org.gradle.util.VersionNumber
-
 static def qualifyVersion(String v) {
-	def versionNumber = VersionNumber.parse(v)
+	// Only the qualifier is needed here, so major/minor/micro/patch use non-capturing
+	// groups (?:...). The qualifier is the sole capturing group → m.group(1).
+	def m = (v =~ /^(?:\d+)\.(?:\d+)\.(?:\d+)(?:\.\d+)?(?:[.-](.+))?$/)
+	if (!m.matches()) return "BAD"
 
-	if (versionNumber == VersionNumber.UNKNOWN) return "BAD";
+	def qualifier = m.group(1)
 
-	if (versionNumber.qualifier == null || versionNumber.qualifier.size() == 0) return "RELEASE" //new scheme
-	if (versionNumber.qualifier == "RELEASE") return "RELEASE" //old scheme
-	if (versionNumber.qualifier.matches("(?:M|RC)\\d+")) return "MILESTONE"
-	if (versionNumber.qualifier == "SNAPSHOT" || versionNumber.qualifier == "BUILD-SNAPSHOT") return "SNAPSHOT"
+	if (qualifier == null || qualifier.isEmpty()) return "RELEASE"
+	if (qualifier == "RELEASE") return "RELEASE"
+	if (qualifier.matches("(?:M|RC)\\d+")) return "MILESTONE"
+	if (qualifier == "SNAPSHOT" || qualifier == "BUILD-SNAPSHOT") return "SNAPSHOT"
 
 	return "BAD"
 }
@@ -100,8 +101,8 @@ configure(rootProject) { subproject ->
 			//we ensure that if at least _one_ submodule version is BAD, we only output versionType=BAD + job fails
 			if (versionType == "BAD") {
 				outputToGha(versionType, version)
-				println "::error ::Unable to parse $version to a VersionNumber with recognizable qualifier"
-				throw new TaskExecutionException(tasks.getByName("qualifyVersionGha"), new IllegalArgumentException("Unable to parse $version to a VersionNumber with recognizable qualifier"))
+				println "::error ::Unable to parse $version with recognizable qualifier"
+				throw new TaskExecutionException(tasks.getByName("qualifyVersionGha"), new IllegalArgumentException("Unable to parse $version with recognizable qualifier"))
 			}
 			println "Recognized $version as $versionType"
 
@@ -116,69 +117,71 @@ configure(rootProject) { subproject ->
 		repositories {
 			maven {
 				name = "mock"
-				url = "${rootProject.buildDir}/repo"
+				url = rootProject.layout.buildDirectory.dir("repo").get().asFile.toURI().toString()
 			}
 			if (qualifyVersion("$version") in ["RELEASE", "MILESTONE"]) {
 				maven {
 					name = "sonatype"
 					url = "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
 					credentials {
-						username findProperty("sonatypeUsername")
-						password findProperty("sonatypePassword")
+						username = findProperty("sonatypeUsername")
+						password = findProperty("sonatypePassword")
 					}
 				}
 			}
 		}
+	}
 
-		publications {
-			mavenJava(MavenPublication) {
-				from components.java
-				//consider adding extra artifacts here, conditionally on submodule's name and perhaps in an afterEvaluate block
-				afterEvaluate {
+	// Create the Maven publication in afterEvaluate: kotlin-gradle-plugin configures the hierarchy of
+	// apiElements/runtimeElements in its own afterEvaluate, and Gradle 9 fails if a configuration is
+	// modified after it has been published as a variant.
+	afterEvaluate {
+		publishing {
+			publications {
+				mavenJava(MavenPublication) {
+					from components.java
 					artifact sourcesJar
 					artifact javadocJar
 					artifact kdocZip
-				}
 
-				pom {
-					afterEvaluate {
+					pom {
 						name = project.description
 						description = project.description
-					}
-					packaging = 'jar' //if not explicitly set, end up as `pom` in output. omitted in output if set as `jar`...
+						packaging = 'jar' //if not explicitly set, end up as `pom` in output. omitted in output if set as `jar`...
 
-					url = 'https://github.com/reactor/reactor-kotlin-extensions'
-					organization {
-						name = 'reactor'
-						url = 'https://github.com/reactor'
-					}
-					licenses {
-						license {
-							name = 'The Apache Software License, Version 2.0'
-							url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
-							distribution = 'repo'
-						}
-					}
-					scm {
 						url = 'https://github.com/reactor/reactor-kotlin-extensions'
-						connection = 'scm:git:git://github.com/reactor/reactor-kotlin-extensions'
-						developerConnection = 'scm:git:git://github.com/reactor/reactor-kotlin-extensions'
-					}
-					developers {
-						developer {
-							id = 'simonbasle'
-							name = 'Simon Baslé'
-							email = 'sbasle@vmware.com'
+						organization {
+							name = 'reactor'
+							url = 'https://github.com/reactor'
 						}
-						developer {
-							id = 'sdeleuze'
-							name = 'Sébastien Deleuze'
-							email = 'sdeleuze@vmware.com'
+						licenses {
+							license {
+								name = 'The Apache Software License, Version 2.0'
+								url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+								distribution = 'repo'
+							}
 						}
-					}
-					issueManagement {
-						system = "GitHub Issues"
-						url = "https://github.com/reactor/reactor-kotlin-extensions/issues"
+						scm {
+							url = 'https://github.com/reactor/reactor-kotlin-extensions'
+							connection = 'scm:git:git://github.com/reactor/reactor-kotlin-extensions'
+							developerConnection = 'scm:git:git://github.com/reactor/reactor-kotlin-extensions'
+						}
+						developers {
+							developer {
+								id = 'simonbasle'
+								name = 'Simon Baslé'
+								email = 'sbasle@vmware.com'
+							}
+							developer {
+								id = 'sdeleuze'
+								name = 'Sébastien Deleuze'
+								email = 'sdeleuze@vmware.com'
+							}
+						}
+						issueManagement {
+							system = "GitHub Issues"
+							url = "https://github.com/reactor/reactor-kotlin-extensions/issues"
+						}
 					}
 				}
 			}
@@ -188,8 +191,10 @@ configure(rootProject) { subproject ->
 	if (rootProject.hasProperty("artifactory_publish_password")) {
 		apply plugin: "com.jfrog.artifactory"
 
-		artifactoryPublish {
-			publications(publishing.publications.mavenJava)
+		afterEvaluate {
+			artifactoryPublish {
+				publications(publishing.publications.mavenJava)
+			}
 		}
 	}
 

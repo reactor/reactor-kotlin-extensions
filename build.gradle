@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2019-2026 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-buildscript {
-	repositories {
-		mavenCentral()
-	}
-}
+import org.gradle.api.attributes.java.TargetJvmVersion
 
 plugins {
   //NB: stdlib version is defined by this plugin's version
@@ -31,6 +27,24 @@ plugins {
 
 configure(rootProject)  { project ->
 	apply plugin: 'kotlin'
+
+	// Compile and test with JDK 8, as before the Gradle 9 migration.
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(8)
+		}
+	}
+
+	// The Artifactory plugin (applied from releaser.gradle) adds maven-publish in afterEvaluate,
+	// which resets TargetJvmVersion on consumable configurations to the running JDK (17).
+	// This pre-registers a callback to force JVM 8 on those configurations,
+	// keeping them consistent with the JDK 8 toolchain.
+	configurations.matching { it.name == 'apiElements' || it.name == 'runtimeElements' }.configureEach { conf ->
+		conf.attributes {
+			attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 8)
+		}
+	}
+
 	apply from: "gradle/dokka.gradle"
 	apply from: "gradle/publishing.gradle"
 	apply from: "gradle/releaser.gradle"
@@ -40,23 +54,13 @@ configure(rootProject)  { project ->
 
 	repositories {
 		mavenCentral()
-		maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-		maven { url "https://maven-eclipse.github.io/maven" }
+		maven { url = "https://oss.sonatype.org/content/repositories/releases/" }
+		maven { url = "https://maven-eclipse.github.io/maven" }
 		if (version.endsWith('-SNAPSHOT')) {
-			maven { url 'https://repo.spring.io/snapshot' }
+			maven { url = 'https://repo.spring.io/snapshot' }
 		}
-		maven { url 'https://repo.spring.io/milestone' }
+		maven { url = 'https://repo.spring.io/milestone' }
 	}
-
-  compileJava {
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
-  }
-
-  compileTestJava {
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
-  }
 
   tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 	kotlinOptions.jvmTarget = "1.8"

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 VMware Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2022-2026 VMware Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,36 @@
  * limitations under the License.
  */
 
+// externalDocumentationLink is called with an Action: the Closure variant of the Dokka Gradle plugin V1
+// relies on org.gradle.util.ConfigureUtil, which was removed in Gradle 9, and the resulting failure is
+// silently ignored (the links are dropped from the generated documentation).
+//
+// The Reactor javadoc is generated with JDK 17+, which publishes an element-list instead of a package-list,
+// so the element-list is configured explicitly for the projectreactor.io links.
+
 dokkaHtml {
 	dependsOn jar
 	group = "documentation"
 	description = "Generates Kotlin API documentation."
 
-	outputDirectory.set(new File(project.buildDir, "docs/kdoc"))
+	outputDirectory.set(layout.buildDirectory.dir("docs/kdoc"))
 	moduleName.set("reactor-kotlin-extensions")
 
 	dokkaSourceSets {
 		configureEach {
 			jdkVersion.set(8)
 
-			externalDocumentationLink {
-				url.set(new URL("https://projectreactor.io/docs/core/release/api/"))
-			}
-			externalDocumentationLink {
-				url.set(new URL("https://projectreactor.io/docs/test/release/api/"))
-			}
-			externalDocumentationLink {
-				url.set(new URL("https://projectreactor.io/docs/extra/release/api/"))
-			}
-			externalDocumentationLink {
-				url.set(new URL("https://projectreactor.io/docs/adapter/release/api/"))
-			}
-			externalDocumentationLink {
-				url.set(new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/"))
-			}
+			externalDocumentationLink({ link ->
+				link.url.set(new URL("https://projectreactor.io/docs/core/release/api/"))
+				link.packageListUrl.set(new URL("https://projectreactor.io/docs/core/release/api/element-list"))
+			} as Action)
+			externalDocumentationLink({ link ->
+				link.url.set(new URL("https://projectreactor.io/docs/test/release/api/"))
+				link.packageListUrl.set(new URL("https://projectreactor.io/docs/test/release/api/element-list"))
+			} as Action)
+			externalDocumentationLink({ link ->
+				link.url.set(new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/"))
+			} as Action)
 		}
 	}
 }
@@ -50,28 +53,24 @@ dokkaJavadoc {
 	group = "documentation"
 	description = "Generates javadoc for Kotlin API."
 
-	outputDirectory.set(new File(project.buildDir, "docs/javadoc"))
+	outputDirectory.set(layout.buildDirectory.dir("docs/javadoc"))
 	moduleName.set("reactor-kotlin-extensions")
 
 	dokkaSourceSets {
 		configureEach {
 			jdkVersion.set(8)
 
-			externalDocumentationLink {
-				url.set(new URL("https://projectreactor.io/docs/core/release/api/"))
-			}
-			externalDocumentationLink {
-				url.set(new URL("https://projectreactor.io/docs/test/release/api/"))
-			}
-			externalDocumentationLink {
-				url.set(new URL("https://projectreactor.io/docs/extra/release/api/"))
-			}
-			externalDocumentationLink {
-				url.set(new URL("https://projectreactor.io/docs/adapter/release/api/"))
-			}
-			externalDocumentationLink {
-				url.set(new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/"))
-			}
+			externalDocumentationLink({ link ->
+				link.url.set(new URL("https://projectreactor.io/docs/core/release/api/"))
+				link.packageListUrl.set(new URL("https://projectreactor.io/docs/core/release/api/element-list"))
+			} as Action)
+			externalDocumentationLink({ link ->
+				link.url.set(new URL("https://projectreactor.io/docs/test/release/api/"))
+				link.packageListUrl.set(new URL("https://projectreactor.io/docs/test/release/api/element-list"))
+			} as Action)
+			externalDocumentationLink({ link ->
+				link.url.set(new URL("https://www.reactive-streams.org/reactive-streams-1.0.3-javadoc/"))
+			} as Action)
 		}
 	}
 }
