@@ -119,6 +119,12 @@ configure(rootProject) { subproject ->
 				name = "mock"
 				url = rootProject.layout.buildDirectory.dir("repo").get().asFile.toURI().toString()
 			}
+			if (project.hasProperty("deploymentRepository")) {
+				maven {
+					name = 'Deployment'
+					url = project.property("deploymentRepository")
+				}
+			}
 		}
 	}
 
